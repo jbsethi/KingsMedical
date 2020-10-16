@@ -1,5 +1,5 @@
-# Real World Vue.js Boilerplate
-This project based on real world practice and ready to use. Have a fun!
+# Kings Medical Application
+Kings medical application for incoice management
 
 ## Features
 - Http request class that implements API calls with Auth and tokens refresh based on Axios
