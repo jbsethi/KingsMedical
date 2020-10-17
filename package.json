@@ -1,0 +1,29 @@
+{
+  "name": "school-attendance-system",
+  "version": "1.0.0",
+  "description": "This project is for API's of school managment system.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "initialize": "sequelize db:migrate --debug && sequelize db:seed:all --debug",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Wasiq Naqi",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "multer": "^1.4.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.13",
+    "sequelize-cli": "^5.5.1"
+  },
+  "devDependencies": {}
+}
