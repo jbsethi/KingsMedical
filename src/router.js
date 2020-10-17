@@ -8,6 +8,7 @@ Vue.use(Router)
 
 export default new Router({
   linkExactActiveClass: 'active',
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -19,26 +20,6 @@ export default new Router({
           name: 'dashboard',
           component: () => import('./views/Dashboard.vue')
         }
-        // {
-        //   path: '/icons',
-        //   name: 'icons',
-        //   component: () => import('./views/Icons.vue')
-        // },
-        // {
-        //   path: '/profile',
-        //   name: 'profile',
-        //   component: () => import('./views/UserProfile.vue')
-        // },
-        // {
-        //   path: '/maps',
-        //   name: 'maps',
-        //   component: () => import('./views/Maps.vue')
-        // },
-        // {
-        //   path: '/tables',
-        //   name: 'tables',
-        //   component: () => import('./views/Tables.vue')
-        // }
       ]
     },
     {
