@@ -19,6 +19,27 @@ export default new Router({
           path: '/dashboard',
           name: 'dashboard',
           component: () => import('./views/Dashboard.vue')
+        },
+        {
+          path: '/labs',
+          name: 'lab',
+          component: () => import('./views/Lab.vue')
+        },
+        {
+          path: '/services',
+          name: 'service',
+          component: () => import('./views/Service.vue')
+        }
+        ,
+        {
+          path: '/users',
+          name: 'user',
+          component: () => import('./views/User.vue')
+        },
+        {
+          path: '/icons',
+          name: 'icons',
+          component: () => import('./views/Icons.vue')
         }
       ]
     },

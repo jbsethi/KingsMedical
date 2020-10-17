@@ -14,6 +14,30 @@
           }"
         />
 
+        <sidebar-item
+          :link="{
+            name: 'Labs',
+            icon: 'ni ni-shop text-primary',
+            path: '/labs'
+          }"
+        />
+
+        <sidebar-item
+          :link="{
+            name: 'Services',
+            icon: 'ni ni-delivery-fast text-primary',
+            path: '/services'
+          }"
+        />
+
+        <sidebar-item
+          :link="{
+            name: 'Users',
+            icon: 'ni ni-delivery-fast text-primary',
+            path: '/users'
+          }"
+        />
+
         <!-- <sidebar-item :link="{name: 'Icons', icon: 'ni ni-planet text-blue', path: '/icons'}"/>
         <sidebar-item :link="{name: 'Maps', icon: 'ni ni-pin-3 text-orange', path: '/maps'}"/>
         <sidebar-item :link="{name: 'User Profile', icon: 'ni ni-single-02 text-yellow', path: '/profile'}"/>
