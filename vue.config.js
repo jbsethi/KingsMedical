@@ -3,7 +3,11 @@ const isProd = process.env.NODE_ENV === "production";
 
 module.exports = {
   configureWebpack: {
-    // Set up all the aliases we use in our app.
+    resolve: {  
+      alias: {
+        '@': require('path').resolve(__dirname, 'src')
+      } 
+    },
     plugins: [
       new webpack.optimize.LimitChunkCountPlugin({
         maxChunks: 6
