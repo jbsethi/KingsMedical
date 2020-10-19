@@ -16,6 +16,14 @@
 
         <sidebar-item
           :link="{
+            name: 'Orders',
+            icon: 'ni ni-folder-17 text-primary',
+            path: '/orders'
+          }"
+        />
+
+        <sidebar-item
+          :link="{
             name: 'Labs',
             icon: 'ni ni-shop text-primary',
             path: '/labs'
@@ -33,8 +41,16 @@
         <sidebar-item
           :link="{
             name: 'Users',
-            icon: 'ni ni-delivery-fast text-primary',
+            icon: 'ni ni-circle-08 text-primary',
             path: '/users'
+          }"
+        />
+
+        <sidebar-item
+          :link="{
+            name: 'Roles',
+            icon: 'ni ni-badge text-primary',
+            path: '/roles'
           }"
         />
 

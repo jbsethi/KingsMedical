@@ -21,6 +21,11 @@ export default new Router({
           component: () => import('./views/Dashboard.vue')
         },
         {
+          path: '/orders',
+          name: 'order',
+          component: () => import('./views/Order.vue')
+        },
+        {
           path: '/labs',
           name: 'lab',
           component: () => import('./views/Lab.vue')
@@ -29,17 +34,26 @@ export default new Router({
           path: '/services',
           name: 'service',
           component: () => import('./views/Service.vue')
-        }
-        ,
+        },
         {
           path: '/users',
           name: 'user',
           component: () => import('./views/User.vue')
         },
         {
+          path: '/roles',
+          name: 'role',
+          component: () => import('./views/Role.vue')
+        },
+        {
           path: '/icons',
           name: 'icons',
           component: () => import('./views/Icons.vue')
+        },
+        {
+          path: '/settings',
+          name: 'setting',
+          component: () => import('./views/Setting.vue')
         }
       ]
     },
