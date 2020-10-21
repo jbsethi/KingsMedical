@@ -6,21 +6,130 @@
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col">
-                    <labs-table title="Labs Record"></labs-table>
+                    <labs-table
+                      @create:lab="toggleCreateLabModal(true)"
+                      @edit:lab="editLab"
+                      title="Labs Record"
+                      :tableData="labs">
+                    </labs-table>
                 </div>
             </div>
         </div>
+        <CreateLabModal :show="createLabModal" @close="toggleCreateLabModal(false)">
+          <template slot="header">
+            Create Lab
+          </template>
+          <template>
+            <form role="form">
+              <base-input alternative
+                          class="mb-3"
+                          placeholder="Title"
+                          v-model="lab.title"
+                          addon-left-icon="ni ni-shop">
+              </base-input>
+              <base-input alternative
+                          class="mb-3"
+                          placeholder="Location"
+                          v-model="lab.location"
+                          addon-left-icon="ni ni-world-2">
+              </base-input>
+              <textarea class="form-control form-control-alternative"
+                        rows="3"
+                        placeholder="Description ..."
+                        v-model="lab.description">
+              </textarea>
+              <div class="d-flex align-items-center mt-3">
+                <base-switch class="mb-0 mr-2" v-model="lab.status"></base-switch> <span>Active</span>
+              </div>
+              <div class="text-center">
+                  <base-button @click="createLab" type="primary" class="my-4">
+                    <template v-if="!createLoading">
+                      {{ lab.id ? 'Update Lab' : 'Create Lab' }}
+                    </template>
+                    <template v-else>
+                      Loading ...
+                    </template>
+                  </base-button>
+              </div>
+          </form>
+          </template>
+        </CreateLabModal>
     </div>
 </template>
 <script>
+import * as _ from 'lodash'
 import LabsTable from './Lab/LabsTable'
+
+import { mapState, mapActions } from 'vuex'
+
 export default {
   components: {
-    LabsTable
+    LabsTable,
+    CreateLabModal: () => import('./../components/Modal')
   },
   data() {
     return {
+      createLabModal: false,
+      createLoading: false,
+      lab: {
+        id: null,
+        title: '',
+        location: '',
+        description: '',
+        status: false
+      },
     }
+  },
+  computed: {
+    ...mapState({
+      labs: state => state.labs.labs
+    })
+  },
+  methods: {
+    toggleCreateLabModal (status) {
+      this.createLabModal = status
+    },
+
+    resetForm () {
+      this.lab = {
+        id: null,
+        title: '',
+        location: '',
+        description: '',
+        status: false
+      }
+    },
+
+    editLab (labId) {
+      this.lab = _.cloneDeep(this.labs.reduce((found, lab) => {
+        if (lab.id == labId) {
+          return lab
+        }
+      }))
+
+      this.toggleCreateLabModal(true)
+    },
+
+    createLab () {
+      if (!this.createLoading) {
+        this.createLoading = true
+        const lab = this.lab
+
+        this.storeLab({lab, labId: this.lab.id})
+          .then(() => {
+            this.toggleCreateLabModal(false)
+            this.resetForm()
+          })
+          .catch(error => {
+            console.log(error)
+          })
+          .finally(this.createLoading = false)
+      }
+    },
+
+    ...mapActions('labs', [
+      'storeLab'
+    ])
   }
 }
 </script>

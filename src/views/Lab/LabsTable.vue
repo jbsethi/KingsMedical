@@ -10,7 +10,7 @@
           </h3>
         </div>
         <div class="col text-right">
-          <base-button type="primary" size="sm">See all</base-button>
+          <base-button @click="$emit('create:lab')" type="primary" size="sm">Create Lab</base-button>
         </div>
       </div>
     </div>
@@ -61,9 +61,12 @@
               </a>
 
               <template>
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <a @click.stop="$emit('edit:lab', row.id)" class="dropdown-item" href="#">
+                  Edit
+                </a>
+                <a class="dropdown-item" href="#">
+                  Remove
+                </a>
               </template>
             </base-dropdown>
           </td>
@@ -87,25 +90,14 @@
       type: {
         type: String
       },
-      title: String
+      title: String,
+      tableData: {
+        required: true,
+        type: Array
+      }
     },
     data() {
       return {
-        tableData: [
-          {
-            img: 'img/theme/bootstrap.jpg',
-            title: 'Argon Design System',
-            location: 'dubai',
-            description: 'Working since 2019',
-            status: false,
-          },
-          {
-            title: 'Argon Design System',
-            location: 'dubai',
-            description: 'Working since 2019',
-            status: false,
-          }
-        ]
       }
     }
   }
