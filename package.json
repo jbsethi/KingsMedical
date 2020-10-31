@@ -1,10 +1,10 @@
 {
-  "name": "school-attendance-system",
+  "name": "kings-medical",
   "version": "1.0.0",
-  "description": "This project is for API's of school managment system.",
+  "description": "This project is for API's of kings medical.",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "node app.js",
     "initialize": "sequelize db:migrate --debug && sequelize db:seed:all --debug",
     "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"

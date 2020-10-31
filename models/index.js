@@ -46,6 +46,11 @@ sequelize.authenticate()
       }
     });
 
+
+    // Associations
+    db.User.belongsTo(db.Role, {foreignKey: 'role'});
+    db.Service.belongsTo(db.ServiceType, {foreignKey: 'serviceType'});
+
     // Synchronization
     sequelize.sync()
     .then(() => {
