@@ -1,4 +1,4 @@
-# web-app
+# Kings Medical Center Invoice Management
 
 ## Project Theme
 Argon Theme used by creative tim.
