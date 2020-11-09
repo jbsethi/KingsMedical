@@ -23,8 +23,8 @@
             <form role="form">
               <base-input alternative
                           class="mb-3"
-                          placeholder="Title"
-                          v-model="lab.title"
+                          placeholder="Name"
+                          v-model="lab.name"
                           addon-left-icon="ni ni-shop">
               </base-input>
               <base-input alternative
@@ -39,7 +39,7 @@
                         v-model="lab.description">
               </textarea>
               <div class="d-flex align-items-center mt-3">
-                <base-switch class="mb-0 mr-2" v-model="lab.status"></base-switch> <span>Active</span>
+                <base-switch class="mb-0 mr-2" v-model="lab.active"></base-switch> <span>Active</span>
               </div>
               <div class="text-center">
                   <base-button @click="createLab" type="primary" class="my-4">
@@ -76,7 +76,7 @@ export default {
         title: '',
         location: '',
         description: '',
-        status: false
+        active: false
       },
     }
   },
@@ -93,19 +93,19 @@ export default {
     resetForm () {
       this.lab = {
         id: null,
-        title: '',
+        name: '',
         location: '',
         description: '',
-        status: false
+        active: false
       }
     },
 
     editLab (labId) {
-      this.lab = _.cloneDeep(this.labs.reduce((found, lab) => {
-        if (lab.id == labId) {
-          return lab
-        }
-      }))
+      const labIdx = _.findIndex(this.labs, ['id', labId])
+
+      if (labIdx >= 0) {
+        this.lab = _.cloneDeep(this.labs[labIdx])
+      }
 
       this.toggleCreateLabModal(true)
     },
@@ -128,8 +128,12 @@ export default {
     },
 
     ...mapActions('labs', [
+      'getAllLabs',
       'storeLab'
     ])
+  },
+  mounted () {
+    this.getAllLabs()
   }
 }
 </script>

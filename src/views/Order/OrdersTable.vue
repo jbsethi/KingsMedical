@@ -10,7 +10,7 @@
           </h3>
         </div>
         <div class="col text-right">
-          <base-button type="primary" size="sm">Create Order</base-button>
+          <base-button @click="$emit('create:order')" type="primary" size="sm">Create Order</base-button>
         </div>
       </div>
     </div>

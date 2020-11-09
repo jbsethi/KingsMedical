@@ -17,10 +17,10 @@
                 <base-dropdown class="nav-link pr-0">
                     <div class="media align-items-center" slot="title">
                       <span class="avatar avatar-sm rounded-circle">
-                        <span>BP</span>
+                        <span>{{ name[0].toUpperCase() }}</span>
                       </span>
                         <div class="media-body ml-2 d-none d-lg-block">
-                            <span class="mb-0 text-sm  font-weight-bold">Binyameen pervaiz</span>
+                            <span class="mb-0 text-sm  font-weight-bold">{{ name }}</span>
                         </div>
                     </div>
 
@@ -45,10 +45,10 @@
                             <span>Support</span>
                         </router-link>
                         <div class="dropdown-divider"></div>
-                        <router-link to="/profile" class="dropdown-item">
+                        <span @click="logout" class="dropdown-item">
                             <i class="ni ni-user-run"></i>
                             <span>Logout</span>
-                        </router-link>
+                        </span>
                     </template>
                 </base-dropdown>
             </li>
@@ -56,6 +56,7 @@
     </base-nav>
 </template>
 <script>
+  import { mapActions, mapState } from 'vuex'
   export default {
     data() {
       return {
@@ -73,7 +74,15 @@
       },
       toggleMenu() {
         this.showMenu = !this.showMenu;
-      }
+      },
+      ...mapActions('user', [
+        'logout'
+      ])
+    },
+    computed: {
+      ...mapState({
+        name: state => state.user.currentUser.name
+      })
     }
   };
 </script>

@@ -2,7 +2,7 @@ import * as Fingerprint2 from 'fingerprintjs2'
 import * as UAParser from 'ua-parser-js'
 import axios from 'axios'
 
-import { Http } from './http.init'
+// import { Http } from './http.init'
 import { ResponseWrapper, ErrorWrapper } from './util'
 import $store from '../store'
 import $router from '../router'
@@ -18,17 +18,22 @@ export class AuthService {
    ******************************
    */
 
-  static async makeLogin ({ email, password }) {
+  static async makeLogin ({ username, password }) {
     try {
-      const fingerprint = await _getFingerprint()
-      const response = await axios.post(`${API_URL}/auth/login`,
-        { email, password, fingerprint },
-        { withCredentials: true })
+      // const fingerprint = await _getFingerprint()
+      const response = await axios.post(`${API_URL}/authentication/login`,
+        // { username, password, fingerprint },
+        { username, password },
+        { withCredentials: false })
+        
+      const responseData = _parseTokenData(response.data.token)
+
       _setAuthData({
-        accessToken: response.data.data.accessToken,
-        exp: _parseTokenData(response.data.data.accessToken).exp
+        accessToken: response.data.token,
+        exp: responseData.exp
       })
-      return new ResponseWrapper(response, response.data.data)
+
+      return new ResponseWrapper(response, responseData)
     } catch (error) {
       throw new ErrorWrapper(error)
     }
@@ -36,10 +41,10 @@ export class AuthService {
 
   static async makeLogout () {
     try {
-      const response = await new Http({ auth: true }).post('auth/logout', {}, { withCredentials: true })
+      // const response = await new Http({ auth: true }).post('auth/logout', {}, { withCredentials: true })
       _resetAuthData()
       $router.push({ name: 'login' }).catch(() => {})
-      return new ResponseWrapper(response, response.data.data)
+      // return new ResponseWrapper(response, response.data.data)
     } catch (error) {
       throw new ErrorWrapper(error)
     }

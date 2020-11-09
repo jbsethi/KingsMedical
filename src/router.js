@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { checkAuthMiddleware, checkAccessMiddleware } from './middlewares'
 
 import DashboardLayout from '@/layout/DashboardLayout'
 import AuthLayout from '@/layout/AuthLayout'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   linkExactActiveClass: 'active',
   mode: 'history',
   routes: [
@@ -14,6 +15,7 @@ export default new Router({
       path: '/',
       redirect: 'dashboard',
       component: DashboardLayout,
+      meta: { isAuth: true },
       children: [
         {
           path: '/dashboard',
@@ -28,22 +30,34 @@ export default new Router({
         {
           path: '/labs',
           name: 'lab',
-          component: () => import('./views/Lab.vue')
+          component: () => import('./views/Lab.vue'),
+          meta: {
+            canAccess: [1]
+          }
         },
         {
           path: '/services',
           name: 'service',
-          component: () => import('./views/Service.vue')
+          component: () => import('./views/Service.vue'),
+          meta: {
+            canAccess: [1]
+          }
         },
         {
           path: '/users',
           name: 'user',
-          component: () => import('./views/User.vue')
+          component: () => import('./views/User.vue'),
+          meta: {
+            canAccess: [1]
+          }
         },
         {
           path: '/roles',
           name: 'role',
-          component: () => import('./views/Role.vue')
+          component: () => import('./views/Role.vue'),
+          meta: {
+            canAccess: [1]
+          }
         },
         {
           path: '/icons',
@@ -74,5 +88,10 @@ export default new Router({
         }
       ]
     }
-  ]
+  ],
 })
+
+router.beforeEach(checkAuthMiddleware)
+router.beforeEach(checkAccessMiddleware)
+
+export default router

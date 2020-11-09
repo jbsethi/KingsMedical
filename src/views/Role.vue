@@ -6,13 +6,18 @@
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col">
-                    <roles-table title="Roles Record"></roles-table>
+                    <roles-table
+                      :tableData="roles"
+                      title="Roles Record"
+                    >
+                    </roles-table>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
+import { mapActions, mapState } from 'vuex'
 import RolesTable from './Role/RolesTable'
 export default {
   components: {
@@ -21,6 +26,19 @@ export default {
   data() {
     return {
     }
+  },
+  computed: {
+    ...mapState({
+      roles: state => state.roles.roles
+    })
+  },
+  methods: {
+    ...mapActions('roles', [
+      'getAllRoles'
+    ])
+  },
+  mounted () {
+    this.getAllRoles()
   }
 }
 </script>

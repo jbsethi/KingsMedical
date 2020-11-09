@@ -1,24 +1,46 @@
 import * as _ from 'lodash'
+import { LabsService } from '@/services/labs.service'
 
 export default {
-  storeLab ({ commit }, payload) {
+  getAllLabs ({ commit }) {
     return new Promise((resolve, reject) => {
-      try {
-        let lab = _.cloneDeep(payload.lab)
-        if (payload.labId) {
-          lab.id = payload.labId
-
-          commit('UPDATE_RECORD', payload)
-          resolve(payload.lab)
-        } else {
-          lab.id = '_' + Math.random().toString(36).substr(2, 9);
-  
-          commit('ADD_LAB', lab)
-          resolve(lab)
-        }
-      } catch (error) {
-        reject(error)
-      }
+      LabsService.getList()
+        .then(result => {
+          commit('ADD_RECORDS', result.data.content)
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
+  },
+
+  storeLab ({ commit }, payload) {
+    let lab = _.cloneDeep(payload.lab)
+    if (payload.labId) {
+      return new Promise((resolve, reject) => {
+        const { name, active, description } = lab
+        LabsService.update(payload.labId, { name, active, description })
+          .then(result => {
+            commit('UPDATE_RECORD', result.data)
+            resolve(result)
+          })
+          .catch((error) => {
+            reject(error)
+          })
+      })
+    } else {
+      return new Promise((resolve, reject) => {
+        const { name, active, description } = lab
+        LabsService.create({ name, active, description })
+          .then(result => {
+            commit('CREATE_RECORD', result.data)
+            resolve(result)
+          })
+          .catch((error) => {
+            reject(error)
+          })
+      })
+    }
   }
 }

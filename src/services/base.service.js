@@ -74,6 +74,28 @@ export class BaseService {
    * @API_CALLS_PRIVATE
    * ------------------------------
    */
+  static async getList (parameters = {}) {
+    assert.object(parameters)
+    const params = { ...parameters }
+
+    try {
+      const response = await this.request({ auth: true }).get(`${this.entity}`, { params })
+      console.log(response)
+      const data = {
+        content: response.data.rows,
+        meta: {
+          total: Number(response.data.count),
+          pageNo: Number(response.data.pageNo),
+          totalPages: Number(response.data.totalPages)
+        }
+      }
+
+      return new ResponseWrapper(response, data)
+    } catch (error) {
+      const message = error.response.data ? error.response.data.error : error.response.statusText
+      throw new ErrorWrapper(error, message)
+    }
+  }
 
   static async getById (id) {
     assert.id(id, { required: true })
@@ -92,7 +114,7 @@ export class BaseService {
 
     try {
       const response = await this.request({ auth: true }).post(`${this.entity}`, data)
-      return new ResponseWrapper(response, response.data.data)
+      return new ResponseWrapper(response, response.data)
     } catch (error) {
       throw new ErrorWrapper(error)
     }
@@ -103,8 +125,8 @@ export class BaseService {
     assert.object(data, { required: true })
 
     try {
-      const response = await this.request({ auth: true }).patch(`${this.entity}/${id}`, data)
-      return new ResponseWrapper(response, response.data.data)
+      const response = await this.request({ auth: true }).put(`${this.entity}/${id}`, data)
+      return new ResponseWrapper(response, response.data)
     } catch (error) {
       throw new ErrorWrapper(error)
     }
@@ -115,7 +137,7 @@ export class BaseService {
 
     try {
       const response = await this.request({ auth: true }).delete(`${this.entity}/${id}`)
-      return new ResponseWrapper(response, response.data.data)
+      return new ResponseWrapper(response, response.data)
     } catch (error) {
       throw new ErrorWrapper(error)
     }

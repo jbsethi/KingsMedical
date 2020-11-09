@@ -1,4 +1,6 @@
 export default {
+  users: [],
+  userMeta: {},
   currentUser: {
     id: '',
     role: '',

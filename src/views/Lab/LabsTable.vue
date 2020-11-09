@@ -22,7 +22,7 @@
                   tbody-classes="list"
                   :data="tableData">
         <template slot="columns">
-          <th>Title</th>
+          <th>Name</th>
           <th>Location</th>
           <th>Description</th>
           <th>Status</th>
@@ -34,10 +34,10 @@
             <div class="media align-items-center">
               <a href="#" class="avatar rounded-circle mr-3">
                 <img v-if="row.img" alt="Image placeholder" :src="row.img">
-                <span v-if="!row.img">{{ row.title[0] }}</span>
+                <span v-if="!row.img">{{ row.name[0] }}</span>
               </a>
               <div class="media-body">
-                <span class="name mb-0 text-sm">{{row.title}}</span>
+                <span class="name mb-0 text-sm">{{row.name}}</span>
               </div>
             </div>
           </th>
@@ -48,15 +48,15 @@
             {{row.description}}
           </td>
           <td>
-            <badge class="badge-dot mr-4" :type="row.status ? 'primary': 'danger'">
-              <i :class="`bg-${row.status ? 'primary': 'danger'}`"></i>
-              <span class="status">{{row.status}}</span>
+            <badge class="badge-dot mr-4" :type="row.active ? 'primary': 'danger'">
+              <i :class="`bg-${row.active ? 'primary': 'danger'}`"></i>
+              <span class="status">{{row.active}}</span>
             </badge>
           </td>
           <td class="text-right">
             <base-dropdown class="dropdown"
                            position="right">
-              <a slot="title" class="btn btn-sm btn-icon-only text-light" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a slot="title" class="btn btn-sm btn-icon-only text-light" role="button" data-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-v"></i>
               </a>
 
