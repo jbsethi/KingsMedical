@@ -62,16 +62,16 @@ exports.Get = async function ( _ID ) {
 
 exports.Create = async (_OBJECT) => {
 
-        let userId = await db.User.findOne({
+        let emiratesId = await db.User.findOne({
             where: {
-                userId: _OBJECT.userId,
+                emiratesId: _OBJECT.emiratesId,
                 live: true
             }
         });
 
-        if(userId){
+        if(emiratesId){
 
-            let error = new Error("User Id already exists!");
+            let error = new Error("Emirates Id already exists!");
             error.status = 409;
             return {
                 DB_error: error
@@ -172,17 +172,17 @@ exports.Update = async (_OBJECT, _ID) => {
 
     }
 
-    let userId = await db.User.findOne({
+    let emiratesId = await db.User.findOne({
         where: {
-            userId: _OBJECT.userId,
+            emiratesId: _OBJECT.emiratesId,
             id: { [db.Sequelize.Op.ne]: _ID },
             live: true
         }
     });
 
-    if(userId){
+    if(emiratesId){
 
-        let error = new Error("User Id already exists!");
+        let error = new Error("Emirates Id already exists!");
         error.status = 409;
         return {
             DB_error: error
@@ -248,7 +248,7 @@ exports.Update = async (_OBJECT, _ID) => {
         User.image = _OBJECT.image;
     }
 
-    User.userId = _OBJECT.userId;
+    User.emiratesId = _OBJECT.emiratesId;
     User.email = _OBJECT.email;
     User.name = _OBJECT.name;
     User.username = _OBJECT.username;

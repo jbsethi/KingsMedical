@@ -1,0 +1,1042 @@
+{
+	"info": {
+		"_postman_id": "78c12217-62f5-4c35-a68e-5681e75d50fe",
+		"name": "KingsMedical",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "CreateUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"image\": \"\",\r\n    \"userId\": \"111111111111112\",\r\n    \"email\": null,\r\n    \"name\": \"Test 1\",\r\n    \"username\": \"username2\",\r\n    \"password\": \"administrator123\",\r\n    \"confirm_password\": \"administrator123\",\r\n    \"contact\": null,\r\n    \"role\": \"1\",\r\n    \"remarks\": null,\r\n    \"active\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Auth-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"image\": null,\r\n    \"userId\": \"111111111111111\",\r\n    \"email\": null,\r\n    \"name\": \"Test 1 update\",\r\n    \"username\": \"username1\",\r\n    \"contact\": null,\r\n    \"role\": \"1\",\r\n    \"remarks\": \"remarks\",\r\n    \"active\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/users/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUser",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/users/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/users/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetALLUser",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/users?pageNo=1&pageSize=10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "CreateRole",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Role 1\",\r\n    \"active\": true,\r\n    \"description\": \"This is notice description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/roles",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateRole",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Auth-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Role 1 update\",\r\n    \"active\": false,\r\n    \"description\": \"This is notice description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/roles/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetRole",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/roles/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteRole",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/roles/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetALLRoles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/roles?pageNo=1&pageSize=10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"roles"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetEachAndEveryRoles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/roles/all/records",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"all",
+								"records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetActiveRoles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/roles/all/active",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"all",
+								"active"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "ServiceType",
+			"item": [
+				{
+					"name": "CreateServiceTpe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth-key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Service Type 1\",\r\n    \"active\": true,\r\n    \"description\": \"This is notice description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/serviceTypes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"serviceTypes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateServiceType",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Auth-key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Service Type 1 update\",\r\n    \"active\": false,\r\n    \"description\": \"This is notice description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/serviceTypes/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"serviceTypes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetServiceType",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/serviceTypes/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"serviceTypes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteServiceType",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Auth-key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/serviceTypes/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"serviceTypes",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetALLServiceTypes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/serviceTypes?pageNo=1&pageSize=10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"serviceTypes"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetEachAndEveryServiceTypes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/serviceTypes/all/records",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"serviceTypes",
+								"all",
+								"records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetActiveServiceTypes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/serviceTypes/all/active",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"serviceTypes",
+								"all",
+								"active"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Service",
+			"item": [
+				{
+					"name": "CreateService",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth-key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Service 1\",\r\n    \"description\": \"This is notice description\",\r\n    \"serviceType\": \"1\",\r\n    \"replaceInterval\": \"30\",\r\n    \"price\": \"400\",\r\n    \"active\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/services",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"services"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateService",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Auth-key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Service 1 update\",\r\n    \"description\": \"This is notice description\",\r\n    \"serviceType\": \"1\",\r\n    \"replaceInterval\": \"30\",\r\n    \"price\": \"400\",\r\n    \"active\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/services/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"services",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetService",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "auth-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/services/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"services",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteService",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Auth-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/services/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"services",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetALLServices",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/services?pageNo=1&pageSize=10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"services"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetEachAndEveryServices",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/services/all/records",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"services",
+								"all",
+								"records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetActiveServices",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/services/all/active",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"services",
+								"all",
+								"active"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Labs",
+			"item": [
+				{
+					"name": "CreateLab",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Lab 2\",\r\n    \"active\": true,\r\n    \"description\": \"This is a lab\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/labs",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"labs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateLab",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Auth-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Lab 1 update\",\r\n    \"active\": false,\r\n    \"description\": \"This is a lab\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/labs/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"labs",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetLab",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/labs/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"labs",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteLab",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Auth-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/labs/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"labs",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetALLLabs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/labs?pageNo=1&pageSize=10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"labs"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetEachAndEveryLabs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/labs/all/records",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"labs",
+								"all",
+								"records"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetActiveLabs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/labs/all/active",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"labs",
+								"all",
+								"active"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "aa14c410-45ee-4e0d-acec-d2208f2a749e",
+								"exec": [
+									"pm.test(\"Get Authentication Token\", function () {\r",
+									"    var token = pm.response.json().token;\r",
+									"    pm.expect(token).not.to.be.undefined;\r",
+									"    pm.environment.set(\"token\", token);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"administrator\",\r\n    \"password\": \"administrator123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/authentication/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"authentication",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

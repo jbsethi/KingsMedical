@@ -4,7 +4,7 @@ const { Errors, GenerateHash } = require('../../functions');
 
 const Schema = Joi.object({
     image: Joi.string().allow(null, ''),
-    userId: Joi.string().required(),
+    emiratesId: Joi.string().required(),
     email: Joi.string().email().allow(null, ''),
     name: Joi.string().required(),
     username: Joi.string().required(),

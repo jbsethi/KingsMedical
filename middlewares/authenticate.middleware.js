@@ -3,11 +3,13 @@ const { Errors, VerifyToken } = require('../functions');
 module.exports = (req, res, next) => {
 
     // If Token does not exist
-    if(!req.headers['auth-key']) return Errors(res, { message: "", status: 401 });
+    if(!req.headers['authorization']) return Errors(res, { message: "", status: 401 });
 
     try {
 
-        VerifyToken(req.headers['auth-key']);
+        let bearer = req.headers['authorization'];
+        let token = (bearer.split(' '))[1];
+        let response = VerifyToken(token);
         next();
 
     } catch(Excp) {

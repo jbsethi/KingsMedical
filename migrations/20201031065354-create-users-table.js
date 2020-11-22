@@ -14,7 +14,7 @@ module.exports = {
       type: Sequelize.STRING(500),
       allowNull: true,
     },
-    userId : {
+    emiratesId : {
       type: Sequelize.STRING(),
       allowNull: false,
       unique: true
