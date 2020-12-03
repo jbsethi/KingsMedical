@@ -43,6 +43,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     { 
-      tableName: 'servicesTypes'
+      tableName: 'services_types'
     });
 }

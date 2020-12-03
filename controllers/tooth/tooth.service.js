@@ -10,7 +10,7 @@ exports.GetAll = async function ( _PAGE, _LIMIT) {
         }
     }
 
-    let result = await Pagination(_PAGE, _LIMIT, db.Lab, association);
+    let result = await Pagination(_PAGE, _LIMIT, db.Tooth, association);
 
     return {
         DB_value: result
@@ -20,7 +20,7 @@ exports.GetAll = async function ( _PAGE, _LIMIT) {
 
 exports.GetEachAndEvery = async function () {
     
-    let Role = await db.Lab.findAll({
+    let Tooths = await db.Tooth.findAll({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             live: true
@@ -31,13 +31,13 @@ exports.GetEachAndEvery = async function () {
     });
 
     return {
-        DB_value: Role
+        DB_value: Tooths
     };
 }
 
 exports.GetAllActive = async function () {
     
-    let Lab = await db.Lab.findAll({
+    let Tooths = await db.Tooth.findAll({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             live: true,
@@ -49,13 +49,13 @@ exports.GetAllActive = async function () {
     });
 
     return {
-        DB_value: Lab
+        DB_value: Tooths
     };
 }
 
 exports.Get = async function ( _ID ) {
 
-    let Lab = await db.Lab.findOne({
+    let Tooth = await db.Tooth.findOne({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             id: _ID,
@@ -64,9 +64,9 @@ exports.Get = async function ( _ID ) {
     });
 
 
-    if(!Lab){
+    if(!Tooth){
 
-        let error = new Error("Lab not found!");
+        let error = new Error("Tooth not found!");
         error.status = 404;
         return {
             DB_error: error
@@ -75,14 +75,14 @@ exports.Get = async function ( _ID ) {
     }
 
     return {
-        DB_value: Lab
+        DB_value: Tooth
     };
 
 }
 
 exports.Create = async (_OBJECT) => {
 
-    let result = await db.Lab.create(_OBJECT);
+    let result = await db.Tooth.create(_OBJECT);
 
     delete result.dataValues.createdBy;
     delete result.dataValues.updatedBy;
@@ -98,7 +98,7 @@ exports.Create = async (_OBJECT) => {
 
 exports.Update = async (_OBJECT, _ID) => {
 
-    let Lab = await db.Lab.findOne({
+    let Tooth = await db.Tooth.findOne({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             id: _ID,
@@ -107,9 +107,9 @@ exports.Update = async (_OBJECT, _ID) => {
     });
 
 
-    if(!Lab){
+    if(!Tooth){
 
-        let error = new Error("Lab not found!");
+        let error = new Error("Tooth not found!");
         error.status = 404;
         return {
             DB_error: error
@@ -117,16 +117,14 @@ exports.Update = async (_OBJECT, _ID) => {
 
     }
 
-    if(_OBJECT.image != 'null' && _OBJECT.image != null && _OBJECT.image != ''){
-        Lab.image = _OBJECT.image;
-    }
 
-    Lab.name = _OBJECT.name;
-    Lab.description = _OBJECT.description;
-    Lab.active = _OBJECT.active;
-    Lab.updatedBy = _OBJECT.updatedBy;
+    Tooth.name = _OBJECT.name;
+    Tooth.value = _OBJECT.value;
+    Tooth.description = _OBJECT.description;
+    Tooth.active = _OBJECT.active;
+    Tooth.updatedBy = _OBJECT.updatedBy;
 
-    let result = await Lab.save();
+    let result = await Tooth.save();
 
     delete result.dataValues.createdBy;
     delete result.dataValues.updatedBy;
@@ -142,7 +140,7 @@ exports.Update = async (_OBJECT, _ID) => {
 
 exports.Delete = async ( _ID ) => {
 
-    let Lab = await db.Lab.findOne({
+    let Tooth = await db.Tooth.findOne({
         where: {
             id: _ID,
             live: true
@@ -150,9 +148,9 @@ exports.Delete = async ( _ID ) => {
     });
 
 
-    if(!Lab){
+    if(!Tooth){
 
-        let error = new Error("Lab not found!");
+        let error = new Error("Tooth not found!");
         error.status = 404;
         return {
             DB_error: error
@@ -160,8 +158,8 @@ exports.Delete = async ( _ID ) => {
 
     }
 
-    Lab.live = false;
-    let result = await Lab.save();
+    Tooth.live = false;
+    let result = await Tooth.save();
 
     delete result.dataValues.createdBy;
     delete result.dataValues.updatedBy;

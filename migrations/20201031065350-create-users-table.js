@@ -3,28 +3,64 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
 
-  return queryInterface.createTable('services_types', { 
+  return queryInterface.createTable('users', { 
     id : {
       type: Sequelize.INTEGER(11),
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
+    image: {
+      type: Sequelize.STRING(500),
+      allowNull: true,
+    },
+    emiratesId : {
+      type: Sequelize.STRING(),
+      allowNull: false,
+      unique: true
+    },
+    email : {
+      type: Sequelize.STRING(),
+      allowNull: true,
+      unique: true
+    },
     name : {
       type: Sequelize.STRING(),
       allowNull: false,
     },
-    description: {
+    username : 
+    {
       type: Sequelize.STRING(),
-      allowNull: true
+      allowNull: false,
+      unique: true
+    },
+    password : {
+      type: Sequelize.STRING(500),
+      allowNull: false,
+    },
+    contact : {
+      type: Sequelize.STRING(),
+      allowNull: true,
+    },
+    role : {
+      type: Sequelize.INTEGER(11),
+      allowNull: false,
+    },
+    labId : {
+      type: Sequelize.INTEGER(11),
+      allowNull: true,
+    },
+    remarks : {
+      type: Sequelize.STRING(500),
+      allowNull: true,
     },
     active : {
       type: Sequelize.BOOLEAN(),
-      allowNull: false,
+      allowNull: true,
     },
     createdBy: {
       type: Sequelize.INTEGER(11),
-      allowNull: false,
+      allowNull: true,
     },
     createdAt: {
       type: Sequelize.DATE,
@@ -37,15 +73,15 @@ module.exports = {
     },
     updatedAt: {
       type: Sequelize.DATE,
-      // defaultValue: Sequelize.NOW,
+      defaultValue: Sequelize.NOW,
       onUpdate : Sequelize.NOW,
-      allowNull: true,
+      allowNull: false,
+      onUpdate: Sequelize.NOW
     },
     live: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
-      defaultValue: true    
-    }
+      defaultValue: true    }
   },{
     timestamp: true,
     updatedAt: 'updateTimestamp'
@@ -62,7 +98,7 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
 
-    return queryInterface.dropTable('services_types');
+    return queryInterface.dropTable('users');
 
     /*
       Add reverting commands here.

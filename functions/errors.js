@@ -18,6 +18,15 @@ module.exports = function(res, error){
         });
 
     }
+    else if( error.status == 403 ){
+        
+        return res.status(error.status).json({ 
+            status: error.status, 
+            message: error.message, 
+            error: "Restricted Access"
+        });
+
+    }
     else if( error.status == 404 ){
         
         return res.status(error.status).json({ 

@@ -1,17 +1,12 @@
 var db = require('../../models');
 const { Pagination } = require('../../functions');
 
-const superman = process.env.SUPERMAN;
-const supermanId = process.env.SUPERMAN_ID;
+let Model = db.PonticDesign;
 
 exports.getAllUsers = async function ( _PAGE, _LIMIT) {
     
     let where = {
         live: true
-    }
-
-    if(superman){
-        where['id'] = { [db.Sequelize.Op.ne]: supermanId }
     }
 
     let association = {
@@ -22,7 +17,7 @@ exports.getAllUsers = async function ( _PAGE, _LIMIT) {
         where
     }
 
-    let result = await Pagination(_PAGE, _LIMIT, db.User, association);
+    let result = await Pagination(_PAGE, _LIMIT, Model, association);
 
     return {
         DB_value: result
@@ -36,15 +31,15 @@ exports.Get = async function ( _ID ) {
         id: _ID,
     }
 
-    let User = await db.User.findOne({
+    let Order = await Model.findOne({
         attributes: { exclude: ['password'] },
         where
     });
 
 
-    if(!User){
+    if(!Order){
 
-        let error = new Error("User not found!");
+        let error = new Error("Order not found!");
         error.status = 404;
         return {
             DB_error: error
@@ -53,81 +48,12 @@ exports.Get = async function ( _ID ) {
     }
 
     return {
-        DB_value: User
+        DB_value: Order
     };
 
 }
 
 exports.Create = async (_OBJECT) => {
-
-        let emiratesId = await db.User.findOne({
-            where: {
-                emiratesId: _OBJECT.emiratesId,
-                live: true
-            }
-        });
-
-        if(emiratesId){
-
-            let error = new Error("Emirates Id already exists!");
-            error.status = 409;
-            return {
-                DB_error: error
-            };
-
-        }
-
-        let username = await db.User.findOne({
-            where: {
-                username: _OBJECT.username,
-                live: true
-            }
-        });
-
-        if(username){
-
-            let error = new Error("Username already exists!");
-            error.status = 409;
-            return {
-                DB_error: error
-            }; 
-
-        }
-
-        if(_OBJECT.email != null){
-            let email = await db.User.findOne({
-                where: {
-                    email: _OBJECT.email,
-                    live: true
-                }
-            });
-
-            if(email){
-                let error = new Error("Email already exists!");
-                error.status = 409;
-                return {
-                    DB_error: error
-                }; 
-            }
-        }
-
-        // Validation if role is present
-        let role = await db.Role.findOne({
-            where: {
-                id: _OBJECT.role,
-                live: true
-            }
-        });
-
-        if(!role){
-
-            let error = new Error("Role does not exists!");
-            error.status = 400;
-            return {
-                DB_error: error
-            }; 
-
-        }
 
         if( _OBJECT.labId ){
 
@@ -150,7 +76,7 @@ exports.Create = async (_OBJECT) => {
 
         }
 
-        let result = await db.User.create(_OBJECT);
+        let result = await Model.create(_OBJECT);
 
         delete result.dataValues.password;
         delete result.dataValues.createdBy;
@@ -172,11 +98,7 @@ exports.Update = async (_OBJECT, _ID) => {
         id: _ID,
     }
 
-    if(superman){
-        where['id'] = { [db.Sequelize.Op.ne]: 1 }
-    }
-
-    let User = await db.User.findOne({
+    let User = await Model.findOne({
         where
     });
 
@@ -191,7 +113,7 @@ exports.Update = async (_OBJECT, _ID) => {
 
     }
 
-    let emiratesId = await db.User.findOne({
+    let emiratesId = await Model.findOne({
         where: {
             emiratesId: _OBJECT.emiratesId,
             id: { [db.Sequelize.Op.ne]: _ID },
@@ -209,7 +131,7 @@ exports.Update = async (_OBJECT, _ID) => {
 
     }
 
-    let username = await db.User.findOne({
+    let username = await Model.findOne({
         where: {
             username: _OBJECT.username,
             id: { [db.Sequelize.Op.ne]: _ID },
@@ -228,7 +150,7 @@ exports.Update = async (_OBJECT, _ID) => {
     }
 
     if(_OBJECT.email != null){
-        let email = await db.User.findOne({
+        let email = await Model.findOne({
             where: {
                 email: _OBJECT.email,
                 id: { [db.Sequelize.Op.ne]: _ID },
@@ -325,7 +247,7 @@ exports.Delete = async function ( _OBJECT, _ID ) {
     //     where['id'] = { [db.Sequelize.Op.ne]: 1 }
     // }
 
-    let User = await db.User.findOne({
+    let User = await Model.findOne({
         attributes: { exclude: ['password'] },
         where
     });

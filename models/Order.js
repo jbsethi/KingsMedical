@@ -1,59 +1,51 @@
 
 module.exports = (sequelize, Datatypes) => {
-    return sequelize.define('User', {
+    return sequelize.define('Order', {
       id : {
         type: Datatypes.INTEGER(11),
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
       },
-      image: {
-        type: Datatypes.STRING(500),
-        allowNull: true,
-      },
-      emiratesId : {
-        type: Datatypes.STRING(),
-        allowNull: false,
-        unique: true
-      },
-      email : {
-        type: Datatypes.STRING(),
-        allowNull: true,
-        unique: true
-      },
-      name : {
-        type: Datatypes.STRING(),
-        allowNull: false,
-      },
-      username : 
-      {
-        type: Datatypes.STRING(),
-        allowNull: false,
-        unique: true
-      },
-      password : {
-        type: Datatypes.STRING(500),
-        allowNull: false,
-      },
-      contact : {
-        type: Datatypes.STRING(),
-        allowNull: true,
-      },
-      role : {
+      patientId:{
         type: Datatypes.INTEGER(11),
         allowNull: false,
       },
-      labId : {
-        type: Datatypes.INTEGER(11),
-        allowNull: true,
+      patientEmiratesId : {
+        type: Datatypes.STRING(),
+        allowNull: false,
       },
-      remarks : {
-        type: Datatypes.STRING(500),
-        allowNull: true,
-      },
-      active : {
+      urgent: {
         type: Datatypes.BOOLEAN,
+        allowNull: false,
+      },
+      sentDate: {
+        type: Datatypes.DATE(),
         allowNull: true,
+      },
+      returnDate: {
+        type: Datatypes.DATE(),
+        allowNull: true,
+      },
+      notes : {
+        type: Datatypes.STRING(500),
+        allowNull: true,
+      },
+      shadeId:{
+        type: Datatypes.INTEGER(11),
+        allowNull: false,
+      },
+      labId:{
+        type: Datatypes.INTEGER(11),
+        allowNull: false,
+      },
+      parentId:{
+        type: Datatypes.INTEGER(11),
+        allowNull: false,
+      },
+      status:{
+        type: Datatypes.STRING(),
+        allowNull: false,
       },
       createdBy: {
         type: Datatypes.INTEGER(11),
@@ -69,6 +61,6 @@ module.exports = (sequelize, Datatypes) => {
         defaultValue: true    
       }
     },{ 
-      tableName: 'users'
+      tableName: 'orders'
     });
 }

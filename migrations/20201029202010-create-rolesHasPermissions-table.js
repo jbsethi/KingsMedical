@@ -3,14 +3,14 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
 
-  return queryInterface.createTable('rolesHasPermissions', { 
+  return queryInterface.createTable('roles_has_permissions', { 
     id : {
       type: Sequelize.INTEGER(11),
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
-    roelId: {
+    roleId: {
       type: Sequelize.INTEGER(11),
       allowNull: false,
     },
@@ -58,7 +58,7 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
 
-    return queryInterface.dropTable('rolesHasPermissions');
+    return queryInterface.dropTable('roles_has_permissions');
 
     /*
       Add reverting commands here.

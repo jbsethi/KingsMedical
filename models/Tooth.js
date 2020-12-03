@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('Lab', {
+    return sequelize.define('Tooth', {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false
+      },
+      value : {
+        type: DataTypes.STRING(),
+        allowNull: false,
       },
       description: {
         type: DataTypes.STRING,
@@ -49,6 +53,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     { 
-      tableName: 'labs'
+      tableName: 'tooths'
     });
 }

@@ -1,26 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('Lab', {
-      id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+    return sequelize.define('RolePermission', {
+      id : {
+        type: DataTypes.INTEGER(11),
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true
       },
-      image: {
-        type: DataTypes.STRING(500),
-        allowNull: true,
+      roleId: {
+        type: DataTypes.INTEGER(11),
+        allowNull: false,
       },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      description: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
-      active: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
+      permissionId: {
+        type: DataTypes.INTEGER(11),
+        allowNull: false,
       },
       createdBy: {
         type: DataTypes.INTEGER(11),
@@ -49,6 +41,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     { 
-      tableName: 'labs'
+      tableName: 'roles_has_permissions'
     });
 }

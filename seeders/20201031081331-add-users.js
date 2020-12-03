@@ -5,15 +5,15 @@ module.exports = {
     return queryInterface.bulkInsert(
       'users', [
         {
-          name: 'Superman',
-          username: 'superman',
+          name: 'System',
+          username: 'system',
           image: null,
           emiratesId : '000000000000000',
-          email : 'admin@superman.com',
+          email : 'admin@system.com',
           password : '$2a$10$O0/7pWlUwWzMGTTBhQb2Kei9vYpI8GD2jEvrSjpJbZqwrzmm5XQXy',
           contact : null,
           role : 1,
-          remarks : 'Hidden administrator account',
+          remarks : 'System account only for developer',
           active: 1,
           createdBy: 1,
           createdAt: new Date(),

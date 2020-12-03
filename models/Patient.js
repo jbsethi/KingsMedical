@@ -7,52 +7,16 @@ module.exports = (sequelize, Datatypes) => {
         autoIncrement: true,
         primaryKey: true
       },
-      image: {
-        type: Datatypes.STRING(500),
-        allowNull: true,
-      },
-      emiratesId : {
-        type: Datatypes.STRING(),
-        allowNull: false,
-        unique: true
-      },
-      email : {
-        type: Datatypes.STRING(),
-        allowNull: true,
-        unique: true
-      },
       name : {
         type: Datatypes.STRING(),
         allowNull: false,
       },
-      username : 
-      {
+      gender : {
         type: Datatypes.STRING(),
-        allowNull: false,
-        unique: true
-      },
-      password : {
-        type: Datatypes.STRING(500),
         allowNull: false,
       },
       contact : {
         type: Datatypes.STRING(),
-        allowNull: true,
-      },
-      role : {
-        type: Datatypes.INTEGER(11),
-        allowNull: false,
-      },
-      labId : {
-        type: Datatypes.INTEGER(11),
-        allowNull: true,
-      },
-      remarks : {
-        type: Datatypes.STRING(500),
-        allowNull: true,
-      },
-      active : {
-        type: Datatypes.BOOLEAN,
         allowNull: true,
       },
       createdBy: {

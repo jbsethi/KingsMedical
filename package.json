@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "initialize": "sequelize db:migrate --debug && sequelize db:seed:all --debug",
+    "initialize": "sequelize db:migrate --debug && sequelize db:seed:all --debug && node ./utils/assignPermissionsToRoles",
     "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -25,8 +25,18 @@ module.exports = {
         live: 1
       },
       {
-        title: 'Accountant',
-        description: 'Accountant role for the application user',
+        title: 'Management',
+        description: 'Management role for the application user',
+        active: 1,
+        createdBy: 1,
+        createdAt: new Date(),
+        updatedBy: null,
+        updatedAt: new Date(),
+        live: 1
+      },
+      {
+        title: 'Lab',
+        description: 'Lab role for the application user',
         active: 1,
         createdBy: 1,
         createdAt: new Date(),

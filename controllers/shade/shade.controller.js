@@ -1,22 +1,22 @@
 const Joi = require('@hapi/joi');
-const LabService = require('./lab.service');
+const ShadeService = require('./shade.service');
 const { Errors } = require('../../functions');
 
 const Schema = Joi.object({
     image: Joi.string().allow(null, ''),
     name: Joi.string().required(),
+    value: Joi.string().required(),
     active: Joi.boolean().required(),
     description: Joi.string().allow('', null)
 });
 
 exports.GetAll = async (req, res, next) => {
-    
 
     let pageNo = req.query.pageNo;
     let pageSize = req.query.pageSize;
 
 
-    let { DB_error, DB_value } = await LabService.GetAll(pageNo, pageSize);
+    let { DB_error, DB_value } = await ShadeService.GetAll(pageNo, pageSize);
 
     if(DB_error){
 
@@ -32,7 +32,7 @@ exports.GetAll = async (req, res, next) => {
 exports.GetEachAndEvery = async (req, res, next) => {
 
 
-    let { DB_error, DB_value } = await LabService.GetEachAndEvery();
+    let { DB_error, DB_value } = await ShadeService.GetEachAndEvery();
 
     if(DB_error){
 
@@ -46,7 +46,7 @@ exports.GetEachAndEvery = async (req, res, next) => {
 exports.GetAllActive = async (req, res, next) => {
 
 
-    let { DB_error, DB_value } = await LabService.GetAllActive();
+    let { DB_error, DB_value } = await ShadeService.GetAllActive();
 
     if(DB_error){
 
@@ -65,7 +65,7 @@ exports.Get = async (req, res, next) => {
         return Errors(res, error);
     }
 
-    let { DB_error, DB_value } = await LabService.Get(req.params.id);
+    let { DB_error, DB_value } = await ShadeService.Get(req.params.id);
 
     if(DB_error){
 
@@ -99,7 +99,7 @@ exports.Create = async (req, res, next) => {
     value.createdBy = req.token.id;
     value.updatedBy = null;
 
-    let { DB_error, DB_value } = await LabService.Create(value);
+    let { DB_error, DB_value } = await ShadeService.Create(value);
 
     if(DB_error){
 
@@ -139,7 +139,7 @@ exports.Update = async (req, res, next) => {
 
     value.updatedBy = req.token.id;
 
-    let { DB_error, DB_value } = await LabService.Update( value, req.params.id );
+    let { DB_error, DB_value } = await ShadeService.Update( value, req.params.id );
 
     if(DB_error){
 
@@ -159,7 +159,7 @@ exports.Delete = async (req, res, next) => {
         return Errors(res, error);
     }
 
-    let { DB_error, DB_value } = await LabService.Delete(req.params.id);
+    let { DB_error, DB_value } = await ShadeService.Delete(req.params.id);
 
     if(DB_error){
 

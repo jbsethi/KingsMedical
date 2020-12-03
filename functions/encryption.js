@@ -22,7 +22,10 @@ module.exports = {
             name: object.name,
             username: object.username,
             image: object.image,
-            role: object.role
+            role: {
+                id: object.Role.dataValues.id,
+                name: object.Role.dataValues.title
+            }
         };
 
         let config = {

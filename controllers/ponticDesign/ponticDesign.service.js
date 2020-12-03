@@ -1,6 +1,7 @@
 var db = require('../../models');
 const { Pagination } = require('../../functions');
 
+let Model = db.PonticDesign;
 
 exports.GetAll = async function ( _PAGE, _LIMIT) {
 
@@ -10,7 +11,7 @@ exports.GetAll = async function ( _PAGE, _LIMIT) {
         }
     }
 
-    let result = await Pagination(_PAGE, _LIMIT, db.Lab, association);
+    let result = await Pagination(_PAGE, _LIMIT, Model, association);
 
     return {
         DB_value: result
@@ -20,7 +21,7 @@ exports.GetAll = async function ( _PAGE, _LIMIT) {
 
 exports.GetEachAndEvery = async function () {
     
-    let Role = await db.Lab.findAll({
+    let PonticDesign = await Model.findAll({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             live: true
@@ -31,13 +32,13 @@ exports.GetEachAndEvery = async function () {
     });
 
     return {
-        DB_value: Role
+        DB_value: PonticDesign
     };
 }
 
 exports.GetAllActive = async function () {
     
-    let Lab = await db.Lab.findAll({
+    let PonticDesign = await Model.findAll({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             live: true,
@@ -49,13 +50,13 @@ exports.GetAllActive = async function () {
     });
 
     return {
-        DB_value: Lab
+        DB_value: PonticDesign
     };
 }
 
 exports.Get = async function ( _ID ) {
 
-    let Lab = await db.Lab.findOne({
+    let PonticDesign = await Model.findOne({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             id: _ID,
@@ -64,9 +65,9 @@ exports.Get = async function ( _ID ) {
     });
 
 
-    if(!Lab){
+    if(!PonticDesign){
 
-        let error = new Error("Lab not found!");
+        let error = new Error("Pontic Design not found!");
         error.status = 404;
         return {
             DB_error: error
@@ -75,14 +76,14 @@ exports.Get = async function ( _ID ) {
     }
 
     return {
-        DB_value: Lab
+        DB_value: PonticDesign
     };
 
 }
 
 exports.Create = async (_OBJECT) => {
 
-    let result = await db.Lab.create(_OBJECT);
+    let result = await Model.create(_OBJECT);
 
     delete result.dataValues.createdBy;
     delete result.dataValues.updatedBy;
@@ -98,7 +99,7 @@ exports.Create = async (_OBJECT) => {
 
 exports.Update = async (_OBJECT, _ID) => {
 
-    let Lab = await db.Lab.findOne({
+    let PonticDesign = await Model.findOne({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             id: _ID,
@@ -107,9 +108,9 @@ exports.Update = async (_OBJECT, _ID) => {
     });
 
 
-    if(!Lab){
+    if(!PonticDesign){
 
-        let error = new Error("Lab not found!");
+        let error = new Error("Pontic Design not found!");
         error.status = 404;
         return {
             DB_error: error
@@ -118,15 +119,16 @@ exports.Update = async (_OBJECT, _ID) => {
     }
 
     if(_OBJECT.image != 'null' && _OBJECT.image != null && _OBJECT.image != ''){
-        Lab.image = _OBJECT.image;
+        PonticDesign.image = _OBJECT.image;
     }
 
-    Lab.name = _OBJECT.name;
-    Lab.description = _OBJECT.description;
-    Lab.active = _OBJECT.active;
-    Lab.updatedBy = _OBJECT.updatedBy;
+    PonticDesign.name = _OBJECT.name;
+    PonticDesign.value = _OBJECT.value;
+    PonticDesign.description = _OBJECT.description;
+    PonticDesign.active = _OBJECT.active;
+    PonticDesign.updatedBy = _OBJECT.updatedBy;
 
-    let result = await Lab.save();
+    let result = await PonticDesign.save();
 
     delete result.dataValues.createdBy;
     delete result.dataValues.updatedBy;
@@ -142,7 +144,7 @@ exports.Update = async (_OBJECT, _ID) => {
 
 exports.Delete = async ( _ID ) => {
 
-    let Lab = await db.Lab.findOne({
+    let PonticDesign = await Model.findOne({
         where: {
             id: _ID,
             live: true
@@ -150,9 +152,9 @@ exports.Delete = async ( _ID ) => {
     });
 
 
-    if(!Lab){
+    if(!PonticDesign){
 
-        let error = new Error("Lab not found!");
+        let error = new Error("Pontic Design not found!");
         error.status = 404;
         return {
             DB_error: error
@@ -160,8 +162,8 @@ exports.Delete = async ( _ID ) => {
 
     }
 
-    Lab.live = false;
-    let result = await Lab.save();
+    PonticDesign.live = false;
+    let result = await PonticDesign.save();
 
     delete result.dataValues.createdBy;
     delete result.dataValues.updatedBy;

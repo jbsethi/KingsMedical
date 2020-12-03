@@ -1,21 +1,12 @@
 const Joi = require('@hapi/joi');
-const UserService = require('./user.service');
-const { Errors, GenerateHash } = require('../../functions');
-
-const superman = process.env.SUPERMAN;
-const supermanId = process.env.SUPERMAN_ID;
+const ToothService = require('./tooth.service');
+const { Errors } = require('../../functions');
 
 const Schema = Joi.object({
-    image: Joi.string().allow(null, ''),
-    emiratesId: Joi.string().required(),
-    email: Joi.string().email().allow(null, ''),
     name: Joi.string().required(),
-    username: Joi.string().required(),
-    contact: Joi.string().allow(null, ''),
-    role: Joi.number().required(),
-    labId: Joi.number().required().allow(null, ''),
-    remarks: Joi.string().allow(null, ''),
+    value: Joi.string().required(),
     active: Joi.boolean().required(),
+    description: Joi.string().allow('', null)
 });
 
 exports.GetAll = async (req, res, next) => {
@@ -24,7 +15,38 @@ exports.GetAll = async (req, res, next) => {
     let pageNo = req.query.pageNo;
     let pageSize = req.query.pageSize;
 
-    let { DB_error, DB_value } = await UserService.getAllUsers(pageNo, pageSize);
+
+    let { DB_error, DB_value } = await ToothService.GetAll(pageNo, pageSize);
+
+    if(DB_error){
+
+        return Errors(res, DB_error);
+
+    }
+    
+    console.log(DB_value)
+    return res.send(DB_value);
+
+}
+
+exports.GetEachAndEvery = async (req, res, next) => {
+
+
+    let { DB_error, DB_value } = await ToothService.GetEachAndEvery();
+
+    if(DB_error){
+
+        return Errors(res, DB_error);
+
+    }
+
+    return res.send(DB_value);
+}
+
+exports.GetAllActive = async (req, res, next) => {
+
+
+    let { DB_error, DB_value } = await ToothService.GetAllActive();
 
     if(DB_error){
 
@@ -43,15 +65,7 @@ exports.Get = async (req, res, next) => {
         return Errors(res, error);
     }
 
-    if( superman ){
-        if( req.params.id == supermanId && req.token.id != supermanId ){
-            let error = new Error('User not found!');
-            error.status = 404;
-            return Errors(res, error);
-        }
-    }
-
-    let { DB_error, DB_value } = await UserService.Get(req.params.id);
+    let { DB_error, DB_value } = await ToothService.Get(req.params.id);
 
     if(DB_error){
 
@@ -64,18 +78,8 @@ exports.Get = async (req, res, next) => {
 }
 
 exports.Create = async (req, res, next) => {
-        
-        if(req.file){
-            req.body['image'] = req.file.newFile;
-        }
 
-        let schema = Schema.keys({
-            password: Joi.string().required(),
-            confirm_password: Joi.ref('password'),
-            // createdBy: Joi.number().required(),
-        });
-
-        let {error, value} = schema.validate(req.body);
+        let {error, value} = Schema.validate(req.body);
 
         if(error){
 
@@ -88,11 +92,10 @@ exports.Create = async (req, res, next) => {
 
         }
 
-        value.password = await GenerateHash(value.password);
         value.createdBy = req.token.id;
         value.updatedBy = null;
 
-        let { DB_error, DB_value } = await UserService.Create(value);
+        let { DB_error, DB_value } = await ToothService.Create(value);
 
         if(DB_error){
 
@@ -113,10 +116,6 @@ exports.Update = async (req, res, next) => {
         return Errors(res, error);
     }
 
-    if(req.file){
-        req.body['image'] = req.file.newFile;
-    }
-
     let {error, value} = Schema.validate(req.body);
 
     if(error){
@@ -132,7 +131,7 @@ exports.Update = async (req, res, next) => {
 
     value.updatedBy = req.token.id;
 
-    let { DB_error, DB_value } = await UserService.Update( value, req.params.id );
+    let { DB_error, DB_value } = await ToothService.Update( value, req.params.id );
 
     if(DB_error){
 
@@ -145,17 +144,14 @@ exports.Update = async (req, res, next) => {
 }
 
 exports.Delete = async (req, res, next) => {
-
+    
     if( isNaN(req.params.id) ){
         let error = new Error('ID must be a number');
         error.status = 400;
         return Errors(res, error);
     }
 
-    let value = {};
-    value.updatedBy = req.token.id;
-
-    let { DB_error, DB_value } = await UserService.Delete( value, req.params.id );
+    let { DB_error, DB_value } = await ToothService.Delete(req.params.id);
 
     if(DB_error){
 

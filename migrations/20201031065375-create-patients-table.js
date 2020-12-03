@@ -3,55 +3,23 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
 
-  return queryInterface.createTable('users', { 
+  return queryInterface.createTable('patients', { 
     id : {
       type: Sequelize.INTEGER(11),
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
-    image: {
-      type: Sequelize.STRING(500),
-      allowNull: true,
-    },
-    emiratesId : {
-      type: Sequelize.STRING(),
-      allowNull: false,
-      unique: true
-    },
-    email : {
-      type: Sequelize.STRING(),
-      allowNull: true,
-      unique: true
-    },
     name : {
       type: Sequelize.STRING(),
       allowNull: false,
     },
-    username : 
-    {
+    gender : {
       type: Sequelize.STRING(),
-      allowNull: false,
-      unique: true
-    },
-    password : {
-      type: Sequelize.STRING(500),
       allowNull: false,
     },
     contact : {
       type: Sequelize.STRING(),
-      allowNull: true,
-    },
-    role : {
-      type: Sequelize.INTEGER(11),
-      allowNull: false,
-    },
-    remarks : {
-      type: Sequelize.STRING(500),
-      allowNull: true,
-    },
-    active : {
-      type: Sequelize.BOOLEAN(),
       allowNull: true,
     },
     createdBy: {
@@ -77,7 +45,8 @@ module.exports = {
     live: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
-      defaultValue: true    }
+      defaultValue: true
+    }
   },{
     timestamp: true,
     updatedAt: 'updateTimestamp'
@@ -94,7 +63,7 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
 
-    return queryInterface.dropTable('users');
+    return queryInterface.dropTable('patients');
 
     /*
       Add reverting commands here.

@@ -3,28 +3,56 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
 
-  return queryInterface.createTable('services_types', { 
+  return queryInterface.createTable('orders', { 
     id : {
       type: Sequelize.INTEGER(11),
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
-    name : {
+    patientId:{
+      type: Sequelize.INTEGER(11),
+      allowNull: false,
+    },
+    patientEmiratesId : {
       type: Sequelize.STRING(),
       allowNull: false,
     },
-    description: {
-      type: Sequelize.STRING(),
-      allowNull: true
+    sentDate: {
+      type: Sequelize.DATE(),
+      allowNull: true,
     },
-    active : {
-      type: Sequelize.BOOLEAN(),
+    returnDate: {
+      type: Sequelize.DATE(),
+      allowNull: true,
+    },
+    notes : {
+      type: Sequelize.STRING(500),
+      allowNull: true,
+    },
+    shadeId:{
+      type: Sequelize.INTEGER(11),
+      allowNull: false,
+    },
+    urgent: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+    },
+    labId:{
+      type: Sequelize.INTEGER(11),
+      allowNull: false,
+    },
+    parentId:{
+      type: Sequelize.INTEGER(11),
+      allowNull: false,
+    },
+    status:{
+      type: Sequelize.STRING(),
       allowNull: false,
     },
     createdBy: {
       type: Sequelize.INTEGER(11),
-      allowNull: false,
+      allowNull: true,
     },
     createdAt: {
       type: Sequelize.DATE,
@@ -37,14 +65,15 @@ module.exports = {
     },
     updatedAt: {
       type: Sequelize.DATE,
-      // defaultValue: Sequelize.NOW,
+      defaultValue: Sequelize.NOW,
       onUpdate : Sequelize.NOW,
-      allowNull: true,
+      allowNull: false,
+      onUpdate: Sequelize.NOW
     },
     live: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
-      defaultValue: true    
+      defaultValue: true
     }
   },{
     timestamp: true,
@@ -62,7 +91,7 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
 
-    return queryInterface.dropTable('services_types');
+    return queryInterface.dropTable('orders');
 
     /*
       Add reverting commands here.

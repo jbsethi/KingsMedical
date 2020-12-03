@@ -1,6 +1,7 @@
 var db = require('../../models');
 const { Pagination } = require('../../functions');
 
+let Model = db.PonticDesign;
 
 exports.GetAll = async function ( _PAGE, _LIMIT) {
 
@@ -10,7 +11,7 @@ exports.GetAll = async function ( _PAGE, _LIMIT) {
         }
     }
 
-    let result = await Pagination(_PAGE, _LIMIT, db.Lab, association);
+    let result = await Pagination(_PAGE, _LIMIT, Model, association);
 
     return {
         DB_value: result
@@ -20,7 +21,7 @@ exports.GetAll = async function ( _PAGE, _LIMIT) {
 
 exports.GetEachAndEvery = async function () {
     
-    let Role = await db.Lab.findAll({
+    let Shade = await Model.findAll({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             live: true
@@ -31,13 +32,13 @@ exports.GetEachAndEvery = async function () {
     });
 
     return {
-        DB_value: Role
+        DB_value: Shade
     };
 }
 
 exports.GetAllActive = async function () {
     
-    let Lab = await db.Lab.findAll({
+    let Shade = await Model.findAll({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             live: true,
@@ -49,13 +50,13 @@ exports.GetAllActive = async function () {
     });
 
     return {
-        DB_value: Lab
+        DB_value: Shade
     };
 }
 
 exports.Get = async function ( _ID ) {
 
-    let Lab = await db.Lab.findOne({
+    let Shade = await Model.findOne({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             id: _ID,
@@ -64,9 +65,9 @@ exports.Get = async function ( _ID ) {
     });
 
 
-    if(!Lab){
+    if(!Shade){
 
-        let error = new Error("Lab not found!");
+        let error = new Error("Shade not found!");
         error.status = 404;
         return {
             DB_error: error
@@ -75,14 +76,14 @@ exports.Get = async function ( _ID ) {
     }
 
     return {
-        DB_value: Lab
+        DB_value: Shade
     };
 
 }
 
 exports.Create = async (_OBJECT) => {
 
-    let result = await db.Lab.create(_OBJECT);
+    let result = await Model.create(_OBJECT);
 
     delete result.dataValues.createdBy;
     delete result.dataValues.updatedBy;
@@ -98,7 +99,7 @@ exports.Create = async (_OBJECT) => {
 
 exports.Update = async (_OBJECT, _ID) => {
 
-    let Lab = await db.Lab.findOne({
+    let Shade = await Model.findOne({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             id: _ID,
@@ -107,9 +108,9 @@ exports.Update = async (_OBJECT, _ID) => {
     });
 
 
-    if(!Lab){
+    if(!Shade){
 
-        let error = new Error("Lab not found!");
+        let error = new Error("Shade not found!");
         error.status = 404;
         return {
             DB_error: error
@@ -118,15 +119,16 @@ exports.Update = async (_OBJECT, _ID) => {
     }
 
     if(_OBJECT.image != 'null' && _OBJECT.image != null && _OBJECT.image != ''){
-        Lab.image = _OBJECT.image;
+        Shade.image = _OBJECT.image;
     }
 
-    Lab.name = _OBJECT.name;
-    Lab.description = _OBJECT.description;
-    Lab.active = _OBJECT.active;
-    Lab.updatedBy = _OBJECT.updatedBy;
+    Shade.name = _OBJECT.name;
+    Shade.value = _OBJECT.value;
+    Shade.description = _OBJECT.description;
+    Shade.active = _OBJECT.active;
+    Shade.updatedBy = _OBJECT.updatedBy;
 
-    let result = await Lab.save();
+    let result = await Shade.save();
 
     delete result.dataValues.createdBy;
     delete result.dataValues.updatedBy;
@@ -142,7 +144,7 @@ exports.Update = async (_OBJECT, _ID) => {
 
 exports.Delete = async ( _ID ) => {
 
-    let Lab = await db.Lab.findOne({
+    let Shade = await Model.findOne({
         where: {
             id: _ID,
             live: true
@@ -150,9 +152,9 @@ exports.Delete = async ( _ID ) => {
     });
 
 
-    if(!Lab){
+    if(!Shade){
 
-        let error = new Error("Lab not found!");
+        let error = new Error("Shade not found!");
         error.status = 404;
         return {
             DB_error: error
@@ -160,8 +162,8 @@ exports.Delete = async ( _ID ) => {
 
     }
 
-    Lab.live = false;
-    let result = await Lab.save();
+    Shade.live = false;
+    let result = await Shade.save();
 
     delete result.dataValues.createdBy;
     delete result.dataValues.updatedBy;
