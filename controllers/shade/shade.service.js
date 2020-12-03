@@ -1,8 +1,6 @@
 var db = require('../../models');
 const { Pagination } = require('../../functions');
 
-let Model = db.PonticDesign;
-
 exports.GetAll = async function ( _PAGE, _LIMIT) {
 
     let association = {
@@ -11,7 +9,7 @@ exports.GetAll = async function ( _PAGE, _LIMIT) {
         }
     }
 
-    let result = await Pagination(_PAGE, _LIMIT, Model, association);
+    let result = await Pagination(_PAGE, _LIMIT, db.Shade, association);
 
     return {
         DB_value: result
@@ -21,7 +19,7 @@ exports.GetAll = async function ( _PAGE, _LIMIT) {
 
 exports.GetEachAndEvery = async function () {
     
-    let Shade = await Model.findAll({
+    let Shade = await db.Shade.findAll({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             live: true
@@ -38,7 +36,7 @@ exports.GetEachAndEvery = async function () {
 
 exports.GetAllActive = async function () {
     
-    let Shade = await Model.findAll({
+    let Shade = await db.Shade.findAll({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             live: true,
@@ -56,7 +54,7 @@ exports.GetAllActive = async function () {
 
 exports.Get = async function ( _ID ) {
 
-    let Shade = await Model.findOne({
+    let Shade = await db.Shade.findOne({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             id: _ID,
@@ -83,7 +81,7 @@ exports.Get = async function ( _ID ) {
 
 exports.Create = async (_OBJECT) => {
 
-    let result = await Model.create(_OBJECT);
+    let result = await db.Shade.create(_OBJECT);
 
     delete result.dataValues.createdBy;
     delete result.dataValues.updatedBy;
@@ -99,7 +97,7 @@ exports.Create = async (_OBJECT) => {
 
 exports.Update = async (_OBJECT, _ID) => {
 
-    let Shade = await Model.findOne({
+    let Shade = await db.Shade.findOne({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             id: _ID,
@@ -144,7 +142,7 @@ exports.Update = async (_OBJECT, _ID) => {
 
 exports.Delete = async ( _ID ) => {
 
-    let Shade = await Model.findOne({
+    let Shade = await db.Shade.findOne({
         where: {
             id: _ID,
             live: true

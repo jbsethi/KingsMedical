@@ -1,11 +1,11 @@
 const Joi = require('@hapi/joi');
 const Service = require('./order.service');
-const { Errors, GenerateHash } = require('../../functions');
+const { Errors } = require('../../functions');
 
 let tooth = Joi.object().keys({
     toothId: Joi.number().required(),
-    serviceIds: Joi.array().min(1).items(Joi.number()),
-    ponticDesignIds: Joi.array().min(1).items(Joi.number())
+    serviceIds: Joi.array().required().min(1).items(Joi.number()),
+    ponticDesignIds: Joi.array().required().min(1).items(Joi.number())
 });
 
 const Schema = Joi.object({
@@ -19,11 +19,11 @@ const Schema = Joi.object({
     returnDate: Joi.date().required().iso().allow(null, ''),
     notes: Joi.string().required().allow(null, ''),
     urgent: Joi.boolean().required(),
-    // urgent: Joi.number().required(),
+    shadeId: Joi.number().required(),
     labId: Joi.number().required().allow(null, ''),
     parentId: Joi.number().required().allow(null, ''),
 
-    tooths: Joi.array().min(1).items(tooth),
+    tooths: Joi.array().required().items(tooth),
 
 });
 
@@ -84,17 +84,22 @@ exports.Create = async (req, res, next) => {
         value.createdBy = req.token.id;
         value.updatedBy = null;
 
-        // let { DB_error, DB_value } = await Service.Create(value);
+        let { DB_error, DB_value } = await Service.Create(value);
 
-        // if(DB_error){
+        if(DB_error){
 
-        //     return Errors(res, DB_error);
+            return Errors(res, DB_error);
 
-        // }
+        }
         
 
-        // return res.status(201).send(DB_value);
-        return res.status(201).send({"success": true});
+        return res.status(201).send(DB_value);
+        // return res.status(201).send(
+        //     {
+        //         "success": true,
+        //         object: value
+        //     }
+        // );
 
 }
 

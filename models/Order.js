@@ -41,9 +41,9 @@ module.exports = (sequelize, Datatypes) => {
       },
       parentId:{
         type: Datatypes.INTEGER(11),
-        allowNull: false,
+        allowNull: true,
       },
-      status:{
+      status:{ // placed - confirmed - completed 
         type: Datatypes.STRING(),
         allowNull: false,
       },

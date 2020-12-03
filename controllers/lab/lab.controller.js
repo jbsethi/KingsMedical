@@ -3,7 +3,7 @@ const LabService = require('./lab.service');
 const { Errors } = require('../../functions');
 
 const Schema = Joi.object({
-    image: Joi.string().allow(null, ''),
+    image: Joi.string().required().allow(null, ''),
     name: Joi.string().required(),
     active: Joi.boolean().required(),
     description: Joi.string().allow('', null)

@@ -1,6 +1,6 @@
 
 module.exports = (sequelize, Datatypes) => {
-    return sequelize.define('Order', {
+    return sequelize.define('OrderToothService', {
       id : {
         type: Datatypes.INTEGER(11),
         allowNull: false,

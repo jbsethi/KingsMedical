@@ -1,17 +1,17 @@
 
 module.exports = (sequelize, Datatypes) => {
-    return sequelize.define('OrderTooth', {
+    return sequelize.define('OrderToothPonticDesign', {
       id : {
         type: Datatypes.INTEGER(11),
         allowNull: false,
         autoIncrement: true,
         primaryKey: true
       },
-      orderId:{
+      orderToothId:{
         type: Datatypes.INTEGER(11),
         allowNull: false,
       },
-      toothId:{
+      ponticDesignId:{
         type: Datatypes.INTEGER(11),
         allowNull: false,
       },
@@ -29,6 +29,6 @@ module.exports = (sequelize, Datatypes) => {
         defaultValue: true    
       }
     },{ 
-      tableName: 'orders_tooths'
+      tableName: 'orders_tooths_pontic_designs'
     });
 }

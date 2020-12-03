@@ -1,6 +1,6 @@
 
 module.exports = (sequelize, Datatypes) => {
-    return sequelize.define('User', {
+    return sequelize.define('Patient', {
       id : {
         type: Datatypes.INTEGER(11),
         allowNull: false,
@@ -33,6 +33,6 @@ module.exports = (sequelize, Datatypes) => {
         defaultValue: true    
       }
     },{ 
-      tableName: 'users'
+      tableName: 'patients'
     });
 }
