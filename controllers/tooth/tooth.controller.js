@@ -3,6 +3,7 @@ const ToothService = require('./tooth.service');
 const { Errors } = require('../../functions');
 
 const Schema = Joi.object({
+    image: Joi.string().allow(null, ''),
     name: Joi.string().required(),
     value: Joi.string().required(),
     active: Joi.boolean().required(),
@@ -79,6 +80,10 @@ exports.Get = async (req, res, next) => {
 
 exports.Create = async (req, res, next) => {
 
+        if(req.file){
+            req.body['image'] = req.file.newFile;
+        }
+
         let {error, value} = Schema.validate(req.body);
 
         if(error){
@@ -116,6 +121,10 @@ exports.Update = async (req, res, next) => {
         return Errors(res, error);
     }
 
+    if(req.file){
+        req.body['image'] = req.file.newFile;
+    }
+    
     let {error, value} = Schema.validate(req.body);
 
     if(error){

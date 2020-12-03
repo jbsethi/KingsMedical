@@ -117,6 +117,9 @@ exports.Update = async (_OBJECT, _ID) => {
 
     }
 
+    if(_OBJECT.image != 'null' && _OBJECT.image != null && _OBJECT.image != ''){
+        Tooth.image = _OBJECT.image;
+    }
 
     Tooth.name = _OBJECT.name;
     Tooth.value = _OBJECT.value;
