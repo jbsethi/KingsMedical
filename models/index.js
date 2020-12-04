@@ -51,7 +51,7 @@ sequelize.authenticate()
     db.User.belongsTo(db.Role, {foreignKey: 'role'});
     db.Service.belongsTo(db.ServiceType, {foreignKey: 'serviceType'});
 
-    db.Order.hasMany(db.OrderTooth, {as: 'Tooths'});
+    db.Order.hasMany(db.OrderTooth, {as: 'tooths'});
     db.OrderTooth.hasMany(db.OrderToothService, {as: 'ToothServices'});
     db.OrderTooth.hasMany(db.OrderToothPonticDesign, {as: 'ToothPonticDesign'});
 

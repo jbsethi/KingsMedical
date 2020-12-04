@@ -27,6 +27,10 @@ const Schema = Joi.object({
 
 });
 
+let SchemaStatus = Joi.object({
+    status: Joi.string().required().valid('placed', 'confirmed')
+});
+
 exports.GetAll = async (req, res, next) => {
     
 
@@ -111,11 +115,11 @@ exports.Update = async (req, res, next) => {
         return Errors(res, error);
     }
 
-    if(req.file){
-        req.body['image'] = req.file.newFile;
-    }
+    let schema = Schema.keys({
+        patientId: Joi.number().required(),
+    });
 
-    let {error, value} = Schema.validate(req.body);
+    let {error, value} = schema.validate(req.body);
 
     if(error){
 
@@ -131,6 +135,41 @@ exports.Update = async (req, res, next) => {
     value.updatedBy = req.token.id;
 
     let { DB_error, DB_value } = await Service.Update( value, req.params.id );
+
+    if(DB_error){
+
+        return Errors(res, DB_error);
+        
+    }
+
+    return res.send(DB_value);
+
+}
+
+exports.UpdateStatus = async (req, res, next) => {
+
+    if( isNaN(req.params.id) ){
+        let error = new Error('ID must be a number');
+        error.status = 400;
+        return Errors(res, error);
+    }
+
+    let {error, value} = SchemaStatus.validate(req.body);
+
+    if(error){
+
+        let newError = {
+            message: error.details[0].message,
+            status: 400
+        }
+
+        return Errors(res, newError);
+
+    }
+
+    value.updatedBy = req.token.id;
+
+    let { DB_error, DB_value } = await Service.UpdateStatus( value, req.params.id );
 
     if(DB_error){
 

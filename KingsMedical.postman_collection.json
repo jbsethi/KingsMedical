@@ -237,7 +237,7 @@
 					"response": []
 				},
 				{
-					"name": "Update User",
+					"name": "UpdateOrder",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -253,13 +253,13 @@
 						"header": [
 							{
 								"key": "Auth-key",
-								"value": "{{token}}",
-								"type": "text"
+								"type": "text",
+								"value": "{{token}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"image\": null,\r\n    \"emiratesId\": \"111111111111111\",\r\n    \"email\": null,\r\n    \"name\": \"Test 1 update\",\r\n    \"username\": \"username1\",\r\n    \"contact\": null,\r\n    \"role\": \"1\",\r\n    \"remarks\": \"remarks\",\r\n    \"active\": true\r\n}",
+							"raw": "{\r\n    \"patientId\": 10,\r\n    \"patientEmiratesId\": \"222\",\r\n    \"patientName\": \"Sumaira\",\r\n    \"patientGender\": \"female\",\r\n    \"patientContact\": \"03040014628\",\r\n    \"sendDate\": \"2020-11-20\",\r\n    \"returnDate\": \"2020-11-20\",\r\n    \"notes\": \"notes\",\r\n    \"urgent\": true,\r\n    \"labId\": \"1\",\r\n    \"shadeId\": 1,\r\n    \"parentId\": null,\r\n    \"tooths\": [\r\n        {\r\n            \"toothId\":1,\r\n            \"serviceIds\": [1,2,3],\r\n            \"ponticDesignIds\": [1,2]\r\n        },\r\n        {\r\n            \"toothId\": 2,\r\n            \"serviceIds\": [4,5,6],\r\n            \"ponticDesignIds\": [8,9]\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -267,14 +267,59 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/users/2",
+							"raw": "{{url}}/api/orders/6",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"users",
-								"2"
+								"orders",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateOrderStatus",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Auth-key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"confirmed\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/orders/6/status",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"6",
+								"status"
 							]
 						}
 					},
@@ -325,14 +370,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/orders/8",
+							"raw": "{{url}}/api/orders/7",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"orders",
-								"8"
+								"7"
 							]
 						}
 					},
@@ -1583,7 +1628,7 @@
 					"response": []
 				},
 				{
-					"name": "GetPonticDesign",
+					"name": "GetShade",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -1604,21 +1649,21 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/ponticDesigns/2",
+							"raw": "{{url}}/api/shades/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"ponticDesigns",
-								"2"
+								"shades",
+								"1"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "DeletePonticDesign",
+					"name": "DeleteShade",
 					"request": {
 						"auth": {
 							"type": "bearer",
