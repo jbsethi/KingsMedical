@@ -5,11 +5,11 @@ const { GetAll, Get, Create, Update, Delete, GetEachAndEvery, GetAllActive } = r
 
 router.route('/')
 .get(GetAll)                        // GET ALL Lab
-.post(Create)                       // CREATE Lab
+.post(upload.single('image'), Create)                       // CREATE Lab
 
 router.route('/:id')
 .get(Get)                           // GET Lab AGAINST ID
-.put(Update)                        // UPDATE Lab
+.put(upload.single('image'), Update)                        // UPDATE Lab
 .delete(Delete)                     // DELETE Lab
 
 router.route('/all/records')
