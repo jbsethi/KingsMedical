@@ -43,7 +43,7 @@
             </div>
           </th>
           <td class="type">
-            {{row.serviceType}}
+            {{row.ServiceType.name}}
           </td>
           <td class="price">
             {{row.price}} $
