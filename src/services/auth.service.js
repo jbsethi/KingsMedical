@@ -90,12 +90,8 @@ export class AuthService {
     return Boolean(localStorage.getItem('refreshToken'))
   }
 
-  static setRefreshToken (status) {
-    if (!['', 'true'].includes(status)) {
-      throw new Error(`setRefreshToken: invalid value ${status}; Expect one of ['', 'true']`)
-    }
-
-    localStorage.setItem('refreshToken', status)
+  static setRefreshToken (token) {
+    localStorage.setItem('refreshToken', token)
   }
 
   static getBearer () {
@@ -160,7 +156,7 @@ function _resetAuthData () {
 }
 
 function _setAuthData ({ accessToken, exp } = {}) {
-  AuthService.setRefreshToken('true')
+  AuthService.setRefreshToken(accessToken)
   AuthService.setBearer(accessToken)
   $store.commit('auth/SET_ATOKEN_EXP_DATE', exp)
 }

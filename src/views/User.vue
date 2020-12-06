@@ -6,7 +6,7 @@
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col">
-                    <users-table @create:user="toggleCreateUserModal(true)" :tableData="users" :tableMeta="userMeta" title="Users Record"></users-table>
+                    <users-table @create:user="toggleCreateUserModal(true)" @activate:user="activateUser" :tableData="users" :tableMeta="userMeta" title="Users Record"></users-table>
                 </div>
             </div>
         </div>
@@ -16,6 +16,12 @@
           </template>
           <template>
             <form role="form">
+              <base-input alternative
+                          label="Emirates ID"
+                          class="mb-3"
+                          placeholder="Emirates ID"
+                          v-model="user.emiratesId">
+              </base-input>
               <div class="form-group mb-3 has-label">
                 <label class="form-control-label">Roles</label>
                 <Select required
@@ -61,13 +67,6 @@
                           class="mb-3"
                           placeholder="password"
                           v-model="user.password">
-              </base-input>
-              <base-input required
-                          label="Confirm Password"
-                          type="password"
-                          class="mb-3"
-                          placeholder="password"
-                          v-model="user.confirmPassword">
               </base-input>
               <div class="d-flex align-items-center mt-3">
                 <base-switch class="mb-0 mr-2" v-model="user.active"></base-switch> <span>Active</span>
@@ -117,7 +116,6 @@ export default {
   methods: {
     toggleCreateUserModal (status) {
       this.createUserModal = status === undefined ? !this.createUserModal : status
-      console.log('coming here')
       if (this.createUserModal && this.roles.length === 0) this.getAllRoles()
     },
 
@@ -130,22 +128,25 @@ export default {
     createUser () {
       if (!this.createLoading) {
         this.createLoading = true
-        const user = this.user
 
-        this.storeUser({user, userId: this.user.id})
+        this.user.labId = null
+        
+        this.storeUser({user: this.user, userId: this.user.id})
           .then(() => {
             this.toggleCreateUserModal(false)
             this.resetForm()
           })
           .catch(error => {
-            console.log(error)
+            this.$notify(error)
           })
           .finally(this.createLoading = false)
       }
     },
+
     ...mapActions('user', [
       'getAllUsers',
-      'storeUser'
+      'storeUser',
+      'activateUser'
     ]),
     ...mapActions('roles', [
       'getAllRoles'

@@ -32,6 +32,14 @@
 
         <sidebar-item
           :link="{
+            name: 'Service Types',
+            icon: 'ni ni-delivery-fast text-primary',
+            path: '/service-types'
+          }"
+        />
+
+        <sidebar-item
+          :link="{
             name: 'Services',
             icon: 'ni ni-delivery-fast text-primary',
             path: '/services'

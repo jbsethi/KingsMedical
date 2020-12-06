@@ -81,7 +81,7 @@
     },
     computed: {
       ...mapState({
-        name: state => state.user.currentUser.name
+        name: state => state.user.currentUser?.name || ''
       })
     }
   };

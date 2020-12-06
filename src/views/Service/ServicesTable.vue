@@ -10,7 +10,7 @@
           </h3>
         </div>
         <div class="col text-right">
-          <base-button type="primary" size="sm">See all</base-button>
+          <base-button @click="$emit('create:service')" type="primary" size="sm">Create Service</base-button>
         </div>
       </div>
     </div>
@@ -24,7 +24,7 @@
         <template slot="columns">
           <th>Title</th>
           <th>Type</th>
-          <th>Price</th>
+          <th>Price $</th>
           <th>Replace Duration</th>
           <th>Status</th>
           <th></th>
@@ -35,26 +35,26 @@
             <div class="media align-items-center">
               <a href="#" class="avatar rounded-circle mr-3">
                 <img v-if="row.img" alt="Image placeholder" :src="row.img">
-                <span v-if="!row.img">{{ row.title[0] }}</span>
+                <span v-if="!row.img">{{ row.name[0] }}</span>
               </a>
               <div class="media-body">
-                <span class="name mb-0 text-sm">{{row.title}}</span>
+                <span class="name mb-0 text-sm">{{row.name}}</span>
               </div>
             </div>
           </th>
           <td class="type">
-            {{row.type}}
+            {{row.serviceType}}
           </td>
           <td class="price">
-            {{row.price}}
+            {{row.price}} $
           </td>
           <td class="replace-duration">
-            {{row.replaceDuration}}
+            {{row.replaceInterval}}
           </td>
           <td>
-            <badge class="badge-dot mr-4" :type="row.status ? 'primary': 'danger'">
-              <i :class="`bg-${row.status ? 'primary': 'danger'}`"></i>
-              <span class="status">{{row.status}}</span>
+            <badge class="badge-dot mr-4" :type="row.active ? 'primary': 'danger'">
+              <i :class="`bg-${row.active ? 'primary': 'danger'}`"></i>
+              <span class="status">{{row.active}}</span>
             </badge>
           </td>
           <td class="text-right">
@@ -65,9 +65,8 @@
               </a>
 
               <template>
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <a @click.prevent="$emit('edit:service', row.id)" class="dropdown-item" href="#">Edit</a>
+                <a class="dropdown-item" href="#">Deactivate</a>
               </template>
             </base-dropdown>
           </td>
@@ -91,34 +90,14 @@
       type: {
         type: String
       },
-      title: String
+      title: String,
+      tableData: {
+        required: true,
+        type: Array
+      }
     },
     data() {
       return {
-        tableData: [
-          {
-            img: 'img/theme/bootstrap.jpg',
-            title: 'Zircon',
-            type: 'Work Case',
-            price: '200$',
-            replaceDuration: '1 month',
-            status: false,
-          },
-          {
-            title: 'Zircon',
-            type: 'Work Case',
-            price: '200$',
-            replaceDuration: '1 month',
-            status: false,
-          },
-          {
-            title: 'Zircon',
-            type: 'Work Case',
-            price: '200$',
-            replaceDuration: '1 month',
-            status: false,
-          }
-        ]
       }
     }
   }

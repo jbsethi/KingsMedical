@@ -10,7 +10,7 @@
           </h3>
         </div>
         <div class="col text-right">
-          <base-button @click="$emit('create:user')" type="primary" size="sm">Create User</base-button>
+          <base-button @click="$emit('create:ServiceType')" type="primary" size="sm">Create Service Type</base-button>
         </div>
       </div>
     </div>
@@ -22,12 +22,7 @@
                   tbody-classes="list"
                   :data="tableData">
         <template slot="columns">
-          <th></th>
-          <th>Username</th>
           <th>Name</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Change Password</th>
           <th>Status</th>
           <th></th>
         </template>
@@ -35,31 +30,19 @@
         <template slot-scope="{row}">
           <th scope="row">
             <div class="media align-items-center">
-              <a href="#" class="avatar rounded-circle">
+              <a href="#" class="avatar rounded-circle mr-3">
                 <img v-if="row.img" alt="Image placeholder" :src="row.img">
-                <span v-if="!row.img">{{ row.username[0] + row.username[1] }}</span>
+                <span v-if="!row.img">{{ row.name[0] }}</span>
               </a>
+              <div class="media-body">
+                <span class="name mb-0 text-sm">{{row.name}}</span>
+              </div>
             </div>
           </th>
-          <td class="first-name">
-            {{row.username}}
-          </td>
-          <td class="first-name">
-            {{row.name}}
-          </td>
-          <td class="email">
-            {{row.email}}
-          </td>
-          <td class="role">
-            {{row.role}}
-          </td>
-          <td class="role">
-            <a href="#">Change Password</a>
-          </td>
           <td>
             <badge class="badge-dot mr-4" :type="row.active ? 'primary': 'danger'">
               <i :class="`bg-${row.active ? 'primary': 'danger'}`"></i>
-              <span class="status">{{row.active}}</span>
+              <span class="status">{{row.active? 'Active': 'Inactive'}}</span>
             </badge>
           </td>
           <td class="text-right">
@@ -70,8 +53,8 @@
               </a>
 
               <template>
-                <a @click.prevent="$emit('activate:user', { id: row.id, status: false})" v-if="row.active" class="dropdown-item" href="#">Deactivate</a>
-                <a @click.prevent="$emit('activate:user', { id: row.id, status: true})" v-else class="dropdown-item" href="#">Activate</a>
+                <a @click.prevent="$emit('edit:serviceType', row.id)" class="dropdown-item" href="#">Edit</a>
+                <a class="dropdown-item" href="#">Deactivate</a>
               </template>
             </base-dropdown>
           </td>
@@ -83,33 +66,29 @@
 
     <div class="card-footer d-flex justify-content-end"
          :class="type === 'dark' ? 'bg-transparent': ''">
-      <base-pagination :pageCount="tableMeta.totalPages"></base-pagination>
+      <base-pagination :total="30"></base-pagination>
     </div>
 
   </div>
 </template>
 <script>
-export default {
-  name: 'services-table',
-  props: {
-    type: {
-      type: String
+  export default {
+    name: 'service-types-table',
+    props: {
+      type: {
+        type: String
+      },
+      title: String,
+      tableData: {
+        required: true,
+        type: Array
+      }
     },
-    title: String,
-    tableData: {
-      required: true,
-      type: Array
-    },
-    tableMeta: {
-      required: true,
-      type: Object
-    }
-  },
-  data() {
-    return {
+    data() {
+      return {
+      }
     }
   }
-}
 </script>
 <style>
 </style>

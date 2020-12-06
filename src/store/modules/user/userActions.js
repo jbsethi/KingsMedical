@@ -21,10 +21,21 @@ export default {
 
   storeUser ({ commit }, payload) {
     let user = _.cloneDeep(payload.user)
+
+    const {
+      emiratesId,
+      role,
+      name,
+      username,
+      email,
+      password,
+      labId = null,
+      active = false
+    } = user
+
     if (payload.userId) {
       return new Promise((resolve, reject) => {
-        const {role, name, email, password, confirmPassword, active} = user
-        UsersService.update(payload.userId, {role, name, email, password, confirmPassword, active})
+        UsersService.update(payload.userId, {emiratesId, role, name, email, password, labId, active})
           .then(result => {
             commit('UPDATE_RECORD', result.data)
             resolve(result)
@@ -35,8 +46,7 @@ export default {
       })
     } else {
       return new Promise((resolve, reject) => {
-        const {role, name, email, password, confirmPassword, active} = user
-        UsersService.create({role, name, email, password, confirmPassword, active})
+        UsersService.create({emiratesId, role, name, username, email, password, labId, active})
           .then(result => {
             commit('CREATE_RECORD', result.data)
             resolve(result)
@@ -46,6 +56,21 @@ export default {
           })
       })
     }
+  },
+
+  activateUser ({ state, commit }, payload) {
+    console.log(payload)
+    return new Promise((resolve, reject) => {
+      UsersService.update(payload.id, { active: payload.status })
+        .then(result => {
+          commit('UPDATE_RECORD', result.data)
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+
   },
 
   getCurrent ({ commit }) {

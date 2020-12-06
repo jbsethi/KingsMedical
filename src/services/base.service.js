@@ -77,10 +77,9 @@ export class BaseService {
   static async getList (parameters = {}) {
     assert.object(parameters)
     const params = { ...parameters }
-
     try {
       const response = await this.request({ auth: true }).get(`${this.entity}`, { params })
-      console.log(response)
+
       const data = {
         content: response.data.rows,
         meta: {
@@ -92,6 +91,7 @@ export class BaseService {
 
       return new ResponseWrapper(response, data)
     } catch (error) {
+      console.log(error)
       const message = error.response.data ? error.response.data.error : error.response.statusText
       throw new ErrorWrapper(error, message)
     }

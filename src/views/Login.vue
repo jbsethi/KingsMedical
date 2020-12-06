@@ -76,9 +76,12 @@ export default {
         const { user } = this
 
         this.login(user)
-          .then(() => this.$router.push({ name: 'dashboard' }))
+          .then(() => {
+            this.$router.push({ name: 'dashboard' })
+            this.$notify('Logged in succesfully !')  
+          })
           .catch((errors) => {
-            console.log(errors)
+            this.$notify(errors)
           })
           .finally(() => this.isLoading = false)
       }

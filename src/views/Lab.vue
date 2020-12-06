@@ -113,7 +113,11 @@ export default {
     createLab () {
       if (!this.createLoading) {
         this.createLoading = true
+
         const lab = this.lab
+        lab.image = null
+
+        console.log(this.lab)
 
         this.storeLab({lab, labId: this.lab.id})
           .then(() => {

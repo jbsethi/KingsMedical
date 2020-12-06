@@ -23,14 +23,9 @@ export class Http {
     if (this.isAuth) {
       this.instance.interceptors.request.use(request => {
         request.headers.authorization = AuthService.getBearer()
-        // if access token expired and refreshToken is exist >> go to API and get new access token
+        // if access token expired and refreshToken is exist >> Logout
         if (AuthService.isAccessTokenExpired() && AuthService.hasRefreshToken()) {
-          return AuthService.debounceRefreshTokens()
-            .then(response => {
-              AuthService.setBearer(response.data.accessToken)
-              request.headers.authorization = AuthService.getBearer()
-              return request
-            }).catch(error => Promise.reject(error))
+          AuthService.makeLogout()
         } else {
           return request
         }

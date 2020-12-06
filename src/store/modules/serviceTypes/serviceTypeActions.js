@@ -1,10 +1,10 @@
 import * as _ from 'lodash'
-import { LabsService } from '@/services/labs.service'
+import { ServiceTypesService } from '@/services/serviceTypes.service'
 
 export default {
-  getAllLabs ({ commit }) {
+  getAllServiceTypes ({ commit }) {
     return new Promise((resolve, reject) => {
-      LabsService.getList()
+      ServiceTypesService.getList()
         .then(result => {
           commit('ADD_RECORDS', result.data.content)
           resolve(result)
@@ -15,13 +15,13 @@ export default {
     })
   },
 
-  storeLab ({ commit }, payload) {
-    let lab = _.cloneDeep(payload.lab)
-    const { name, active, location, description, image } = lab
+  storeServiceType ({ commit }, payload) {
+    let serviceType = _.cloneDeep(payload.serviceType)
+    const { name, active = false } = serviceType
 
-    if (payload.labId) {
+    if (payload.serviceTypeId) {
       return new Promise((resolve, reject) => {
-        LabsService.update(payload.labId, { name, active, location, description, image })
+        ServiceTypesService.update(payload.serviceTypeId, { name, active })
           .then(result => {
             commit('UPDATE_RECORD', result.data)
             resolve(result)
@@ -32,7 +32,7 @@ export default {
       })
     } else {
       return new Promise((resolve, reject) => {
-        LabsService.create({ name, active, location, description, image })
+        ServiceTypesService.create({ name, active })
           .then(result => {
             commit('CREATE_RECORD', result.data)
             resolve(result)

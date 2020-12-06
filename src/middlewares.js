@@ -1,4 +1,6 @@
 import $store from './store'
+import vue from 'vue'
+
 
 /**
  * Check access permission to auth routes
@@ -14,13 +16,13 @@ export function checkAuthMiddleware (to, from, next) {
 
 
 export function checkAccessMiddleware (to, from, next) {
-  const currentUserRole = $store.state.user.currentUser.role
-  const isAuthRoute = to.matched.some(item => item.meta.isAuth)
+  const currentUserId = $store.state.user.currentUser.id
+  const currentUserRole = $store.state.user.currentUser?.role?.name || null
   const canAccess = to.meta.canAccess
 
-  if (isAuthRoute && canAccess && canAccess.includes(currentUserRole)) return next()
-  if (isAuthRoute && canAccess && !canAccess.includes(currentUserRole)) {
-    $store.commit('toast/NEW', { type: 'error', message: 'Unautharized Access !' })
+  if (currentUserId && canAccess && canAccess.includes(currentUserRole)) return next()
+  if (currentUserId && canAccess && !canAccess.includes(currentUserRole)) {
+    vue.prototype.$notify('Unautharized Access !')
     return next('/')
   }
   next()
