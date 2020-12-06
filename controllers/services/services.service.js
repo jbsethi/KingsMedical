@@ -188,8 +188,22 @@ exports.Update = async (_OBJECT, _ID) => {
     delete result.dataValues.updatedAt;
     delete result.dataValues.live;
 
+    let include = [{
+        model: db.ServiceType, // will create a left join
+        attributes:  [ 'id', 'name', 'description' ] 
+    }];
+
+    Service = await db.Service.findOne({
+        attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+        where: {
+            id: _ID,
+            live: true
+        },
+        include
+    });
+
     return {
-        DB_value: result
+        DB_value: Service
     };
 
 
