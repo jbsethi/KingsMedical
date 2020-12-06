@@ -117,8 +117,7 @@ exports.Update = async (_OBJECT, _ID) => {
     }
 
 
-    ServiceType.title = _OBJECT.title;
-    ServiceType.sequence = _OBJECT.sequence;
+    ServiceType.name = _OBJECT.name;
     ServiceType.description = _OBJECT.description;
     ServiceType.active = _OBJECT.active;
     ServiceType.updatedBy = _OBJECT.updatedBy;

@@ -54,12 +54,18 @@ exports.GetAllActive = async function () {
 
 exports.Get = async function ( _ID ) {
 
+    let include = [{
+            model: db.ServiceType, // will create a left join
+            attributes:  [ 'id', 'name', 'description' ] 
+    }];
+
     let Service = await db.Service.findOne({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         where: {
             id: _ID,
             live: true
-        }
+        },
+        include
     });
 
 
@@ -155,9 +161,11 @@ exports.Update = async (_OBJECT, _ID) => {
     }
 
 
-    Service.title = _OBJECT.title;
-    Service.sequence = _OBJECT.sequence;
+    Service.name = _OBJECT.name;
+    Service.serviceType = _OBJECT.serviceType;
     Service.description = _OBJECT.description;
+    Service.replaceInterval = _OBJECT.replaceInterval;
+    Service.price = _OBJECT.price;
     Service.active = _OBJECT.active;
     Service.updatedBy = _OBJECT.updatedBy;
 
