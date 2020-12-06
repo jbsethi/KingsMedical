@@ -7,7 +7,11 @@ exports.GetAll = async function ( _PAGE, _LIMIT) {
     let association = {
         where: {
             live: true
-        }
+        },
+        include: [{
+            model: db.ServiceType, // will create a left join
+            attributes:  [ 'id', 'name', 'description' ] 
+        }]
     }
 
     let result = await Pagination(_PAGE, _LIMIT, db.Service, association);
@@ -21,6 +25,10 @@ exports.GetEachAndEvery = async function () {
     
     let Service = await db.Service.findAll({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+        include: [{
+            model: db.ServiceType, // will create a left join
+            attributes:  [ 'id', 'name', 'description' ] 
+        }],
         where: {
             live: true
         },
@@ -38,6 +46,10 @@ exports.GetAllActive = async function () {
     
     let Service = await db.Service.findAll({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+        include: [{
+            model: db.ServiceType, // will create a left join
+            attributes:  [ 'id', 'name', 'description' ] 
+        }],
         where: {
             live: true,
             active: true
