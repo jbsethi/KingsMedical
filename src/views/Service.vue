@@ -10,6 +10,8 @@
                       @create:service="toggleCreateServiceModal(true)"
                       @edit:service="editService"
                       title="Services Record"
+                      :pageNo="pageNo"
+                      :meta="serviceMeta"
                       :tableData="services">
                     </services-table>
                 </div>
@@ -103,6 +105,7 @@ export default {
     return {
       createLoading: false,
       createServiceModal: false,
+      pageNo: 1,
       service: {
         id: null,
         name: '',
@@ -117,6 +120,7 @@ export default {
   computed: {
     ...mapState({
       services: state => state.services.services,
+      serviceMeta : state => state.services.meta,
       serviceTypes: state => state.serviceTypes.serviceTypes
     })
   },
@@ -175,7 +179,23 @@ export default {
     ])
   },
   mounted () {
+    if (this.$route.query.pageNo && Number.isInteger(this.$route.query.pageNo) && this.$route.query.pageNo > 0) {
+      this.getAllServices({ pageNo: this.$route.query.pageNo })
+      this.pageNo = this.$route.query.pageNo
+    }
+      
     this.getAllServices()
+  },
+  watch: {
+    '$route.query': {
+      deep: true,
+      handler (query) {
+        if (query.pageNo && Number.isInteger(query.pageNo) && query.pageNo > 0) {
+          this.getAllServices({ pageNo: query.pageNo })
+          this.pageNo = query.pageNo
+        }
+      }
+    }
   }
 }
 </script>

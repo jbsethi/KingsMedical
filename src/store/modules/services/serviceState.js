@@ -1,3 +1,4 @@
 export default {
-  services: []
+  services: [],
+  meta: {}
 }

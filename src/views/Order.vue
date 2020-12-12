@@ -15,6 +15,7 @@
     </div>
 
     <CreateOrderModal
+      v-if="createOrderModal"
       :show="createOrderModal"
       @close="toggleCreateOrderModal(false)"
       modalClasses="modal--max-width"

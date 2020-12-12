@@ -12,6 +12,10 @@ export default {
     })
   },
 
+  ADD_META (state, payload) {
+    state.meta = payload
+  },
+
   ADD_RECORDS (state, payload) {
     state.services = payload
   },
