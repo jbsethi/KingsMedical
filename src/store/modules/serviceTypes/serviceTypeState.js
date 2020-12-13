@@ -1,3 +1,4 @@
 export default {
-  serviceTypes: []
+  serviceTypes: [],
+  meta: {}
 }

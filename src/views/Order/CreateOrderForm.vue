@@ -6,63 +6,74 @@
           <header>
             Kings Medical Center
           </header>
-          <div class="form-input">
-            <label>Emirates ID:</label>
-            <input class="flex-1" type="text" v-model="order.emiratesId" />
+          <base-input placeholder="Emirates ID"
+                      label="Emirates ID"
+                      class="mb-0"
+                      v-model="order.emiratesId"
+                      alternative="">
+          </base-input>
+          <base-input placeholder="Patient's Name"
+                      label="Patient's Name"
+                      class="mb-0"
+                      v-model="order.patientName"
+                      alternative="">
+          </base-input>
+          <div class="form-group mb-0 has-label">
+            <label class="form-control-label">Clinic</label>
+            <Select required
+                    :clearable="false"
+                    placeholder="Select Clinic"
+                    :options="labs"
+                    v-model="order.lab"
+                    :reduce="(lab) => lab.id"
+                    label="name">
+              <template #search="{attributes, events}">
+                <input
+                  class="vs__search"
+                  :required="!order.lab"
+                  v-bind="attributes"
+                  v-on="events"
+                />
+              </template>
+            </Select>
           </div>
-          <div class="form-input">
-            <label>Patient's Name:</label>
-            <input class="flex-1" type="text" v-model="order.patientName" />
-          </div>
-          <div class="form-input">
-            <label>Clinic:</label>
-            <select class="flex-1" v-model="order.lab">
-              <option v-for="lab in labs" :key="lab.id" :value="lab.id">{{ lab.name }}</option>
-            </select>
-          </div>
-          <div class="form-input">
-            <label>Send Date:</label>
-            <input class="flex-1 ml-2" type="date" v-model="order.sendDate" />
-          </div>
-          <div class="form-input">
-            <label>Return Date:</label>
-            <input class="flex-1 ml-2" type="date" v-model="order.returnDate" />
-          </div>
+          <base-input placeholder="Send Date"
+                      label="Send Date"
+                      class="mb-0"
+                      type="date"
+                      v-model="order.sendDate"
+                      alternative="">
+          </base-input>
+          <base-input placeholder="Return Date"
+                      label="Return Date"
+                      class="mb-0"
+                      type="date"
+                      v-model="order.returnDate"
+                      alternative="">
+          </base-input>
           <div class="form-group-items gap-1">
-            <div class="form-input flex-1">
-              <label>Age:</label>
-              <input class="flex-1" type="text" v-model="order.age" />
-            </div>
-            <div class="form-input form-input--radio flex-1">
-              <label>Gender:</label>
-              <div class="d-flex flex-1 jc-se">
-                <div>
-                  <input
-                    type="radio"
-                    id="male"
-                    name="gender"
-                    value="male"
-                    v-model="order.gender" 
-                  />&nbsp;
-                  <label class="checkbox-input" for="male">Male</label>
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    id="female"
-                    name="gender"
-                    value="female"
-                    v-model="order.gender"
-                  />&nbsp;
-                  <label class="checkbox-input" for="female">Female</label>
-                </div>
+            <base-input placeholder="Age"
+                        label="Age"
+                        class="mb-0"
+                        v-model="order.age"
+                        alternative="">
+            </base-input>
+            <div>
+              <label class="form-control-label">Gender:</label>
+              <div class="">
+                <base-radio :inline="true" name="male" v-model="order.gender">
+                  Male
+                </base-radio>
+                <base-radio :inline="true" name="female" v-model="order.gender">
+                  Female
+                </base-radio>
               </div>
             </div>
           </div>
           <section class="order__teeth-design">
             <header>Pointic Design</header>
             <section>
-              <ul>
+              <ul class="order__teeth-design--display-grid">
                 <li v-for="pointicDesignItem in pointicDesigns" :key="pointicDesignItem.id">
                   <figure>
                     <img :src="require(`../../assets/teeths/design1.png`)" />
@@ -72,14 +83,7 @@
                     </figcaption>
                   </figure>
                 </li>
-                <li></li>
               </ul>
-            </section>
-          </section>
-          <section class="order__teeth-design">
-            <header>Note</header>
-            <section class="order__node">
-              <p>for an urgent case an extra 50% of the value will be applied</p>
             </section>
           </section>
         </section>
@@ -90,13 +94,12 @@
                 {{serviceType.title}} <span v-if="index == 0">QTY</span>
               </header>
               <ul class="services__list">
-                <li v-for="service in serviceType.services" :key="service.id" class="d-flex jc-sb">
-                  <div class="service__radio">
-                    <input @change="updateService(service)" type="radio" name="service" :value="service.id" />&nbsp;
-                    <label class="checkbox-input" for="service">{{ service.name }}</label>
-                  </div>
+                <li v-for="service in serviceType.services" :key="service.id" class="d-flex jc-sb pl-2">
+                  <base-radio :inline="true" :name="service.name" @change="updateService(service)" v-model="order.service">
+                    {{ service.name }}
+                  </base-radio>
                   <div class="service__qty-container">
-                    <input type="text" class="service__qty" :value="order.service == service.id ? totalTeethCount : ''"/>
+                    <input type="text" class="service__qty" :value="order.service == service.name ? totalTeethCount : ''"/>
                   </div>
                 </li>
               </ul>
@@ -155,6 +158,12 @@
             Please <router-link to="/services" tag="a">Add Services</router-link> to create Order
           </p>
         </section>
+        <section class="order__teeth-design mt-3">
+          <header>Note</header>
+          <section class="order__node">
+            <p>for an urgent case an extra 50% of the value will be applied</p>
+          </section>
+        </section>
       </div>
       <section v-if="orders.length > 0" class="order-list">
         <h2>Orders</h2>
@@ -190,6 +199,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import 'vue-select/src/scss/vue-select.scss'
 export default {
   data () {
     return {
@@ -267,6 +277,7 @@ export default {
           { id: 32, value: '32' },
         ]
       },
+      orderService: '',
       orders: [],
       order: {
         emiratesId: '',
@@ -289,6 +300,7 @@ export default {
     },
     ...mapState({
       labs: state => state.labs.labs,
+      allServices: state => state.services.services,
       serviceTypes: state => {
         const serviceTypes = {}
         state.services.services.forEach(service => {
@@ -307,9 +319,12 @@ export default {
       }
     })
   },
+  components: {
+    Select: () => import('vue-select')
+  },
   methods: {
     initOrderData () {
-      this.$store.dispatch('services/getAllServices')
+      this.$store.dispatch('services/getAllServicesRecords')
       this.$store.dispatch('labs/getAllLabs')
     },
 
@@ -347,14 +362,13 @@ export default {
       this.order.pointicDesign = pointicDesign
     },
 
-    updateService (service) {
-      this.order.service = service
-    },
-
     addOrder () {
       const orderIdx = this.orders.findIndex(order => order.service === this.order.service)
+      
+      const selectedService = this.allServices.find(service => service.name == this.order.service)
+
       const order = {
-        service: this.order.service,
+        service: selectedService,
         price: 500,
         pointicDesign: this.order.pointicDesign,
         teeths: this.order.teeths
@@ -378,10 +392,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@mixin media($min, $max, $type: false) {
+  @if $type == true {
+    @media only screen and (max-width: #{$max}) and (min-width: #{$min}) {
+      @content;
+    }
+  } @else if $max != null {
+    @media only screen and (max-width: $max) {
+      @content;
+    }
+  } @else if $min != null {
+    @media only screen and (min-width: $min) {
+      @content;
+    }
+  }
+}
+
 .order-container {
   .order {
     display: grid;
     grid-template-columns: 40% 60%;
+    @include media (null, 768px) {
+      grid-template-columns: 1fr;
+    }
     &__client {
       display: flex;
       flex-direction: column;
@@ -398,6 +431,10 @@ export default {
     &__options {
       margin-left: 10px;
       border: 2px solid saddlebrown;
+      @include media (null, 1280px) {
+        margin-left: 5px;
+        flex-direction: column-reverse;
+      }
       &--no-service {
         & > p {
           font-size: 1.5em;
@@ -470,10 +507,9 @@ export default {
         list-style: none;
         padding: 0;
         margin: 0;
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
         li {
-          flex: 1;
-          border-right: 1px solid saddlebrown;
           padding: 3px;
           padding-bottom: 10px;
           figure {
@@ -489,23 +525,15 @@ export default {
             }
             figcaption {
               p {
-                padding-top: 5  px;
+                padding-top: 5px;
                 text-align: center;
                 font-size: 0.875em;
                 line-height: 1.025em;
-                padding-bottom: 10px;
-              }
-              input[type="radio"] {
-                position: absolute;
-                bottom: 0px;
+                padding-bottom: 0px;
+                margin-bottom: 10px;
               }
             }
           }
-        }
-        li:last-of-type {
-          flex: 2;
-          border-right: 1px solid saddlebrown;
-          padding: 3px;
         }
       }
     }
@@ -558,6 +586,9 @@ export default {
   background-position: center center;
   background-size: contain;
   background-repeat: no-repeat;
+  @include media (null, 768px) {
+    background-size: 150px;
+  }
   .teeth__left {
     display: flex;
     flex-direction: column;
@@ -826,5 +857,18 @@ export default {
 
 .gap-1 {
   gap: 1em;
+}
+</style>
+
+
+<style lang="scss">
+.custom-radio {
+  .custom-control-label {
+    &::after{
+      // background: blue;
+      // border-radius: 50%;
+      // border: 5px solid white;
+    }
+  }
 }
 </style>

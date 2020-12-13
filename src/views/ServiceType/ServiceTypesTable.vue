@@ -66,7 +66,7 @@
 
     <div class="card-footer d-flex justify-content-end"
          :class="type === 'dark' ? 'bg-transparent': ''">
-      <base-pagination :total="30"></base-pagination>
+      <base-pagination :value="pageNo" @input="updatePage" :total="meta.total || 0"></base-pagination>
     </div>
 
   </div>
@@ -79,6 +79,12 @@
         type: String
       },
       title: String,
+      meta: {
+        type: Object
+      },
+      pageNo: {
+        type: [String, Number]
+      },
       tableData: {
         required: true,
         type: Array
@@ -86,6 +92,11 @@
     },
     data() {
       return {
+      }
+    },
+    methods: {
+      updatePage (pageNo) {
+        this.$router.push({query: { pageNo }})
       }
     }
   }

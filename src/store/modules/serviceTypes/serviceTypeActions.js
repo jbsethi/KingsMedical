@@ -2,11 +2,12 @@ import * as _ from 'lodash'
 import { ServiceTypesService } from '@/services/serviceTypes.service'
 
 export default {
-  getAllServiceTypes ({ commit }) {
+  getAllServiceTypes ({ commit }, payload) {
     return new Promise((resolve, reject) => {
-      ServiceTypesService.getList()
+      ServiceTypesService.getList(payload)
         .then(result => {
           commit('ADD_RECORDS', result.data.content)
+          commit('ADD_META', result.data.meta)
           resolve(result)
         })
         .catch((error) => {

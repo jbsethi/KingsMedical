@@ -10,6 +10,8 @@
                       @create:lab="toggleCreateLabModal(true)"
                       @edit:lab="editLab"
                       title="Labs Record"
+                      :pageNo="pageNo"
+                      :meta="labMeta"
                       :tableData="labs">
                     </labs-table>
                 </div>
@@ -71,6 +73,7 @@ export default {
     return {
       createLabModal: false,
       createLoading: false,
+      pageNo: 1,
       lab: {
         id: null,
         title: '',
@@ -82,7 +85,8 @@ export default {
   },
   computed: {
     ...mapState({
-      labs: state => state.labs.labs
+      labs: state => state.labs.labs,
+      labMeta : state => state.labs.meta
     })
   },
   methods: {
@@ -137,7 +141,23 @@ export default {
     ])
   },
   mounted () {
+    if (this.$route.query.pageNo && Number.isInteger(this.$route.query.pageNo) && this.$route.query.pageNo > 0) {
+      this.getAllLabs({ pageNo: this.$route.query.pageNo })
+      this.pageNo = this.$route.query.pageNo
+    }
+
     this.getAllLabs()
+  },
+  watch: {
+    '$route.query': {
+      deep: true,
+      handler (query) {
+        if (query.pageNo && Number.isInteger(query.pageNo) && query.pageNo > 0) {
+          this.getAllLabs({ pageNo: query.pageNo })
+          this.pageNo = query.pageNo
+        }
+      }
+    }
   }
 }
 </script>

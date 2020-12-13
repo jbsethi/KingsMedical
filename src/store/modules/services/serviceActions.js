@@ -16,6 +16,20 @@ export default {
     })
   },
 
+  getAllServicesRecords ({ commit }) {
+    return new Promise((resolve, reject) => {
+      ServicesService.getAllList()
+        .then(result => {
+          console.log(result)
+          commit('ADD_RECORDS', result.data.content)
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
   storeService ({ commit }, payload) {
     let service = _.cloneDeep(payload.service)
     const { name, active, serviceType, replaceInterval, price, description } = service

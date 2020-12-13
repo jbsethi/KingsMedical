@@ -10,6 +10,7 @@
                   @create:ServiceType="toggleCreateServiceTypeModal(true)"
                   @edit:serviceType="editServiceType"
                   title="Service Types Record"
+                  :meta="serviceTypeMeta"
                   :tableData="serviceTypes"
                 ></service-types-table>
             </div>
@@ -63,7 +64,8 @@ export default {
   },
   computed: {
     ...mapState({
-      serviceTypes: state => state.serviceTypes.serviceTypes
+      serviceTypes: state => state.serviceTypes.serviceTypes,
+      serviceTypeMeta : state => state.serviceTypes.meta,
     })
   },
   methods: {
@@ -112,7 +114,23 @@ export default {
     ])
   },
   mounted () {
+    if (this.$route.query.pageNo && Number.isInteger(this.$route.query.pageNo) && this.$route.query.pageNo > 0) {
+      this.getAllServiceTypes({ pageNo: this.$route.query.pageNo })
+      this.pageNo = this.$route.query.pageNo
+    }
+
     this.getAllServiceTypes()
+  },
+  watch: {
+    '$route.query': {
+      deep: true,
+      handler (query) {
+        if (query.pageNo && Number.isInteger(query.pageNo) && query.pageNo > 0) {
+          this.getAllServiceTypes({ pageNo: query.pageNo })
+          this.pageNo = query.pageNo
+        }
+      }
+    }
   }
 }
 </script>
