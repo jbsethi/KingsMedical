@@ -1,11 +1,13 @@
 var db = require('../../models');
 const { Pagination } = require('../../functions');
 
-exports.getAllUsers = async function ( _PAGE, _LIMIT) {
+exports.getAllUsers = async function ( _PAGE, _LIMIT, condition = {} ) {
     
     let where = {
         live: true
     }
+
+    Object.assign(where, condition);
 
     let association = {
         include: [{
@@ -23,12 +25,14 @@ exports.getAllUsers = async function ( _PAGE, _LIMIT) {
     };
 }
 
-exports.Get = async function ( _ID ) {
+exports.Get = async function ( _ID, condition = {} ) {
 
     let where = {
         live: true,
         id: _ID,
     }
+
+    Object.assign(where, condition);
 
     let include = [
         {
@@ -328,16 +332,19 @@ exports.Create = async (_OBJECT) => {
     
 }
 
-exports.Update = async (_OBJECT, _ID) => {
+exports.Update = async (_OBJECT, _ID, condition = {}) => {
 
     let Order = null;
     if( _ID ){
 
+        let where = {
+            id: _ID,
+            live: true
+        }
+        Object.assign(where, condition);
+        
         Order = await db.Order.findOne({
-            where: {
-                id: _ID,
-                live: true
-            }
+            where
         });
 
         if(!Order){

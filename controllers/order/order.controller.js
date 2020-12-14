@@ -1,6 +1,7 @@
 const Joi = require('@hapi/joi');
 const Service = require('./order.service');
 const { Errors } = require('../../functions');
+const { Roles } = require('../../utils/permissions');
 
 let tooth = Joi.object().keys({
     toothId: Joi.number().required(),
@@ -33,11 +34,26 @@ let SchemaStatus = Joi.object({
 
 exports.GetAll = async (req, res, next) => {
     
+    let condition = {};
+
+    // Only retrive orders that is created by doctor
+    if(req.token.role.id == Roles['Doctor']){
+        condition = {
+            createdBy: req.token.id
+        }
+    }
+
+    // Only retrive orders that is created by doctor
+    if(req.token.role.id == Roles['Lab']){
+        condition = {
+            labId: req.token.labId
+        }
+    }
 
     let pageNo = req.query.pageNo;
     let pageSize = req.query.pageSize;
 
-    let { DB_error, DB_value } = await Service.getAllUsers(pageNo, pageSize);
+    let { DB_error, DB_value } = await Service.getAllUsers(pageNo, pageSize, condition);
 
     if(DB_error){
 
@@ -56,6 +72,19 @@ exports.Get = async (req, res, next) => {
         return Errors(res, error);
     }
 
+    // Only retrive orders that is created by doctor
+    if(req.token.role.id == Roles['Doctor']){
+        condition = {
+            createdBy: req.token.id
+        }
+    }
+
+    // Only retrive orders that is created by doctor
+    if(req.token.role.id == Roles['Lab']){
+        condition = {
+            labId: req.token.labId
+        }
+    }
 
     let { DB_error, DB_value } = await Service.Get(req.params.id);
 
@@ -134,6 +163,13 @@ exports.Update = async (req, res, next) => {
 
     value.updatedBy = req.token.id;
 
+    // Only retrive orders that is created by doctor
+    if(req.token.role.id == Roles['Doctor']){
+        condition = {
+            createdBy: req.token.id
+        }
+    }
+    
     let { DB_error, DB_value } = await Service.Update( value, req.params.id );
 
     if(DB_error){

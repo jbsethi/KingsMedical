@@ -5,15 +5,15 @@ const { HandleNullString, AuthenticatePermission } = require('../middlewares');
 const { Resources, Actions } = require('../utils/permissions');
 
 router.route('/')
-.get(GetAll)                // GET ALL USERS
-.post( HandleNullString, Create)               // CREATE USER
+.get(AuthenticatePermission(Resources['Orders'], Actions['GetAll']),GetAll)                // GET ALL Orders
+.post(AuthenticatePermission(Resources['Orders'], Actions['Create']), HandleNullString, Create)               // CREATE USER
 
 router.route('/:id')
-.get(Get)                   // GET USER AGAINST ID
-.put( HandleNullString, Update)                // UPDATE USER
-.delete( Delete)             // DELETE USER
+.get(AuthenticatePermission(Resources['Orders'], Actions['GetSingle']),Get)                   // GET USER AGAINST ID
+.put(AuthenticatePermission(Resources['Orders'], Actions['Update']), HandleNullString, Update)                // UPDATE USER
+.delete(AuthenticatePermission(Resources['Orders'], Actions['Delete']), Delete)             // DELETE USER
 
 router.route('/:id/status')
-.put(UpdateStatus)
+.put(AuthenticatePermission(Resources['Orders'], Actions['Update']), UpdateStatus)
 
 module.exports = router;

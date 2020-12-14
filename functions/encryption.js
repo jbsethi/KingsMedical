@@ -25,7 +25,8 @@ module.exports = {
             role: {
                 id: object.Role.dataValues.id,
                 name: object.Role.dataValues.title
-            }
+            },
+            labId: object.labId
         };
 
         let config = {

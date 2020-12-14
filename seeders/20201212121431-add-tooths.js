@@ -368,6 +368,9 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
+
+    return queryInterface.bulkDelete('tooths', null, {});
+
     /**
      * Add commands to revert seed here.
      *

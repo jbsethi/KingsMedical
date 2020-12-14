@@ -39,6 +39,7 @@ build/Release
 
 # Public directories
 public/
+frontend/
 
 # Dependency directories
 node_modules/

@@ -176,6 +176,9 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
+
+    return queryInterface.bulkDelete('services', null, {});
+
     /**
      * Add commands to revert seed here.
      *

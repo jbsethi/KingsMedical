@@ -24,8 +24,7 @@ exports.GetAll = async (req, res, next) => {
         return Errors(res, DB_error);
 
     }
-    
-    console.log(DB_value)
+
     return res.send(DB_value);
 
 }

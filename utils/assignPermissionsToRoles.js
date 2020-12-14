@@ -12,9 +12,12 @@ dotenv.config({ path: currentDir + path.sep + '.env' });
 const DB = require('../models/index');
 
 // Actions
-let Create = 1, Update = 2, Delete = 3, GetSingle = 4, GetAll = 5; 
+let Create = 1, Update = 2, Delete = 3, GetSingle = 4, GetAll = 5;
+
 // Resources
-let Orders = 1, Labs = 2, Services = 3, Users = 4;
+let Orders = 1, Labs = 2, Services = 3, Users = 4, Roles = 5, 
+    ServiceTypes = 6, PonticDesigns = 7, Shades = 8, Tooths = 9;
+
 // Roles
 let Administrator = 1, Doctor = 2, Management = 3, Lab = 4;
 
@@ -48,21 +51,56 @@ const permissions = {
             {permission: GetSingle, status: true},
             {permission: GetAll, status: true},
         ] },
+        { [Roles]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [ServiceTypes]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [PonticDesigns]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Shades]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Tooths]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
     ],
-    [Lab]: [
+    [Management]: [
         { [Orders]: [
             {permission: Create, status: false},
-            {permission: Update, status: false},
-            {permission: Delete, status: false},
-            {permission: GetSingle, status: false},
-            {permission: GetAll, status: false},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
         ] },
         { [Labs]: [
-            {permission: Create, status: false},
-            {permission: Update, status: false},
-            {permission: Delete, status: false},
-            {permission: GetSingle, status: false},
-            {permission: GetAll, status: false},
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
         ] },
         { [Services]: [
             {permission: Create, status: true},
@@ -72,6 +110,171 @@ const permissions = {
             {permission: GetAll, status: true},
         ] },
         { [Users]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: false},
+        ] },
+        { [Roles]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: false},
+        ] },
+        { [ServiceTypes]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [PonticDesigns]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Shades]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Tooths]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+    ],
+    [Doctor]: [
+        { [Orders]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Labs]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: true},
+        ] },
+        { [Services]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: true},
+        ] },
+        { [Users]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: false},
+        ] },
+        { [Roles]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: false},
+        ] },
+        { [ServiceTypes]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: true},
+        ] },
+        { [PonticDesigns]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: true},
+        ] },
+        { [Shades]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: true},
+        ] },
+        { [Tooths]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: true},
+        ] },
+    ],
+    [Lab]: [
+        { [Orders]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Labs]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: false},
+        ] },
+        { [Services]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: false},
+        ] },
+        { [Users]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: false},
+        ] },
+        { [Roles]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: false},
+        ] },
+        { [ServiceTypes]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: false},
+        ] },
+        { [PonticDesigns]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: false},
+        ] },
+        { [Shades]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: false},
+        ] },
+        { [Tooths]: [
             {permission: Create, status: false},
             {permission: Update, status: false},
             {permission: Delete, status: false},

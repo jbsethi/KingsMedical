@@ -74,6 +74,9 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
+
+    return queryInterface.bulkDelete('pontic_designs', null, {});
+
     /**
      * Add commands to revert seed here.
      *
