@@ -9,6 +9,7 @@ module.exports = {
         PonticDesigns: 7,
         Shades: 8,
         Tooths: 9,
+        Invoices: 10,
     },
     Actions: {
         Create: 1,

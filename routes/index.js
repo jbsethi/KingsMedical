@@ -13,6 +13,7 @@ const serviceType = require('./serviceType.route');
 const ponticDesign = require('./ponticDesign.route');
 const shade = require('./shade.route');
 const OrderRoutes = require('./order.route');
+const InvoiceRoutes = require('./invoice.route');
 
 // router.get('/', (req, res)=>{
 //     res.send('API Page');
@@ -28,6 +29,7 @@ router.use('/tooths', Authenticate, DecodeToken, tooth);
 router.use('/services', Authenticate, DecodeToken, service);
 router.use('/serviceTypes', Authenticate, DecodeToken, serviceType);
 router.use('/ponticDesigns', Authenticate, DecodeToken, ponticDesign);
+router.use('/invoices', Authenticate, DecodeToken, InvoiceRoutes);
 router.use('/shades', Authenticate, DecodeToken, shade);
 router.use('/orders', Authenticate, DecodeToken, OrderRoutes);
 

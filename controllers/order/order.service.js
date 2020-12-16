@@ -1,13 +1,18 @@
 var db = require('../../models');
 const { Pagination } = require('../../functions');
+const { Roles } = require('../../utils/permissions');
 
-exports.getAllUsers = async function ( _PAGE, _LIMIT, condition = {} ) {
+exports.getAllUsers = async function ( _PAGE, _LIMIT, _USER ) {
     
     let where = {
         live: true
     }
 
-    Object.assign(where, condition);
+    // Only retrive orders that is assigned to lab
+    if(_USER.roleId == Roles['Lab']) where['labId'] = _USER.labId; 
+
+    // Only retrive orders that is created by doctor
+    if(_USER.roleId == Roles['Doctor']) where['createdBy'] = _USER.userId; 
 
     let association = {
         include: [{
@@ -25,14 +30,19 @@ exports.getAllUsers = async function ( _PAGE, _LIMIT, condition = {} ) {
     };
 }
 
-exports.Get = async function ( _ID, condition = {} ) {
+exports.Get = async function ( _ID, _USER ) {
 
     let where = {
         live: true,
         id: _ID,
     }
 
-    Object.assign(where, condition);
+    // Only retrive orders that is assigned to lab
+    if(_USER.roleId == Roles['Lab']) where['labId'] = _USER.labId; 
+
+    // Only retrive orders that is created by doctor
+    if(_USER.roleId == Roles['Doctor']) where['createdBy'] = _USER.userId; 
+
 
     let include = [
         {
@@ -324,6 +334,7 @@ exports.Create = async (_OBJECT) => {
         // delete result.dataValues.live;
 
         delete _OBJECT.updatedBy;
+        _OBJECT.id = Order.dataValues.id;
 
         return {
             DB_value: _OBJECT
@@ -341,7 +352,9 @@ exports.Update = async (_OBJECT, _ID, condition = {}) => {
             id: _ID,
             live: true
         }
-        Object.assign(where, condition);
+
+        // Only retrive orders that is created by doctor
+        if(_USER.roleId == Roles['Doctor']) where['createdBy'] = _USER.userId; 
         
         Order = await db.Order.findOne({
             where

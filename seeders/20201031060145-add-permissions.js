@@ -518,6 +518,63 @@ module.exports = {
         live: 1
       },
 
+        // Adding Tooths permissions
+        {
+          resourceId: 10,
+          actionId: 1,
+          description: 'Description',
+          active: 1,
+          createdBy: 1,
+          createdAt: new Date(),
+          updatedBy: null,
+          updatedAt: new Date(),
+          live: 1
+        },
+        {
+          resourceId: 10,
+          actionId: 2,
+          description: 'Description',
+          active: 1,
+          createdBy: 1,
+          createdAt: new Date(),
+          updatedBy: null,
+          updatedAt: new Date(),
+          live: 1
+        },
+        {
+          resourceId: 10,
+          actionId: 3,
+          description: 'Description',
+          active: 1,
+          createdBy: 1,
+          createdAt: new Date(),
+          updatedBy: null,
+          updatedAt: new Date(),
+          live: 1
+        },
+        {
+          resourceId: 10,
+          actionId: 4,
+          description: 'Description',
+          active: 1,
+          createdBy: 1,
+          createdAt: new Date(),
+          updatedBy: null,
+          updatedAt: new Date(),
+          live: 1
+        },
+        {
+          resourceId: 10,
+          actionId: 5,
+          description: 'Description',
+          active: 1,
+          createdBy: 1,
+          createdAt: new Date(),
+          updatedBy: null,
+          updatedAt: new Date(),
+          live: 1
+        },
+
     ]);
   },
 

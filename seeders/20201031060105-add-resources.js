@@ -95,6 +95,16 @@ module.exports = {
         updatedAt: new Date(),
         live: 1
       },
+      {
+        name: 'Invoices',
+        description: 'This is a resource for invoice management',
+        active: 1,
+        createdBy: 1,
+        createdAt: new Date(),
+        updatedBy: null,
+        updatedAt: new Date(),
+        live: 1
+      },
     ])
   },
 

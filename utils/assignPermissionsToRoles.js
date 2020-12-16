@@ -16,7 +16,8 @@ let Create = 1, Update = 2, Delete = 3, GetSingle = 4, GetAll = 5;
 
 // Resources
 let Orders = 1, Labs = 2, Services = 3, Users = 4, Roles = 5, 
-    ServiceTypes = 6, PonticDesigns = 7, Shades = 8, Tooths = 9;
+    ServiceTypes = 6, PonticDesigns = 7, Shades = 8, Tooths = 9, 
+    Invoices = 10;
 
 // Roles
 let Administrator = 1, Doctor = 2, Management = 3, Lab = 4;
@@ -80,6 +81,13 @@ const permissions = {
             {permission: GetAll, status: true},
         ] },
         { [Tooths]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Invoices]: [
             {permission: Create, status: true},
             {permission: Update, status: true},
             {permission: Delete, status: true},
@@ -151,6 +159,13 @@ const permissions = {
             {permission: GetSingle, status: true},
             {permission: GetAll, status: true},
         ] },
+        { [Invoices]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
     ],
     [Doctor]: [
         { [Orders]: [
@@ -216,6 +231,13 @@ const permissions = {
             {permission: GetSingle, status: false},
             {permission: GetAll, status: true},
         ] },
+        { [Invoices]: [
+            {permission: Create, status: false},
+            {permission: Update, status: false},
+            {permission: Delete, status: false},
+            {permission: GetSingle, status: false},
+            {permission: GetAll, status: false},
+        ] },
     ],
     [Lab]: [
         { [Orders]: [
@@ -237,7 +259,7 @@ const permissions = {
             {permission: Update, status: false},
             {permission: Delete, status: false},
             {permission: GetSingle, status: false},
-            {permission: GetAll, status: false},
+            {permission: GetAll, status: true},
         ] },
         { [Users]: [
             {permission: Create, status: false},
@@ -265,21 +287,28 @@ const permissions = {
             {permission: Update, status: false},
             {permission: Delete, status: false},
             {permission: GetSingle, status: false},
-            {permission: GetAll, status: false},
+            {permission: GetAll, status: true},
         ] },
         { [Shades]: [
             {permission: Create, status: false},
             {permission: Update, status: false},
             {permission: Delete, status: false},
             {permission: GetSingle, status: false},
-            {permission: GetAll, status: false},
+            {permission: GetAll, status: true},
         ] },
         { [Tooths]: [
             {permission: Create, status: false},
             {permission: Update, status: false},
             {permission: Delete, status: false},
             {permission: GetSingle, status: false},
-            {permission: GetAll, status: false},
+            {permission: GetAll, status: true},
+        ] },
+        { [Invoices]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
         ] },
     ],
 }
