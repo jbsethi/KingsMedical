@@ -31,7 +31,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"image\": \"\",\r\n    \"emiratesId\": \"111111111111111\",\r\n    \"email\": null,\r\n    \"name\": \"Test 1\",\r\n    \"username\": \"username2\",\r\n    \"password\": \"administrator123\",\r\n    \"confirm_password\": \"administrator123\",\r\n    \"contact\": null,\r\n    \"role\": \"1\",\r\n    \"remarks\": null,\r\n    \"active\": true\r\n}",
+							"raw": "{\r\n    \"image\": null,\r\n    \"emiratesId\": \"111111111111112\",\r\n    \"email\": null,\r\n    \"name\": \"lab 2 User\",\r\n    \"username\": \"lab2\",\r\n    \"password\": \"lab2123\",\r\n    \"confirm_password\": \"lab2123\",\r\n    \"contact\": null,\r\n    \"role\": \"4\",\r\n    \"remarks\": null,\r\n    \"active\": true,\r\n    \"labId\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -216,7 +216,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"patientEmiratesId\": \"111111111111111\",\r\n    \"patientName\": \"Wasiq\",\r\n    \"patientGender\": \"male\",\r\n    \"patientContact\": \"male\",\r\n    \"sendDate\": \"2020-11-20\",\r\n    \"returnDate\": \"2020-11-20\",\r\n    \"notes\": \"notes\",\r\n    \"urgent\": true,\r\n    \"labId\": \"1\",\r\n    \"shadeId\": 1,\r\n    \"parentId\": null,\r\n    \"tooths\": [\r\n        {\r\n            \"toothId\":1,\r\n            \"serviceIds\": [1,2,3],\r\n            \"ponticDesignIds\": [1,2]\r\n        },\r\n        {\r\n            \"toothId\": 2,\r\n            \"serviceIds\": [4,5,6],\r\n            \"ponticDesignIds\": [8,9]\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"patientEmiratesId\": \"111111111111111\",\r\n    \"patientName\": \"Wasiq\",\r\n    \"patientGender\": \"male\",\r\n    \"patientContact\": \"male\",\r\n    \"sendDate\": \"2020-11-20\",\r\n    \"returnDate\": \"2020-11-20\",\r\n    \"notes\": \"notes\",\r\n    \"urgent\": true,\r\n    \"labId\": \"1\",\r\n    \"shadeId\": 1,\r\n    \"parentId\": null,\r\n    \"tooths\": [\r\n        {\r\n            \"toothId\":1,\r\n            \"serviceIds\": [1,2,3],\r\n            \"ponticDesignIds\": [1,2]\r\n        },\r\n        {\r\n            \"toothId\": 2,\r\n            \"serviceIds\": [4,5,6],\r\n            \"ponticDesignIds\": [3,4]\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -341,14 +341,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/orders/6",
+							"raw": "{{url}}/api/orders/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"orders",
-								"6"
+								"1"
 							]
 						}
 					},
@@ -370,14 +370,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/orders/7",
+							"raw": "{{url}}/api/orders/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"orders",
-								"7"
+								"1"
 							]
 						}
 					},
@@ -535,6 +535,16 @@
 				{
 					"name": "GetALLRoles",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -664,6 +674,16 @@
 				{
 					"name": "UpdateServiceType",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [
 							{
@@ -674,7 +694,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Service Type 1 update\",\r\n    \"active\": false,\r\n    \"description\": \"This is notice description\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Service Type update 2\",\r\n    \"active\": true,\r\n    \"description\": \"This is notice description update 2\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -748,6 +768,16 @@
 				{
 					"name": "GetALLServiceTypes",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -877,6 +907,16 @@
 				{
 					"name": "UpdateService",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [
 							{
@@ -887,7 +927,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Service 1 update\",\r\n    \"description\": \"This is notice description\",\r\n    \"serviceType\": \"1\",\r\n    \"replaceInterval\": \"30\",\r\n    \"price\": \"400\",\r\n    \"active\": false\r\n}",
+							"raw": "{\r\n    \"name\": \"Service 1 update 1\",\r\n    \"description\": \"This is service description update 1\",\r\n    \"serviceType\": \"2\",\r\n    \"replaceInterval\": \"50\",\r\n    \"price\": \"500\",\r\n    \"active\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -911,6 +951,16 @@
 				{
 					"name": "GetService",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -999,6 +1049,16 @@
 				{
 					"name": "GetEachAndEveryServices",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -1025,6 +1085,16 @@
 				{
 					"name": "GetActiveServices",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -1071,13 +1141,14 @@
 						"header": [
 							{
 								"key": "Auth-key",
-								"value": "{{token}}",
-								"type": "text"
+								"value": "",
+								"type": "text",
+								"disabled": true
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"image\": null,\r\n    \"name\": \"Lab 2\",\r\n    \"active\": true,\r\n    \"description\": \"This is a lab\"\r\n}",
+							"raw": "{\r\n    \"image\": null,\r\n    \"name\": \"Lab test\",\r\n    \"active\": true,\r\n    \"description\": \"This is a lab\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1100,6 +1171,16 @@
 				{
 					"name": "UpdateLab",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [
 							{
@@ -1110,7 +1191,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Lab 1 update\",\r\n    \"active\": false,\r\n    \"description\": \"This is a lab\"\r\n}",
+							"raw": "{\r\n    \"image\": null,\r\n    \"name\": \"Lab 1 update 1\",\r\n    \"active\": true,\r\n    \"description\": \"This is a lab 1 update\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1321,8 +1402,18 @@
 					"response": []
 				},
 				{
-					"name": "UpdateLab",
+					"name": "UpdatePonticDesign",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [
 							{
@@ -1333,7 +1424,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Lab 1 update\",\r\n    \"active\": false,\r\n    \"description\": \"This is a lab\"\r\n}",
+							"raw": "{\r\n    \"image\": null,\r\n    \"name\": \"Pontic 1 update\",\r\n    \"value\": \"Pontic 1 update\",\r\n    \"active\": true,\r\n    \"description\": \"This is a pontic 1 update\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1341,13 +1432,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/labs/1",
+							"raw": "{{url}}/api/ponticDesigns/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
-								"labs",
+								"ponticDesigns",
 								"1"
 							]
 						}
@@ -1538,6 +1629,270 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "Invoice",
+			"item": [
+				{
+					"name": "CreateInvoice",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Auth-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "orderId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "This is invoice description",
+									"type": "text"
+								},
+								{
+									"key": "attachment",
+									"type": "file",
+									"src": []
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/invoices",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"invoices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateInvoice",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Auth-key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "description",
+									"value": "This is updated ",
+									"type": "text"
+								},
+								{
+									"key": "attachment",
+									"value": "",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/invoices/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"invoices",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetInvoice",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/invoices/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"invoices",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteInvoice",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Auth-key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/invoices/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"invoices",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetALLInvoices",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/invoices?pageNo=1&pageSize=10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"invoices"
+							],
+							"query": [
+								{
+									"key": "pageNo",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllInvoicesByOrderId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Auth-Key",
+								"type": "text",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/invoices/order/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"invoices",
+								"order",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "Shade",
 			"item": [
 				{
@@ -1606,7 +1961,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"image\": null,\r\n    \"name\": \"Shade 2\",\r\n    \"value\": \"Shade 2\",\r\n    \"active\": true,\r\n    \"description\": \"This is a shade 2\"\r\n}",
+							"raw": "{\r\n    \"image\": null,\r\n    \"name\": \"Shade 1 update\",\r\n    \"value\": \"Shade 1 update\",\r\n    \"active\": true,\r\n    \"description\": \"This is a shade 1 update\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1614,14 +1969,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/shades/2",
+							"raw": "{{url}}/api/shades/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"shades",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -2070,7 +2425,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"administrator\",\r\n    \"password\": \"administrator123\"\r\n}",
+							"raw": "{\r\n    \"username\": \"administrator2\",\r\n    \"password\": \"administrator123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
