@@ -46,7 +46,6 @@ sequelize.authenticate()
       }
     });
 
-
     // Associations
     db.User.belongsTo(db.Role, {foreignKey: 'role'});
     db.Service.belongsTo(db.ServiceType, {foreignKey: 'serviceType'});
@@ -55,8 +54,16 @@ sequelize.authenticate()
     db.OrderTooth.hasMany(db.OrderToothService, {as: 'ToothServices'});
     db.OrderTooth.hasMany(db.OrderToothPonticDesign, {as: 'ToothPonticDesign'});
 
-    // Including PAtient in order
+    // Including Patient in order
     db.Order.belongsTo(db.Patient,  {as: 'Patient', foreignKey: 'patientId'});
+    // Include Sahde in Order
+    db.Order.belongsTo(db.Shade,  {as: 'Shade', foreignKey: 'shadeId'});
+    // Include Tooth in Order from Ordertooth Table
+    db.OrderTooth.belongsTo(db.Tooth, {as: 'Tooth', foreignKey: 'toothId'});
+    // Include Services in Order from OrderToothServices Table
+    db.OrderToothService.belongsTo(db.Service, {as: 'Service', foreignKey: 'serviceId'});
+    // Include Services in Order from OrderToothServices Table
+    db.OrderToothPonticDesign.belongsTo(db.PonticDesign, {as: 'PonticDesign', foreignKey: 'ponticDesignId'});
 
     // Synchronization
     sequelize.sync()

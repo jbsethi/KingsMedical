@@ -50,6 +50,11 @@ exports.Get = async function ( _ID, _USER ) {
             model: db.Patient, // will create a left join
             attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
         },
+        {
+            as: 'Shade',
+            model: db.Shade, // will create a left join
+            attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+        },
         { 
             as: 'tooths', 
             model: db.OrderTooth, 
@@ -59,11 +64,23 @@ exports.Get = async function ( _ID, _USER ) {
             where: { live: true },
             include: [
                 {
+                    as: 'Tooth',
+                    model: db.Tooth, // will create a left join
+                    attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                },
+                {
                     as: 'ToothServices', 
                     model: db.OrderToothService, 
                     attributes: ['serviceId'], 
                     paranoid: false, 
                     required: false,
+                    include: [
+                        {
+                            as: 'Service',
+                            model: db.Service, // will create a left join
+                            attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                        },
+                    ]
                 },
                 {
                     as: 'ToothPonticDesign', 
@@ -71,6 +88,13 @@ exports.Get = async function ( _ID, _USER ) {
                     attributes: ['ponticDesignId'], 
                     paranoid: false, 
                     required: false,
+                    include: [
+                        {
+                            as: 'PonticDesign',
+                            model: db.PonticDesign, // will create a left join
+                            attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                        },
+                    ]
                 },
             ] 
         },
@@ -97,28 +121,30 @@ exports.Get = async function ( _ID, _USER ) {
     // console.log(Order);
 
     // Setting order structure
-    for( let i = 0; i < Order['tooths'].length; i++ ){
+    // for( let i = 0; i < Order['tooths'].length; i++ ){
 
-        let tooth = Order['tooths'][i];
+    //     let tooth = Order['tooths'][i];
 
-        let ToothService = tooth['ToothServices'];
-        let serviceIds = [];
+    //     let ToothService = tooth['ToothServices'];
+    //     let serviceIds = [];
 
-        for( let service of ToothService ){
-            serviceIds.push(service['serviceId']);
-        }
-        Order['tooths'][i]['serviceIds'] = serviceIds;
-        delete Order['tooths'][i]['ToothServices'];
+    //     for( let service of ToothService ){
+    //         serviceIds.push(service['serviceId']);
+    //     }
+    //     Order['tooths'][i]['serviceIds'] = serviceIds;
+    //     delete Order['tooths'][i]['ToothServices'];
 
-        let ToothPonticDesign = tooth['ToothPonticDesign'];
-        let ponticDesignIds = [];
-        for( let ponticDesign of ToothPonticDesign ){
-            ponticDesignIds.push(ponticDesign['ponticDesignId']);
-        }
-        Order['tooths'][i]['ponticDesignIds'] = ponticDesignIds;
-        delete Order['tooths'][i]['ToothPonticDesign'];
+    //     let ToothPonticDesign = tooth['ToothPonticDesign'];
+    //     let ponticDesignIds = [];
+    //     for( let ponticDesign of ToothPonticDesign ){
+    //         ponticDesignIds.push(ponticDesign['ponticDesignId']);
+    //     }
+    //     Order['tooths'][i]['ponticDesignIds'] = ponticDesignIds;
+    //     delete Order['tooths'][i]['ToothPonticDesign'];
 
-    }
+    // }
+
+    // delete Order.live;
 
     return {
         DB_value: Order
