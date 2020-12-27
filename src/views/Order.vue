@@ -8,49 +8,242 @@
         <div class="col">
           <orders-table
             @create:order="toggleCreateOrderModal(true)"
+            @viewOrder="viewDetails"
+            @uploadInvoice="uploadInvoice"
             title="Orders Record"
+            :pageNo="pageNo"
+            :meta="orderMeta"
+            :tableData="orders"
           ></orders-table>
         </div>
       </div>
     </div>
 
-    <CreateOrderModal
+    <Modal
       :show="createOrderModal"
       @close="toggleCreateOrderModal(false)"
       modalClasses="modal--max-width"
     >
       <template>
-        <CreateOrderForm />
+        <CreateOrderForm :orderDetails="order" :isViewDetails="isViewDetails" v-if="createOrderModal" @close="toggleCreateOrderModal(false)"/>
       </template>
-    </CreateOrderModal>
+    </Modal>
+    <Modal
+      :show="uploadInvoiceModal"
+      @close="toggleUploadInvoiceModal(false)"
+    >
+      <template>
+        <div class="upload-invoice">
+          <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
+            <h3>Upload Invoice</h3>
+            <div class="dropbox">
+              <input type="file" multiple :name="uploadFieldName" :disabled="isSaving" @change="filesChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
+                accept="image/*" class="input-file">
+                <p v-if="isInitial">
+                  Drag your file(s) here to begin<br> or click to browse
+                </p>
+                <p v-if="isSaving">
+                  Uploading {{ fileCount }} files...
+                </p>
+            </div>
+          </form>
+        </div>
+      </template>
+    </Modal>
   </div>
 </template>
 <script>
+import { mapState, mapActions } from 'vuex'
 import OrdersTable from './Order/OrdersTable'
+
+const STATUS_INITIAL = 0, STATUS_SAVING = 1, STATUS_SUCCESS = 2, STATUS_FAILED = 3;
+
 export default {
   components: {
     OrdersTable,
     CreateOrderForm: () => import('./Order/CreateOrderForm'),
-    CreateOrderModal: () => import('./../components/Modal')
+    Modal: () => import('./../components/Modal')
   },
   data() {
     return {
+      pageNo: 1,
       createOrderModal: false,
-      order: {
-        doctorName: ''
-      }
+      uploadInvoiceModal: false,
+
+      isViewDetails: false,
+      order: {},
+
+      invoice: {
+        orderId: null
+      },
+
+      uploadedFiles: [],
+      uploadError: null,
+      currentStatus: null,
+      uploadFieldName: 'attachment'
     }
   },
+  computed: {
+    isInitial() {
+        return this.currentStatus === STATUS_INITIAL;
+      },
+      isSaving() {
+        return this.currentStatus === STATUS_SAVING;
+      },
+      isSuccess() {
+        return this.currentStatus === STATUS_SUCCESS;
+      },
+      isFailed() {
+        return this.currentStatus === STATUS_FAILED;
+      },
+    ...mapState({
+      orders: state => state.orders.orders,
+      orderMeta : state => state.orders.meta
+    })
+  },
   methods: {
-    toggleCreateOrderModal(status) {
+    reset() {
+      // reset form to initial state
+      this.currentStatus = STATUS_INITIAL;
+      this.uploadedFiles = [];
+      this.uploadError = null;
+    },
+
+    save(formData) {
+      // upload data to the server
+      this.currentStatus = STATUS_SAVING;
+
+      this.createInvoice(formData)
+        .then(() => {
+          this.currentStatus = STATUS_SUCCESS;
+          this.reset()
+          this.$notify('Invoice Uploaded successfully !')
+          this.toggleUploadInvoiceModal(false)
+        })
+        .catch(err => {
+          this.uploadError = err.response;
+          this.currentStatus = STATUS_FAILED;
+        });
+    },
+
+
+    filesChange(fieldName, fileList) {
+      // handle file changes
+      const formData = new FormData();
+
+      if (!fileList.length) return;
+
+      // append the files to FormData
+      Array
+        .from(Array(fileList.length).keys())
+        .map(x => {
+          formData.append(fieldName, fileList[x], fileList[x].name);
+        });
+
+      // append Order id to FormData
+      formData.append('orderId', this.invoice.orderId)
+
+      // save it
+      this.save(formData);
+    },
+
+    toggleCreateOrderModal(status, isViewDetails = false) {
+      this.isViewDetails = isViewDetails
       this.createOrderModal = status
+    },
+
+    toggleUploadInvoiceModal(status) {
+      this.uploadInvoiceModal = status
+    },
+
+    uploadInvoice (orderId) {
+      this.invoice.orderId = orderId
+      this.toggleUploadInvoiceModal(true)
+    },
+
+    storeInvoice () {
+      this.createInvoice(this.invoice)
+        .then(() => {
+          console.log('upload successfull !')
+        })
+    },
+
+    viewDetails (orderId) {
+      this.getOrderDetails(orderId)
+        .then((result) => {
+          console.log(result)
+          this.order = result.data
+          this.toggleCreateOrderModal(true, true)
+        })
+    },
+
+    ...mapActions('orders', [
+      'getAllOrders',
+      'getOrderDetails'
+    ]),
+    ...mapActions('invoices', [
+      'createInvoice',
+    ])
+  },
+  mounted () {
+    if (this.$route.query.pageNo && Number.isInteger(this.$route.query.pageNo) && this.$route.query.pageNo > 0) {
+      this.getAllOrders({ pageNo: this.$route.query.pageNo })
+      this.pageNo = this.$route.query.pageNo
+    }
+
+    this.getAllOrders()
+    this.reset()
+  },
+  watch: {
+    '$route.query': {
+      deep: true,
+      handler (query) {
+        if (query.pageNo && Number.isInteger(query.pageNo) && query.pageNo > 0) {
+          this.getAllOrders({ pageNo: query.pageNo })
+          this.pageNo = query.pageNo
+        }
+      }
     }
   }
 }
 </script>
 
-<style>
-  .modal--max-width {
-    max-width: 1600px;
+
+<style lang="scss">
+.modal--max-width {
+  max-width: 1600px;
+}
+</style>
+
+<style lang="scss" scoped>
+  
+
+  .dropbox {
+    outline: 2px dashed grey; /* the dash box */
+    outline-offset: -10px;
+    background: lightcyan;
+    color: dimgray;
+    padding: 10px 10px;
+    min-height: 200px; /* minimum height */
+    position: relative;
+    cursor: pointer;
+  }
+
+  .input-file {
+    opacity: 0; /* invisible but it's there! */
+    width: 100%;
+    height: 200px;
+    position: absolute;
+    cursor: pointer;
+  }
+
+  .dropbox:hover {
+    background: lightblue; /* when mouse over to the drop zone, change color */
+  }
+
+  .dropbox p {
+    font-size: 1.2em;
+    text-align: center;
+    padding: 50px 0;
   }
 </style>

@@ -3,6 +3,7 @@ import user from './user'
 import dom from './dom'
 import toast from './toast'
 import orders from './orders'
+import invoices from './invoices'
 import serviceTypes from './serviceTypes'
 import services from './services'
 import labs from './labs'
@@ -14,6 +15,7 @@ export default {
   dom,
   toast,
   orders,
+  invoices,
   serviceTypes,
   services,
   labs,

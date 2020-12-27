@@ -25,7 +25,9 @@
           <th>ID</th>
           <th>Emirates ID</th>
           <th>Details</th>
-          <th>Billed</th>
+          <th>Send Date</th>
+          <th>Urgent</th>
+          <th>Status</th>
           <th></th>
         </template>
 
@@ -34,13 +36,22 @@
             {{row.id}}
           </td>
           <td class="emirates-id">
-            {{row.emiratesID}}
+            {{row.patientEmiratesId}}
           </td>
           <td class="details">
-            <a href="#">View Details</a>
+            <a @click.prevent="$emit('viewOrder', row.id)" href="#">View Details</a>
           </td>
-          <td class="billed">
-            {{row.billed}}
+          <td class="send-date">
+            {{getDate(row.sentDate)}}
+          </td>
+          <td class="urgent">
+            {{row.urgent}}
+          </td>
+          <td>
+            <badge class="badge-dot mr-4" :type="row.status ? 'primary': 'danger'">
+              <i :class="`bg-${row.status ? 'primary': 'danger'}`"></i>
+              <span class="status">{{row.status}}</span>
+            </badge>
           </td>
           <td class="text-right">
             <base-dropdown class="dropdown"
@@ -50,9 +61,7 @@
               </a>
 
               <template>
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <a @click.prevent="$emit('uploadInvoice', row.id)" class="dropdown-item" href="#">Add Invoice</a>
               </template>
             </base-dropdown>
           </td>
@@ -64,7 +73,7 @@
 
     <div class="card-footer d-flex justify-content-end"
          :class="type === 'dark' ? 'bg-transparent': ''">
-      <base-pagination :total="30"></base-pagination>
+      <base-pagination :value="pageNo" @input="updatePage" :total="meta.total || 0"></base-pagination>
     </div>
 
   </div>
@@ -76,47 +85,31 @@
       type: {
         type: String
       },
-      title: String
+      title: String,
+      meta: {
+        type: Object
+      },
+      pageNo: {
+        type: [String, Number]
+      },
+      tableData: {
+        required: true,
+        type: Array
+      }
     },
     data() {
       return {
-        tableData: [
-          {
-            id: '456215',
-            emiratesID: '5646a5s4d86a1s',
-            billed: '500$'
-          },
-          {
-            id: '456215',
-            emiratesID: '5646a5s4d86a1s',
-            billed: '500$'
-          },
-          {
-            id: '456215',
-            emiratesID: '5646a5s4d86a1s',
-            billed: '500$'
-          },
-          {
-            id: '456215',
-            emiratesID: '5646a5s4d86a1s',
-            billed: '500$'
-          },
-          {
-            id: '456215',
-            emiratesID: '5646a5s4d86a1s',
-            billed: '500$'
-          },
-          {
-            id: '456215',
-            emiratesID: '5646a5s4d86a1s',
-            billed: '500$'
-          },
-          {
-            id: '456215',
-            emiratesID: '5646a5s4d86a1s',
-            billed: '500$'
-          }
-        ]
+      }
+    },
+    methods: {
+      updatePage (pageNo) {
+        this.$router.push({query: { pageNo }})
+      },
+
+      getDate (date) {
+        const dateObj = new Date(date)
+
+        return `${dateObj.getDay()}-${dateObj.getMonth()}-${dateObj.getFullYear()}`
       }
     }
   }

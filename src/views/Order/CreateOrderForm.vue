@@ -70,7 +70,7 @@
               </div>
             </div>
           </div>
-          <section class="order__teeth-design">
+          <section v-if="!isViewDetails" class="order__teeth-design">
             <header>Pointic Design</header>
             <section>
               <ul class="order__teeth-design--display-grid">
@@ -79,7 +79,7 @@
                     <img :src="require(`../../assets/teeths/design1.png`)" />
                     <figcaption>
                       <p>{{ pointicDesignItem.title }}</p>
-                      <input @change="updatePointicDesign($event, pointicDesignItem)" type="radio" name="design" />
+                      <input v-model="orderData.pointicDesign" type="radio" name="design" :value="pointicDesignItem.id" />
                     </figcaption>
                   </figure>
                 </li>
@@ -89,13 +89,14 @@
         </section>
         <section v-if="Object.values(serviceTypes).length > 0" class="d-flex order__options">
           <section class="flex-1 order__service">
-            <section v-for="(serviceType, index) in Object.values(serviceTypes)" :key="serviceType.title" class="services">
+            <template v-if="!isViewDetails" tag="div" class="services">
+            <section v-for="(serviceType, index) in Object.values(serviceTypes)" :key="serviceType.title">
               <header class="services__header">
                 {{serviceType.title}} <span v-if="index == 0">QTY</span>
               </header>
               <ul class="services__list">
                 <li v-for="service in serviceType.services" :key="service.id" class="d-flex jc-sb pl-2">
-                  <base-radio :inline="true" :name="service.name" @change="updateService(service)" v-model="order.service">
+                  <base-radio :inline="true" :name="service.id" v-model="orderData.service">
                     {{ service.name }}
                   </base-radio>
                   <div class="service__qty-container">
@@ -104,7 +105,8 @@
                 </li>
               </ul>
             </section>
-            <section v-if="order.service && totalTeethCount > 0" class="mt-2 pl-2">
+            </template>
+            <section v-if="canAddMoreService" class="mt-2 pl-2">
               <base-button @click="addOrder" block size="sm" outline type="secondary">
                 Add more service
               </base-button>
@@ -122,14 +124,14 @@
                 <div class="teeth__upper-arch">
                   <label v-for="tooth in teeths.upperLeft" :key="tooth.id" class="checkbox__container"
                     >{{ tooth.value }}
-                    <input @change="updateTooth($event, tooth)" type="checkbox"  />
+                    <input v-model="orderData.teeths[tooth.id]" name="teeths" type="checkbox" :disabled="isViewDetails" />
                     <span class="checkmark"></span>
                   </label>
                 </div>
                 <div class="teeth__lower-arch">
                   <label v-for="tooth in teeths.lowerLeft" :key="tooth.id" class="checkbox__container"
                     >{{ tooth.value }}
-                    <input @change="updateTooth($event, tooth)" type="checkbox"  />
+                    <input v-model="orderData.teeths[tooth.id]" name="teeths" type="checkbox" :disabled="isViewDetails" />
                     <span class="checkmark"></span>
                   </label>
                 </div>
@@ -138,14 +140,14 @@
                 <div class="teeth__upper-arch">
                   <label v-for="tooth in teeths.upperRight" :key="tooth.id" class="checkbox__container container-rev"
                     >{{ tooth.value }}
-                    <input @change="updateTooth($event, tooth)" type="checkbox"  />
+                    <input v-model="orderData.teeths[tooth.id]" name="teeths" type="checkbox" :disabled="isViewDetails" />
                     <span class="checkmark checkmark--right"></span>
                   </label>
                 </div>
                 <div class="teeth__lower-arch">
-                  <label v-for="tooth in teeths.upperRight" :key="tooth.id" class="checkbox__container container-rev"
+                  <label v-for="tooth in teeths.lowerRight" :key="tooth.id" class="checkbox__container container-rev"
                     >{{ tooth.value }}
-                    <input @change="updateTooth($event, tooth)" type="checkbox"  />
+                    <input v-model="orderData.teeths[tooth.id]" name="teeths" type="checkbox" :disabled="isViewDetails" />
                     <span class="checkmark checkmark--right"></span>
                   </label>
                 </div>
@@ -158,7 +160,7 @@
             Please <router-link to="/services" tag="a">Add Services</router-link> to create Order
           </p>
         </section>
-        <section class="order__teeth-design mt-3">
+        <section v-if="!isViewDetails" class="order__teeth-design mt-3">
           <header>Note</header>
           <section class="order__node">
             <p>for an urgent case an extra 50% of the value will be applied</p>
@@ -173,11 +175,10 @@
               <h3>{{ orderItem.service.name }}</h3>
               <section>
                 <p>Pointic Design : {{ orderItem.pointicDesign.title || 'No Selected !' }}</p>
-                <p>Price : <span class="price-tag">{{ orderItem.price }}$</span></p>
                 <p>
                   <span>Teeths :</span> 
                   <ul>
-                    <li v-for="teeth in orderItem.teeths" :key="teeth.id">Teeth no : {{ teeth.value }}</li>
+                    <li v-for="teeth in orderItem.teeths" :key="teeth.id">Teeth : {{ teeth.value }}</li>
                   </ul>
                 </p>
               </section>
@@ -191,19 +192,130 @@
       </section>
     </form>
     
-    <div class="d-flex submit-order">
+    <div v-if="!isViewDetails" class="d-flex submit-order">
       <button @click="submitOrderCreate">Create Order</button>
     </div>
   </div>
 </template>
 
 <script>
+import * as _ from 'lodash'
 import { mapState, mapActions } from 'vuex'
 import 'vue-select/src/scss/vue-select.scss'
 export default {
+  props: {
+    orderDetails: {
+      type: Object,
+      required: false
+    },
+    isViewDetails: {
+      type: Boolean,
+      required: true,
+      default: false
+    }
+  },
   data () {
     return {
-      pointicDesigns: [
+      order: {
+        emiratesId: '',
+        patientName: '',
+        age: '',
+        sendDate: '',
+        returnDate: '',
+        gender: '',
+        note: '',
+        lab: '',
+      },
+      orderData: {
+        pointicDesign: '',
+        service: '',
+        teeths: {}
+      },
+      orders: []
+    }
+  },
+  computed: {
+    totalTeethCount () {
+      const teethCount = Object.keys(this.orderData.teeths).reduce((count, teeth) => {
+        if (this.orderData.teeths[teeth]) {
+          count++
+        }
+        return count
+      }, 0)
+      return teethCount
+    },
+    canAddMoreService () {
+      if (this.totalTeethCount > 0 && this.orderData.service && this.orderData.pointicDesign) return true
+      return false
+    },
+    tooths () {
+      const tooths = [
+        { id: 1, value: '1', type: 'ul' },
+        { id: 2, value: '2', type: 'ul'  },
+        { id: 3, value: '3', type: 'ul'  },
+        { id: 4, value: '4', type: 'ul'  },
+        { id: 5, value: '5', type: 'ul'  },
+        { id: 6, value: '6', type: 'ul'  },
+        { id: 7, value: '7', type: 'ul'  },
+        { id: 8, value: '8', type: 'ul'  },
+        { id: 9, value: '9', type: 'ur'  },
+        { id: 10, value: '10', type: 'ur' },
+        { id: 11, value: '11', type: 'ur' },
+        { id: 12, value: '12', type: 'ur' },
+        { id: 13, value: '13', type: 'ur' },
+        { id: 14, value: '14', type: 'ur' },
+        { id: 15, value: '15', type: 'ur' },
+        { id: 16, value: '16', type: 'ur' },
+        { id: 17, value: '17', type: 'll' },
+        { id: 18, value: '18', type: 'll' },
+        { id: 19, value: '19', type: 'll' },
+        { id: 20, value: '20', type: 'll' },
+        { id: 21, value: '21', type: 'll' },
+        { id: 22, value: '22', type: 'll' },
+        { id: 23, value: '23', type: 'll' },
+        { id: 24, value: '24', type: 'll' },
+        { id: 25, value: '25', type: 'lr' },
+        { id: 26, value: '26', type: 'lr' },
+        { id: 27, value: '27', type: 'lr' },
+        { id: 28, value: '28', type: 'lr' },
+        { id: 29, value: '29', type: 'lr' },
+        { id: 30, value: '30', type: 'lr' },
+        { id: 31, value: '31', type: 'lr' },
+        { id: 32, value: '32', type: 'lr' },
+      ]
+
+      return tooths
+    },
+    teeths () {
+      
+      const teeths = this.tooths.reduce((teethbyType, tooth) => {
+        switch (tooth.type) {
+          case 'ul':
+            teethbyType.upperLeft.push(tooth)
+            break
+          case 'ur':
+            teethbyType.upperRight.push(tooth)
+            break
+          case 'll':
+            teethbyType.lowerLeft.push(tooth)
+            break
+          case 'lr':
+            teethbyType.lowerRight.push(tooth)
+            break
+        }
+
+        return teethbyType
+      }, {
+        upperLeft: [],
+        upperRight: [],
+        lowerLeft: [],
+        lowerRight: []
+      })
+
+      return teeths
+    },
+    pointicDesigns () {
+      const pointicDesigns = [
         {
           id: 6,
           image: 'teeths/design1.png',
@@ -234,69 +346,9 @@ export default {
           image: 'teeths/design1.png',
           title: 'Ovate'
         }
-      ],
-      teeths: {
-        upperLeft: [
-          { id: 1, value: '1' },
-          { id: 2, value: '2' },
-          { id: 3, value: '3' },
-          { id: 4, value: '4' },
-          { id: 5, value: '5' },
-          { id: 6, value: '6' },
-          { id: 7, value: '7' },
-          { id: 8, value: '8' },
-        ],
-        upperRight: [
-          { id: 9, value: '9' },
-          { id: 10, value: '10' },
-          { id: 11, value: '11' },
-          { id: 12, value: '12' },
-          { id: 13, value: '13' },
-          { id: 14, value: '14' },
-          { id: 15, value: '15' },
-          { id: 16, value: '16' },
-        ],
-        lowerLeft: [
-          { id: 17, value: '17' },
-          { id: 18, value: '18' },
-          { id: 19, value: '19' },
-          { id: 20, value: '20' },
-          { id: 21, value: '21' },
-          { id: 22, value: '22' },
-          { id: 23, value: '23' },
-          { id: 24, value: '24' },
-        ],
-        lowerRight: [
-          { id: 25, value: '25' },
-          { id: 26, value: '26' },
-          { id: 27, value: '27' },
-          { id: 28, value: '28' },
-          { id: 29, value: '29' },
-          { id: 30, value: '30' },
-          { id: 31, value: '31' },
-          { id: 32, value: '32' },
-        ]
-      },
-      orderService: '',
-      orders: [],
-      order: {
-        emiratesId: '',
-        patientName: '',
-        age: '',
-        sendDate: '',
-        returnDate: '',
-        gender: '',
-        note: '',
-        pointicDesign: null,
-        service: '',
-        lab: '',
-        teeths: []
-      }
-    }
-  },
-  computed: {
-    totalTeethCount () {
-      return this.order.teeths.length
+      ]
+
+      return pointicDesigns
     },
     ...mapState({
       labs: state => state.labs.labs,
@@ -328,8 +380,35 @@ export default {
       this.$store.dispatch('labs/getAllLabs')
     },
 
+    initOrderDetails () {
+      this.order.emiratesId = this.orderDetails.patientEmiratesId
+      this.order.patientName = this.orderDetails.Patient.name
+      this.order.lab = this.orderDetails.labId
+      this.order.age = 20
+      this.order.sendDate = this.orderDetails.sentDate
+      this.order.returnDate = this.orderDetails.returnDate
+      this.order.gender = this.orderDetails.Patient.gender
+      this.order.note = this.orderDetails.notes
+
+      this.orderDetails.tooths.forEach(tooth => {
+        this.orderData.teeths[tooth.toothId] = true
+      })
+
+      // this.orderDetails.reduce((orders, tooth) => {
+        
+      // }, [])
+    },
+
     submitOrderCreate () {
-      this.addOrder()
+      if (this.canAddMoreService) {
+        this.addOrder()
+      }
+
+      if (this.orders.length == 0) {
+        this.$notify('Please add order to create !')
+        return
+      }
+
       const formData = {
         emiratesId: this.order.emiratesId,
         lab: this.order.lab,
@@ -343,43 +422,44 @@ export default {
       }
       this.storeOrder(formData)
         .then(() => {
+          console.log('is it comming here')
           this.$emit('close')
         })
     },
 
-    updateTooth (event, insertTooth) {
-      if (event.target.checked) {
-        const isToothAdded = this.order.teeths.find(tooth => tooth.id === insertTooth.id)
-        if (!isToothAdded) {
-          this.order.teeths.push(insertTooth)
-        }
-      } else {
-        this.order.teeths = this.order.teeths.filter(tooth => tooth.id !== insertTooth.id)
-      }
-    },
-
-    updatePointicDesign (event, pointicDesign) {
-      this.order.pointicDesign = pointicDesign
-    },
-
     addOrder () {
-      const orderIdx = this.orders.findIndex(order => order.service === this.order.service)
+      const selectedService = _.cloneDeep(this.allServices.find(service => service.id === this.orderData.service))
+      const selectedPointicDesign = _.cloneDeep(this.pointicDesigns.find(design => design.id === this.orderData.pointicDesign))
       
-      const selectedService = this.allServices.find(service => service.name == this.order.service)
+      const selectedTeeths = Object.keys(this.orderData.teeths).reduce((selectedTeeths, teeth) => {
+        if (this.orderData.teeths[teeth]) {
+          const toothTemp = _.cloneDeep(this.tooths.find(tooth => tooth.id == teeth))
+          selectedTeeths.push(toothTemp)
+        }
+        return selectedTeeths
+      }, [])
 
-      const order = {
-        service: selectedService,
-        price: 500,
-        pointicDesign: this.order.pointicDesign,
-        teeths: this.order.teeths
-      }
+      const orderIdx = this.orders.findIndex(orderItem => orderItem?.service?.id == selectedService.id)
 
       if (orderIdx >= 0) {
-        this.orders[orderIdx] = order
+        this.orders[orderIdx] = {
+          service: selectedService,
+          pointicDesign: selectedPointicDesign,
+          teeths: selectedTeeths
+        }
       } else {
-        this.orders.push(order)
+        this.orders.push({
+          service: selectedService,
+          pointicDesign: selectedPointicDesign,
+          teeths: selectedTeeths
+        })
       }
-      // this.$refs.orderForm.reset()
+
+      this.orderData.pointicDesign = ''
+      this.orderData.service = ''
+      Object.keys(this.orderData.teeths).forEach(idx => {
+        this.orderData.teeths[idx] = false
+      })
     },
     ...mapActions('orders', [
       'storeOrder'
@@ -387,6 +467,9 @@ export default {
   },
   mounted () {
     this.initOrderData()
+    if (this.isViewDetails) {
+      this.initOrderDetails()
+    }
   }
 }
 </script>
