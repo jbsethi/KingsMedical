@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { GetAll, Get, Create, Update, Delete, GetEachAndEvery, GetAllActive } = require('../controllers/serviceType/serviceType.controller');
+const { GetAll, Get, Create, Update, Delete, GetEachAndEvery, GetAllActive, GetServicesByServiceType } = require('../controllers/serviceType/serviceType.controller');
 const { HandleNullString, AuthenticatePermission } = require('../middlewares');
 const { Resources, Actions } = require('../utils/permissions');
 
@@ -12,6 +12,9 @@ router.route('/:id')
 .get(AuthenticatePermission(Resources['ServiceTypes'], Actions['GetSingle']), Get)                           // GET Notice AGAINST ID
 .put(AuthenticatePermission(Resources['ServiceTypes'], HandleNullString, Actions['Update']), Update)                        // UPDATE Notice
 .delete(AuthenticatePermission(Resources['ServiceTypes'], Actions['Delete']), Delete)                     // DELETE Notice
+
+router.route('/:id/services')
+.get(AuthenticatePermission(Resources['ServiceTypes'], Actions['GetAll']), GetServicesByServiceType );         
 
 router.route('/all/records')
 .get(AuthenticatePermission(Resources['ServiceTypes'], Actions['GetAll']), GetEachAndEvery)       // GET Notice History

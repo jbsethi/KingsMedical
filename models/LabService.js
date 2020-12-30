@@ -1,34 +1,27 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('Service', {
-      id : {
-        type: DataTypes.INTEGER(11),
-        allowNull: false,
+    return sequelize.define('LabService', {
+      id: {
+        type: DataTypes.INTEGER,
         autoIncrement: true,
+        allowNull: false,
         primaryKey: true
       },
-      name : {
-        type: DataTypes.STRING(),
-        allowNull: false,
-      },
-      description: {
-        type: DataTypes.STRING(),
-        allowNull: true
-      },
-      replaceInterval: {
+      labId:{
         type: DataTypes.INTEGER(11),
         allowNull: false,
       },
-      // price: {
-      //   type: DataTypes.FLOAT(11),
-      //   allowNull: false,
-      // },
-      serviceType: {
+      serviceId:{
         type: DataTypes.INTEGER(11),
         allowNull: false,
       },
-      active : {
-        type: DataTypes.BOOLEAN(),
+      price: {
+        type: DataTypes.FLOAT(11),
         allowNull: false,
+      },
+      active: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
       },
       createdBy: {
         type: DataTypes.INTEGER(11),
@@ -45,16 +38,18 @@ module.exports = (sequelize, DataTypes) => {
       },
       updatedAt: {
         type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
         onUpdate : DataTypes.NOW,
         allowNull: true,
+        onUpdate: DataTypes.NOW
       },
       live: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: true    
+        defaultValue: true
       }
     },
     { 
-      tableName: 'services'
+      tableName: 'labs-services'
     });
 }

@@ -161,3 +161,23 @@ exports.Delete = async (req, res, next) => {
     return res.send(DB_value);
 
 }
+
+exports.GetServicesByServiceType = async (req, res, next) => {
+    
+    if( isNaN(req.params.id) ){
+        let error = new Error('ID must be a number');
+        error.status = 400;
+        return Errors(res, error);
+    }
+
+    let { DB_error, DB_value } = await ServiceTypeService.GetServicesByServiceType(req.params.id);
+
+    if(DB_error){
+
+        return Errors(res, DB_error);
+
+    }
+
+    return res.send(DB_value);
+
+}

@@ -3,14 +3,14 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
 
-  return queryInterface.createTable('orders_tooths_services', { 
+  return queryInterface.createTable('labs-services', { 
     id : {
       type: Sequelize.INTEGER(11),
       allowNull: false,
       autoIncrement: true,
       primaryKey: true
     },
-    orderToothId:{
+    labId:{
       type: Sequelize.INTEGER(11),
       allowNull: false,
     },
@@ -18,7 +18,11 @@ module.exports = {
       type: Sequelize.INTEGER(11),
       allowNull: false,
     },
-    charge: {
+    price: {
+      type: Sequelize.FLOAT(11),
+      allowNull: false,
+    },
+    active: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
       defaultValue: true
@@ -64,7 +68,7 @@ module.exports = {
 
   down: (queryInterface, Sequelize) => {
 
-    return queryInterface.dropTable('orders_tooths_services');
+    return queryInterface.dropTable('labs-services');
 
     /*
       Add reverting commands here.

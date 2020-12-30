@@ -169,3 +169,37 @@ exports.Delete = async ( _ID ) => {
     };
 
 }
+
+exports.GetServicesByServiceType = async function ( _ID ) {
+
+    let ServiceType = await db.ServiceType.findOne({
+        attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+        where: {
+            id: _ID,
+            live: true
+        }
+    });
+
+
+    if(!ServiceType){
+
+        let error = new Error("Service Type not found!");
+        error.status = 404;
+        return {
+            DB_error: error
+        };
+
+    }
+
+    let Services = await db.Service.findAll({
+        where: {
+            live: true,
+            serviceType: _ID
+        }
+    });
+
+    return {
+        DB_value: Services
+    };
+
+}

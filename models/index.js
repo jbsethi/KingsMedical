@@ -60,8 +60,10 @@ sequelize.authenticate()
     db.Order.belongsTo(db.Shade,  {as: 'Shade', foreignKey: 'shadeId'});
     // Include Tooth in Order from Ordertooth Table
     db.OrderTooth.belongsTo(db.Tooth, {as: 'Tooth', foreignKey: 'toothId'});
+    // Include LabServices in Order from OrderToothServices Table
+    db.OrderToothService.belongsTo(db.LabService, {as: 'LabService', foreignKey: 'serviceId'});
     // Include Services in Order from OrderToothServices Table
-    db.OrderToothService.belongsTo(db.Service, {as: 'Service', foreignKey: 'serviceId'});
+    db.LabService.belongsTo(db.Service, {as: 'Service', foreignKey: 'serviceId'});
     // Include Services in Order from OrderToothServices Table
     db.OrderToothPonticDesign.belongsTo(db.PonticDesign, {as: 'PonticDesign', foreignKey: 'ponticDesignId'});
 

@@ -5,6 +5,16 @@ module.exports = {
     return queryInterface.bulkInsert(
       'roles', [
       {
+        title: 'Super Administrator',
+        description: 'Super Admin role for the application user',
+        active: 1,
+        createdBy: 1,
+        createdAt: new Date(),
+        updatedBy: null,
+        updatedAt: new Date(),
+        live: 1
+      },
+      {
         title: 'Administrator',
         description: 'Admin role for the application user',
         active: 1,

@@ -20,9 +20,81 @@ let Orders = 1, Labs = 2, Services = 3, Users = 4, Roles = 5,
     Invoices = 10;
 
 // Roles
-let Administrator = 1, Doctor = 2, Management = 3, Lab = 4;
+let SuperAdmin = 1, Administrator = 2, Doctor = 3, Management = 4, Lab = 5;
 
 const permissions = {
+    [SuperAdmin]: [
+        { [Orders]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Labs]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Services]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Users]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Roles]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [ServiceTypes]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [PonticDesigns]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Shades]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Tooths]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+        { [Invoices]: [
+            {permission: Create, status: true},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
+        ] },
+    ],
     [Administrator]: [
         { [Orders]: [
             {permission: Create, status: true},

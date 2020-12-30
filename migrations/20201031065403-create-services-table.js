@@ -22,10 +22,7 @@ module.exports = {
       type: Sequelize.INTEGER(11),
       allowNull: false,
     },
-    price: {
-      type: Sequelize.FLOAT(11),
-      allowNull: false,
-    },
+    
     serviceType: {
       type: Sequelize.INTEGER(11),
       allowNull: false,

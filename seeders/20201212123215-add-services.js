@@ -7,7 +7,7 @@ module.exports = {
         {
           name: 'ZIRCON',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 1,
           active: 1,
           createdBy: 1,
@@ -19,7 +19,7 @@ module.exports = {
         {
           name: 'PFM',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 1,
           active: 1,
           createdBy: 1,
@@ -31,7 +31,7 @@ module.exports = {
         {
           name: 'EMAX',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 1,
           active: 1,
           createdBy: 1,
@@ -43,7 +43,7 @@ module.exports = {
         {
           name: 'VENEER',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 1,
           active: 1,
           createdBy: 1,
@@ -55,7 +55,7 @@ module.exports = {
         {
           name: 'NON-PREP VENEER',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 1,
           active: 1,
           createdBy: 1,
@@ -67,7 +67,7 @@ module.exports = {
         {
           name: 'Crown / Bridge',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 2,
           active: 1,
           createdBy: 1,
@@ -79,7 +79,7 @@ module.exports = {
         {
           name: 'Inlay / Onlay',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 2,
           active: 1,
           createdBy: 1,
@@ -91,7 +91,7 @@ module.exports = {
         {
           name: 'Post',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 2,
           active: 1,
           createdBy: 1,
@@ -103,7 +103,7 @@ module.exports = {
         {
           name: 'Telescopic',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 2,
           active: 1,
           createdBy: 1,
@@ -115,7 +115,7 @@ module.exports = {
         {
           name: 'Maryland Bridge',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 2,
           active: 1,
           createdBy: 1,
@@ -127,7 +127,7 @@ module.exports = {
         {
           name: 'Night Guard',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 3,
           active: 1,
           createdBy: 1,
@@ -139,7 +139,7 @@ module.exports = {
         {
           name: 'Diagnostic Wax Up',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 3,
           active: 1,
           createdBy: 1,
@@ -151,7 +151,7 @@ module.exports = {
         {
           name: 'Ortho',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 3,
           active: 1,
           createdBy: 1,
@@ -163,7 +163,7 @@ module.exports = {
         {
           name: 'Denture',
           replaceInterval: 30,
-          price: 50,
+          // price: 50,
           serviceType: 3,
           active: 1,
           createdBy: 1,

@@ -177,7 +177,7 @@ exports.Update = async (_OBJECT, _ID) => {
     Service.serviceType = _OBJECT.serviceType;
     Service.description = _OBJECT.description;
     Service.replaceInterval = _OBJECT.replaceInterval;
-    Service.price = _OBJECT.price;
+    // Service.price = _OBJECT.price;
     Service.active = _OBJECT.active;
     Service.updatedBy = _OBJECT.updatedBy;
 

@@ -6,7 +6,7 @@ const Schema = Joi.object({
     name: Joi.string().required(),
     active: Joi.boolean().required(),
     replaceInterval: Joi.number().required(),
-    price: Joi.number().required(),
+    // price: Joi.number().required(),
     serviceType: Joi.number().required(),
     description: Joi.string().allow('', null)
 });

@@ -76,9 +76,16 @@ exports.Get = async function ( _ID, _USER ) {
                     required: false,
                     include: [
                         {
-                            as: 'Service',
-                            model: db.Service, // will create a left join
+                            as: 'LabService',
+                            model: db.LabService, // will create a left join
                             attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                            include: [
+                                {
+                                    as: 'Service',
+                                    model: db.Service, // will create a left join
+                                    attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                                },
+                            ]
                         },
                     ]
                 },
@@ -233,7 +240,7 @@ exports.Create = async (_OBJECT) => {
             let services = element.serviceIds;
             for(let serviceId of services){
 
-                let Service = await db.Service.findOne( {where: {id: serviceId, live: true } });
+                let Service = await db.LabService.findOne( {where: {id: serviceId, live: true } });
                 if(!Service){
                     let error = new Error(`Service does not exists having id '${serviceId}'`);
                     error.status = 400;
@@ -319,6 +326,7 @@ exports.Create = async (_OBJECT) => {
                 let orderToothService = {
                     orderToothId: Tooth.dataValues.id,
                     serviceId: serviceId,
+                    charge: element.charge,
                     createdBy: _OBJECT.createdBy,
                 }
                 let Service = await db.OrderToothService.create(orderToothService);

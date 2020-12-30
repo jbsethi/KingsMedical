@@ -4,6 +4,7 @@ const { Errors } = require('../../functions');
 
 let tooth = Joi.object().keys({
     toothId: Joi.number().required(),
+    charge: Joi.boolean().required(),
     serviceIds: Joi.array().required().min(1).items(Joi.number()),
     ponticDesignIds: Joi.array().required().min(1).items(Joi.number())
 });

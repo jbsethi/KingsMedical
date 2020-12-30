@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { GetAll, Get, Create, Update, Delete, GetEachAndEvery, GetAllActive } = require('../controllers/lab/lab.controller');
+const { GetAll, Get, Create, Update, Delete, GetEachAndEvery, GetAllActive,
+        CreateLabServices, GetLabService, GetAllLabService, GetEachAndEveryLabService,
+        GetAllActiveLabService,
+        DeleteLabService,
+        UpdateLabService
+     } = require('../controllers/lab/lab.controller');
 const { HandleNullString, AuthenticatePermission } = require('../middlewares');
 const { Resources, Actions } = require('../utils/permissions');
 
@@ -18,5 +23,32 @@ router.route( '/all/records')
 
 router.route('/all/active')
 .get(AuthenticatePermission(Resources['Labs'], Actions['GetAll']), GetAllActive)       // GET Lab All Active
+
+
+/*
+**
+**  Labs Service
+**
+*/
+
+// router.route('/:id/services/:labServiceId')
+router.route('/services/:id')
+.get(AuthenticatePermission(Resources['Labs'], Actions['GetSingle']), GetLabService)
+.delete(AuthenticatePermission(Resources['Labs'], Actions['Delete']), DeleteLabService)
+.put(AuthenticatePermission(Resources['Labs'], Actions['Update']), HandleNullString, UpdateLabService)
+
+// router.route('/:id/services')
+router.route('/services')
+// .get(AuthenticatePermission(Resources['Labs'], Actions['GetAll']), GetAllLabService)
+.post(AuthenticatePermission(Resources['Labs'], Actions['Create']), CreateLabServices)
+
+router.route('/services/:id/all')
+.get(AuthenticatePermission(Resources['Labs'], Actions['GetAll']), GetAllLabService)
+
+router.route('/services/:id/all/records')
+.get(AuthenticatePermission(Resources['Labs'], Actions['GetAll']), GetEachAndEveryLabService)
+
+router.route('/services/:id/all/active')
+.get(AuthenticatePermission(Resources['Labs'], Actions['GetAll']), GetAllActiveLabService)
 
 module.exports = router;

@@ -5,9 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "initialize": "sequelize db:migrate --debug && sequelize db:seed:all --debug && node ./utils/assignPermissionsToRoles",
     "dev": "nodemon app.js",
-    "resetPermission": "node ./utils/assignPermissionsToRoles",
+    "refresh:app": "sequelize db:migrate:undo:all && sequelize db:migrate --debug && sequelize db:seed:all --debug && node ./utils/assignPermissionsToRoles",
+    "refresh:permissions": "node ./utils/assignPermissionsToRoles",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Wasiq Naqi",
