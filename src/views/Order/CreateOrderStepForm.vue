@@ -1,0 +1,261 @@
+<template>
+  <Modal :show="showCreateModal">
+    <section>
+      <section class="header">
+        <h3 class="header__title">Create Order</h3>
+        <p class="header__step-info">Step : <span>{{ currentStep }}</span> / {{ totalSteps }}</p>
+        <div class="header__step-bar">
+          <div :style="{ width: barProgress }"></div>
+        </div>
+      </section>
+
+      <section class="py-4">
+        <keep-alive>
+          <component
+            :is="stepComponent"
+            :patientInfo="patientInfo"
+            :serviceSelection="serviceSelection"
+            :teethSelection="teethSelection"
+            @update:patientInfo="updatePatientInfo"
+            @update:serviceSelection="updateServiceSelection"
+            @update:teethSelection="updateTeethSelection"
+          ></component>
+        </keep-alive>
+      </section>
+    </section>
+    <template slot="footer">
+      <section class="d-flex justify-content-between w-100">
+        <section>
+          <base-button @click="close" class="btn-small" type="danger">Close</base-button>
+        </section>
+        <section>
+          <base-button v-if="currentStep != 1" @click="move('back')" class="btn-small" type="secondary">Back</base-button>
+          <base-button v-if="currentStep != totalSteps" @click="move('next')" class="btn-small" type="primary">Next</base-button>
+          <base-button v-if="currentStep == totalSteps" @click="confirmCreate" class="btn-small" type="primary">Confirm Create</base-button>
+        </section>
+      </section>
+    </template>
+  </Modal>
+</template>
+
+<script>
+import { mapActions } from 'vuex'
+import 'vue-select/src/scss/vue-select.scss'
+export default {
+  name: 'CreateOrderStepForm',
+  props: {
+    showCreateModal: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data () {
+    return {
+      currentStep: 1,
+      totalSteps: 4,
+
+      patientInfo: {
+        emiratesId: '',
+        name: '',
+        age: '',
+        gender: '',
+        labId: '',
+        sendDate: null,
+        returnDate: null
+      },
+
+      serviceSelection: {
+        serviceType: '',
+        service: ''
+      },
+
+      teethSelection: {
+        teeths: [],
+        pointicDesign: '',
+        shade: ''
+      }
+    }
+  },
+  computed: {
+    isPatientInfoValid () {
+      if (this.patientInfo.emiratesId == '') return false
+      if (this.patientInfo.name == '') return false
+      if (this.patientInfo.labId == '') return false
+      if (this.patientInfo.sendDate == '') return false
+      return true
+    },
+
+    isServiceSelectionValid () {
+      if (this.serviceSelection.serviceType == '') return false
+      if (this.serviceSelection.service == '') return false
+      return true
+    },
+
+    isTeethSelectionValid () {
+      if (this.teethSelection.pointicDesign == '') return false
+      if (this.teethSelection.shade == '') return false
+      return true
+    },
+
+    stepComponent () {
+      switch (this.currentStep) {
+        case 2:
+          return () => import('./CreateOrderStepForm/ServiceSelection.vue')
+        case 3:
+          return () => import('./CreateOrderStepForm/TeethSelection.vue')
+        case 4:
+          return () => import('./CreateOrderStepForm/OrderOverview.vue')
+        default:
+          return () => import('./CreateOrderStepForm/PatientInfo.vue')
+      }
+    },
+    barProgress () {
+      return ((100 / this.totalSteps + 1) * (this.currentStep)) + '%'
+    }
+  },
+  methods: {
+    confirmCreate () {
+      const formData = {
+        patientEmiratesId: this.patientInfo.emiratesId,
+        patientName: this.patientInfo.name,
+        patientGender: this.patientInfo.gender,
+        patientContact: '090078601',
+        sendDate: this.patientInfo.sendDate,
+        returnDate: this.patientInfo.returnDate,
+        notes: '',
+        urgent: false,
+        labId: this.patientInfo.labId,
+        shadeId: this.teethSelection.shade,
+        tooths: [],
+        parentId: ''
+      }
+
+      formData.tooths = this.teethSelection.teeths.map(tooth => {
+        return {
+          toothId: tooth,
+          serviceIds: [this.serviceSelection.service],
+          ponticDesignIds: [this.teethSelection.pointicDesign],
+          charge: true
+        }
+      })
+
+      this.storeOrder(formData)
+        .then((resp) => {
+          console.log(resp)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
+    close () {
+      this.$emit('click:close')
+      this.resetFormData()
+    },
+
+    move (dir) {
+      if (dir == 'next') {
+        console.log('next')
+        if (this.currentStep < this.totalSteps) {
+          if (this.currentStep == 1 && this.isPatientInfoValid) {
+            this.currentStep += 1
+          } else if (this.currentStep == 2 && this.isServiceSelectionValid) {
+            this.currentStep += 1
+          } else if (this.currentStep == 3 && this.isTeethSelectionValid) {
+            this.currentStep += 1
+          }
+        }
+      } else if (dir == 'back') {
+        if (this.currentStep > 1)
+        this.currentStep -= 1
+      }
+    },
+
+    resetFormData () {
+      this.currentStep = 1
+
+      this.patientInfo = {
+        emiratesId: '',
+        name: '',
+        age: '',
+        gender: '',
+        labId: '',
+        sendDate: null,
+        returnDate: null
+      },
+
+      this.serviceSelection = {
+        serviceType: '',
+        service: ''
+      },
+
+      this.teethSelection = {
+        teeths: [],
+        pointicDesign: '',
+        shade: ''
+      }
+    },
+
+    updatePatientInfo (patientInfo) {
+      this.patientInfo[patientInfo[0]] = patientInfo[1]
+    },
+
+    updateServiceSelection (serviceSelection) {
+      this.serviceSelection[serviceSelection[0]] = serviceSelection[1]
+    },
+
+    updateTeethSelection (teethSelection) {
+      this.teethSelection[teethSelection[0]] = teethSelection[1]
+    },
+
+    ...mapActions('orders', [
+      'storeOrder'
+    ])
+  },
+  components: {
+    Modal: () => import('./../../components/Modal')
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.header{
+  &__title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.125em;
+    color: #1D273E;
+    margin-bottom: 0;
+  }
+  &__step-info {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 1em;
+    color: #1D273E;
+    margin-bottom: 0;
+    span {
+      font-size: 1.25em;
+      font-weight: 500;
+    }
+  }
+  &__step-bar{
+    margin: 5px 0px;
+    width: 100%;
+    height: 5px;
+    background-color: #eee;
+    border-radius: 10px;
+    div {
+      height: 5px;
+      width: 0px;
+      transition: width 0.5s;
+      background-color: #5e72e4;
+    }
+  }
+  hr {
+    margin: 5px 0px;
+  }
+}
+
+.btn-small {
+  padding: 0.5rem 0.925rem;
+  font-size: 0.7rem;
+}
+</style>

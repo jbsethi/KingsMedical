@@ -2,6 +2,30 @@ import * as _ from 'lodash'
 import { ServiceTypesService } from '@/services/serviceTypes.service'
 
 export default {
+  getEveryServiceTypes (context, payload) {
+    return new Promise((resolve, reject) => {
+      ServiceTypesService.getList(payload)
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
+  getEveryServicebyServiceType (context, payload) {
+    return new Promise((resolve, reject) => {
+      ServiceTypesService.getServicesByServiceType(payload)
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
   getAllServiceTypes ({ commit }, payload) {
     return new Promise((resolve, reject) => {
       ServiceTypesService.getList(payload)

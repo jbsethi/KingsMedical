@@ -71,11 +71,6 @@ const router = new Router({
           path: '/icons',
           name: 'icons',
           component: () => import('./views/Icons.vue')
-        },
-        {
-          path: '/settings',
-          name: 'setting',
-          component: () => import('./views/Setting.vue')
         }
       ]
     },
