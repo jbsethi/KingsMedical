@@ -234,9 +234,12 @@ exports.GetAllLabService = async (req, res, next) => {
 
     let pageNo = req.query.pageNo;
     let pageSize = req.query.pageSize;
+    let serviceType = undefined;
+    if(req.query.type){
+        serviceType = req.query.type;
+    }
 
-
-    let { DB_error, DB_value } = await LabService.GetAllLabServices(req.params.id, pageNo, pageSize);
+    let { DB_error, DB_value } = await LabService.GetAllLabServices(req.params.id, pageNo, pageSize, serviceType);
 
     if(DB_error){
 

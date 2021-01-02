@@ -216,13 +216,34 @@ exports.GetEachAndEveryLabServices = async function ( _ID ) {
         DB_value: LabService
     };
 }
-exports.GetAllLabServices = async function ( _ID, _PAGE, _LIMIT) {
+exports.GetAllLabServices = async function ( _ID, _PAGE, _LIMIT, _TYPE) {
 
     let association = {
         where: {
             live: true,
             labId: _ID
-        }
+        },
+    }
+
+    if(_TYPE){
+        association['include'] = [
+            {
+                as: 'Service',
+                model: db.Service, // will create a left join
+                required: true,
+                attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                include: [{
+                    as: 'ServiceType',
+                    model: db.ServiceType, // will create a left join
+                    required: true,
+                    attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                    where: {
+                        live: true,
+                        id: _TYPE
+                    },
+                }]
+            },
+        ]
     }
 
     let result = await Pagination(_PAGE, _LIMIT, db.LabService, association);
