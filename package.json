@@ -7,7 +7,7 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "refresh:app": "sequelize db:migrate:undo:all && sequelize db:migrate --debug && sequelize db:seed:all --debug && node ./utils/assignPermissionsToRoles",
-    "refresh:permissions": "node ./utils/assignPermissionsToRoles",
+    "refresh:app:permissions": "node ./utils/assignPermissionsToRoles",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Wasiq Naqi",

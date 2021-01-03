@@ -67,6 +67,9 @@ sequelize.authenticate()
     // Include Services in Order from OrderToothServices Table
     db.OrderToothPonticDesign.belongsTo(db.PonticDesign, {as: 'PonticDesign', foreignKey: 'ponticDesignId'});
 
+    // db.Invoice.belongsTo(db.Order, {as: 'Invoices', foreignKey: 'orderId'});
+    db.Order.hasMany(db.Invoice, {as: 'Invoices', foreignKey: 'orderId'});
+
     // Synchronization
     sequelize.sync()
     .then(() => {

@@ -245,6 +245,25 @@ exports.GetAllLabServices = async function ( _ID, _PAGE, _LIMIT, _TYPE) {
             },
         ]
     }
+    else{
+        association['include'] = [
+            {
+                as: 'Service',
+                model: db.Service, // will create a left join
+                required: true,
+                attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                include: [{
+                    as: 'ServiceType',
+                    model: db.ServiceType, // will create a left join
+                    required: true,
+                    attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                    where: {
+                        live: true
+                    },
+                }]
+            },
+        ]
+    }
 
     let result = await Pagination(_PAGE, _LIMIT, db.LabService, association);
 

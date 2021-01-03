@@ -32,6 +32,12 @@ let SchemaStatus = Joi.object({
     status: Joi.string().required().valid('placed', 'confirmed')
 });
 
+let SchemaGetOrderStatus = Joi.object({
+    patientEmiratesId: Joi.string().required(),
+    toothId: Joi.number().required(),
+    serviceId: Joi.number().required()
+});
+
 exports.GetAll = async (req, res, next) => {
     
 
@@ -202,5 +208,35 @@ exports.Delete = async (req, res, next) => {
     }
 
     return res.send(DB_value);
+
+}
+
+exports.GetOrderStatus = async (req, res, next) => {
+
+
+    let {error, value} = SchemaGetOrderStatus.validate(req.body);
+
+    if(error){
+
+        let newError = {
+            message: error.details[0].message,
+            status: 400
+        }
+
+        return Errors(res, newError);
+
+    }
+
+
+    let { DB_error, DB_value } = await Service.GetOrderStatus(value);
+
+    if(DB_error){
+
+        return Errors(res, DB_error);
+
+    }
+    
+
+    return res.status(201).send(DB_value);
 
 }

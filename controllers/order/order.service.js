@@ -105,6 +105,16 @@ exports.Get = async function ( _ID, _USER ) {
                 },
             ] 
         },
+        {
+            as: 'Invoices',
+            model: db.Invoice, // will create a left join
+            paranoid: false, 
+            required: false,
+            attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+            where: {
+                live: true
+            }
+        },
     ]
 
     let Order = await db.Order.findOne({
@@ -712,6 +722,174 @@ exports.Delete = async function ( _OBJECT, _ID ) {
     
     return {
         DB_value: result
+    };
+
+}
+
+exports.GetOrderStatus = async function ( _OBJECT ) {
+
+    let where = {
+        patientEmiratesId: _OBJECT['patientEmiratesId'],
+        live: true,
+    }
+
+    let include = [
+        { 
+            as: 'tooths', 
+            model: db.OrderTooth, 
+            attributes: ['toothId'], 
+            // paranoid: false, 
+            required: true,
+            where: { 
+                live: true,
+                toothId: _OBJECT['toothId']    
+            },
+            include: [
+                {
+                    as: 'ToothServices', 
+                    model: db.OrderToothService, 
+                    attributes: ['serviceId'], 
+                    // paranoid: false, 
+                    required: true,
+                    include: [
+                        {
+                            as: 'LabService',
+                            model: db.LabService, // will create a left join
+                            attributes: [['serviceId', 'LabServiceId']],
+                            required: true,
+                            include: [
+                                {
+                                    as: 'Service',
+                                    model: db.Service, // will create a left join
+                                    attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                                    required: true,
+                                    where: {
+                                        live: true,
+                                        id: _OBJECT['serviceId']
+                                    }
+                                },
+                            ]
+                        },
+                    ]
+                },
+
+            ] 
+        },
+    ]
+
+    let Orders = await db.Order.findAll({
+        where,
+        include,
+    });
+
+
+    if(!Orders){
+
+        let error = new Error("Order not found!");
+        error.status = 404;
+        return {
+            DB_error: error
+        };
+
+    }
+
+    // GET FULL ORDERS DETAILS OF ORDERS FOUND
+
+    include = [
+        {
+            as: 'Patient',
+            model: db.Patient, // will create a left join
+            attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+        },
+        {
+            as: 'Shade',
+            model: db.Shade, // will create a left join
+            attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+        },
+        { 
+            as: 'tooths', 
+            model: db.OrderTooth, 
+            attributes: ['toothId'], 
+            paranoid: false, 
+            required: false,
+            where: { live: true },
+            include: [
+                {
+                    as: 'Tooth',
+                    model: db.Tooth, // will create a left join
+                    attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                },
+                {
+                    as: 'ToothServices', 
+                    model: db.OrderToothService, 
+                    attributes: ['serviceId'], 
+                    paranoid: false, 
+                    required: false,
+                    include: [
+                        {
+                            as: 'LabService',
+                            model: db.LabService, // will create a left join
+                            attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                            include: [
+                                {
+                                    as: 'Service',
+                                    model: db.Service, // will create a left join
+                                    attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                                },
+                            ]
+                        },
+                    ]
+                },
+                {
+                    as: 'ToothPonticDesign', 
+                    model: db.OrderToothPonticDesign, 
+                    attributes: ['ponticDesignId'], 
+                    paranoid: false, 
+                    required: false,
+                    include: [
+                        {
+                            as: 'PonticDesign',
+                            model: db.PonticDesign, // will create a left join
+                            attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                        },
+                    ]
+                },
+            ] 
+        },
+        {
+            as: 'Invoices',
+            model: db.Invoice, // will create a left join
+            paranoid: false, 
+            required: false,
+            attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+            where: {
+                live: true
+            }
+        },
+    ]
+
+    where = {
+        live: true,
+        id: []
+    }
+
+    // console.log(Orders);
+    // Orders = Orders.get({ plain: true });
+    for(let order of Orders){
+        let orderObj = order.get({ plain: true });
+        where.id.push(orderObj.id);
+    }
+
+    Orders = await db.Order.findAll({
+        attributes: { exclude: ['password'] },
+        where,
+        include,
+    });
+
+    // Order = Order.get({ plain: true });
+
+    return {
+        DB_value: Orders
     };
 
 }
