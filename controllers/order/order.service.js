@@ -15,11 +15,23 @@ exports.getAllUsers = async function ( _PAGE, _LIMIT, _USER ) {
     if(_USER.roleId == Roles['Doctor']) where['createdBy'] = _USER.userId; 
 
     let association = {
-        include: [{
+        include: [
+            {
             as: 'Patient',
             model: db.Patient, // will create a left join
             attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
-        }],
+            },
+            {
+                as: 'Invoices',
+                model: db.Invoice, // will create a left join
+                paranoid: false, 
+                required: false,
+                attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                where: {
+                    live: true
+                }
+            },
+    ],
         where
     }
 

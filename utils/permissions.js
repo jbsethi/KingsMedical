@@ -19,9 +19,10 @@ module.exports = {
         GetAll: 5,
     },
     Roles: {
-        Administrator: 1,
-        Managment: 3,
-        Doctor: 2,
-        Lab: 4,
+        SuperAdmin: 1,
+        Administrator: 2,
+        Managment: 4,
+        Doctor: 3,
+        Lab: 5,
     },
 }
