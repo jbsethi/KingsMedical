@@ -13,4 +13,16 @@ export default {
         })
     })
   },
+
+  getOrderInvoice (context, payload) {
+    return new Promise((resolve, reject) => {
+      InvoicesService.getOrderInvoice(payload)
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
 }

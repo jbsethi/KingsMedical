@@ -10,12 +10,14 @@
                       label="Emirates ID"
                       class="mb-0"
                       v-model="order.emiratesId"
+                       disabled
                       alternative="">
           </base-input>
           <base-input placeholder="Patient's Name"
                       label="Patient's Name"
                       class="mb-0"
                       v-model="order.patientName"
+                       disabled
                       alternative="">
           </base-input>
           <div class="form-group mb-0 has-label">
@@ -26,6 +28,7 @@
                     :options="labs"
                     v-model="order.lab"
                     :reduce="(lab) => lab.id"
+                     disabled
                     label="name">
               <template #search="{attributes, events}">
                 <input
@@ -42,6 +45,7 @@
                       class="mb-0"
                       type="date"
                       v-model="order.sendDate"
+                      disabled
                       alternative="">
           </base-input>
           <base-input placeholder="Return Date"
@@ -49,6 +53,7 @@
                       class="mb-0"
                       type="date"
                       v-model="order.returnDate"
+                      disabled
                       alternative="">
           </base-input>
           <div class="form-group-items gap-1">
@@ -56,21 +61,22 @@
                         label="Age"
                         class="mb-0"
                         v-model="order.age"
+                        disabled
                         alternative="">
             </base-input>
             <div>
               <label class="form-control-label">Gender:</label>
               <div class="">
-                <base-radio :inline="true" name="male" v-model="order.gender">
+                <base-radio disabled :inline="true" name="male" v-model="order.gender">
                   Male
                 </base-radio>
-                <base-radio :inline="true" name="female" v-model="order.gender">
+                <base-radio disabled :inline="true" name="female" v-model="order.gender">
                   Female
                 </base-radio>
               </div>
             </div>
           </div>
-          <section v-if="!isViewDetails" class="order__teeth-design">
+          <section class="order__teeth-design">
             <header>Pointic Design</header>
             <section>
               <ul class="order__teeth-design--display-grid">
@@ -79,7 +85,7 @@
                     <img :src="require(`../../assets/teeths/design1.png`)" />
                     <figcaption>
                       <p>{{ pointicDesignItem.title }}</p>
-                      <input v-model="orderData.pointicDesign" type="radio" name="design" :value="pointicDesignItem.id" />
+                      <input disabled v-model="orderData.pointicDesign" type="radio" name="design" :value="pointicDesignItem.id" />
                     </figcaption>
                   </figure>
                 </li>
@@ -89,28 +95,23 @@
         </section>
         <section v-if="Object.values(serviceTypes).length > 0" class="d-flex order__options">
           <section class="flex-1 order__service">
-            <template v-if="!isViewDetails" tag="div" class="services">
+            <template tag="div" class="services">
             <section v-for="(serviceType, index) in Object.values(serviceTypes)" :key="serviceType.title">
               <header class="services__header">
                 {{serviceType.title}} <span v-if="index == 0">QTY</span>
               </header>
               <ul class="services__list">
                 <li v-for="service in serviceType.services" :key="service.id" class="d-flex jc-sb pl-2">
-                  <base-radio :inline="true" :name="service.id" v-model="orderData.service">
+                  <base-radio disabled :inline="true" :name="service.id" v-model="orderData.service">
                     {{ service.name }}
                   </base-radio>
                   <div class="service__qty-container">
-                    <input type="text" class="service__qty" :value="order.service == service.name ? totalTeethCount : ''"/>
+                    <input disabled type="text" class="service__qty" :value="orderData.service == service.id ? totalTeethCount : ''"/>
                   </div>
                 </li>
               </ul>
             </section>
             </template>
-            <section v-if="canAddMoreService" class="mt-2 pl-2">
-              <base-button @click="addOrder" block size="sm" outline type="secondary">
-                Add more service
-              </base-button>
-            </section>
           </section>
           <section class="flex-1 order__teeths">
             <div
@@ -124,14 +125,14 @@
                 <div class="teeth__upper-arch">
                   <label v-for="tooth in teeths.upperLeft" :key="tooth.id" class="checkbox__container"
                     >{{ tooth.value }}
-                    <input v-model="orderData.teeths[tooth.id]" name="teeths" type="checkbox" :disabled="isViewDetails" />
+                    <input v-model="orderData.teeths[tooth.id]" name="teeths" type="checkbox" disabled />
                     <span class="checkmark"></span>
                   </label>
                 </div>
                 <div class="teeth__lower-arch">
                   <label v-for="tooth in teeths.lowerLeft" :key="tooth.id" class="checkbox__container"
                     >{{ tooth.value }}
-                    <input v-model="orderData.teeths[tooth.id]" name="teeths" type="checkbox" :disabled="isViewDetails" />
+                    <input v-model="orderData.teeths[tooth.id]" name="teeths" type="checkbox" disabled />
                     <span class="checkmark"></span>
                   </label>
                 </div>
@@ -140,14 +141,14 @@
                 <div class="teeth__upper-arch">
                   <label v-for="tooth in teeths.upperRight" :key="tooth.id" class="checkbox__container container-rev"
                     >{{ tooth.value }}
-                    <input v-model="orderData.teeths[tooth.id]" name="teeths" type="checkbox" :disabled="isViewDetails" />
+                    <input v-model="orderData.teeths[tooth.id]" name="teeths" type="checkbox" disabled />
                     <span class="checkmark checkmark--right"></span>
                   </label>
                 </div>
                 <div class="teeth__lower-arch">
                   <label v-for="tooth in teeths.lowerRight" :key="tooth.id" class="checkbox__container container-rev"
                     >{{ tooth.value }}
-                    <input v-model="orderData.teeths[tooth.id]" name="teeths" type="checkbox" :disabled="isViewDetails" />
+                    <input v-model="orderData.teeths[tooth.id]" name="teeths" type="checkbox" disabled />
                     <span class="checkmark checkmark--right"></span>
                   </label>
                 </div>
@@ -160,7 +161,7 @@
             Please <router-link to="/services" tag="a">Add Services</router-link> to create Order
           </p>
         </section>
-        <section v-if="!isViewDetails" class="order__teeth-design mt-3">
+        <section class="order__teeth-design mt-3">
           <header>Note</header>
           <section class="order__node">
             <p>for an urgent case an extra 50% of the value will be applied</p>
@@ -188,30 +189,19 @@
       </section>
       <section class="order-notes">
         <header>Notes</header>
-        <textarea v-model="order.note" placeholder="Write down notes here ..."></textarea>
+        <textarea  disabled v-model="order.note" placeholder="Write down notes here ..."></textarea>
       </section>
     </form>
-    
-    <div v-if="!isViewDetails" class="d-flex submit-order">
-      <button @click="submitOrderCreate">Create Order</button>
-    </div>
   </div>
 </template>
 
 <script>
-import * as _ from 'lodash'
-import { mapState, mapActions } from 'vuex'
-import 'vue-select/src/scss/vue-select.scss'
+import { mapState } from 'vuex'
 export default {
   props: {
     orderDetails: {
       type: Object,
-      required: false
-    },
-    isViewDetails: {
-      type: Boolean,
-      required: true,
-      default: false
+      required: true
     }
   },
   data () {
@@ -243,10 +233,6 @@ export default {
         return count
       }, 0)
       return teethCount
-    },
-    canAddMoreService () {
-      if (this.totalTeethCount > 0 && this.orderData.service && this.orderData.pointicDesign) return true
-      return false
     },
     tooths () {
       const tooths = [
@@ -375,12 +361,13 @@ export default {
     Select: () => import('vue-select')
   },
   methods: {
-    initOrderData () {
-      this.$store.dispatch('services/getAllServicesRecords')
-      this.$store.dispatch('labs/getAllLabs')
+    async initOrderData () {
+      await this.$store.dispatch('services/getAllServicesRecords')
+      await this.$store.dispatch('labs/getAllLabs')
     },
 
     initOrderDetails () {
+      console.log(this.orderDetails)
       this.order.emiratesId = this.orderDetails.patientEmiratesId
       this.order.patientName = this.orderDetails.Patient.name
       this.order.lab = this.orderDetails.labId
@@ -392,84 +379,18 @@ export default {
 
       this.orderDetails.tooths.forEach(tooth => {
         this.orderData.teeths[tooth.toothId] = true
+        this.orderData.pointicDesign = tooth.ToothPonticDesign[0].ponticDesignId
+        this.orderData.service = tooth.ToothServices[0].serviceId
       })
 
       // this.orderDetails.reduce((orders, tooth) => {
         
       // }, [])
-    },
-
-    submitOrderCreate () {
-      if (this.canAddMoreService) {
-        this.addOrder()
-      }
-
-      if (this.orders.length == 0) {
-        this.$notify('Please add order to create !')
-        return
-      }
-
-      const formData = {
-        emiratesId: this.order.emiratesId,
-        lab: this.order.lab,
-        patientName: this.order.patientName,
-        age: this.order.age,
-        sendDate: this.order.sendDate,
-        returnDate: this.order.returnDate,
-        gender: this.order.gender,
-        note: this.order.note,
-        orders: this.orders
-      }
-      this.storeOrder(formData)
-        .then(() => {
-          console.log('is it comming here')
-          this.$emit('close')
-        })
-    },
-
-    addOrder () {
-      const selectedService = _.cloneDeep(this.allServices.find(service => service.id === this.orderData.service))
-      const selectedPointicDesign = _.cloneDeep(this.pointicDesigns.find(design => design.id === this.orderData.pointicDesign))
-      
-      const selectedTeeths = Object.keys(this.orderData.teeths).reduce((selectedTeeths, teeth) => {
-        if (this.orderData.teeths[teeth]) {
-          const toothTemp = _.cloneDeep(this.tooths.find(tooth => tooth.id == teeth))
-          selectedTeeths.push(toothTemp)
-        }
-        return selectedTeeths
-      }, [])
-
-      const orderIdx = this.orders.findIndex(orderItem => orderItem?.service?.id == selectedService.id)
-
-      if (orderIdx >= 0) {
-        this.orders[orderIdx] = {
-          service: selectedService,
-          pointicDesign: selectedPointicDesign,
-          teeths: selectedTeeths
-        }
-      } else {
-        this.orders.push({
-          service: selectedService,
-          pointicDesign: selectedPointicDesign,
-          teeths: selectedTeeths
-        })
-      }
-
-      this.orderData.pointicDesign = ''
-      this.orderData.service = ''
-      Object.keys(this.orderData.teeths).forEach(idx => {
-        this.orderData.teeths[idx] = false
-      })
-    },
-    ...mapActions('orders', [
-      'storeOrder'
-    ])
-  },
-  mounted () {
-    this.initOrderData()
-    if (this.isViewDetails) {
-      this.initOrderDetails()
     }
+  },
+  async mounted () {
+    await this.initOrderData()
+    this.initOrderDetails()
   }
 }
 </script>

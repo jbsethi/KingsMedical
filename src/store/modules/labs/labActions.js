@@ -2,12 +2,48 @@ import * as _ from 'lodash'
 import { LabsService } from '@/services/labs.service'
 
 export default {
+  getAllLabServices (context, payload) {
+    return new Promise((resolve, reject) => {
+      LabsService.getAllLabServices(payload)
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
   getAllLabs ({ commit }, payload) {
     return new Promise((resolve, reject) => {
       LabsService.getList(payload)
         .then(result => {
           commit('ADD_RECORDS', result.data.content)
           commit('ADD_META', result.data.meta)
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
+  loadEveryLab () {
+    return new Promise((resolve, reject) => {
+      LabsService.loadEveryLab()
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
+  addService (context, payload) {
+    return new Promise((resolve, reject) => {
+      LabsService.addService(payload)
+        .then(result => {
           resolve(result)
         })
         .catch((error) => {

@@ -93,7 +93,6 @@
 import * as _ from 'lodash'
 import { mapActions, mapState } from 'vuex'
 import ServicesTable from './Service/ServicesTable'
-import 'vue-select/src/scss/vue-select.scss'
 
 export default {
   components: {

@@ -9,8 +9,9 @@
             {{title}}
           </h3>
         </div>
-        <div class="col text-right">
+        <div class="col text-right" v-if="['Administrator'].includes(role || null)">
           <base-button @click="$emit('create:lab')" type="primary" size="sm">Create Lab</base-button>
+          <base-button @click="$emit('create:labService')" type="primary" size="sm">Add Service</base-button>
         </div>
       </div>
     </div>
@@ -25,8 +26,9 @@
           <th>Name</th>
           <th>Location</th>
           <th>Description</th>
+          <th>Services</th>
           <th>Status</th>
-          <th></th>
+          <th v-if="['Administrator'].includes(role || null)"></th>
         </template>
 
         <template slot-scope="{row}">
@@ -48,12 +50,15 @@
             {{row.description}}
           </td>
           <td>
+            <base-button @click="$emit('click:viewServices', row.id)" outline type="primary" size="sm">View Services</base-button>
+          </td>
+          <td>
             <badge class="badge-dot mr-4" :type="row.active ? 'primary': 'danger'">
               <i :class="`bg-${row.active ? 'primary': 'danger'}`"></i>
               <span class="status">{{row.active}}</span>
             </badge>
           </td>
-          <td class="text-right">
+          <td class="text-right" v-if="['Administrator'].includes(role || null)">
             <base-dropdown class="dropdown"
                            position="right">
               <a slot="title" class="btn btn-sm btn-icon-only text-light" role="button" data-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false">
@@ -104,6 +109,11 @@
     },
     data() {
       return {
+      }
+    },
+    computed: {
+      role  () {
+        return this.$store.state.user?.currentUser?.role?.name || null
       }
     },
     methods: {

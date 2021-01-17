@@ -10,6 +10,8 @@
             @create:order="toggleCreateOrderModal(true)"
             @viewOrder="viewDetails"
             @uploadInvoice="uploadInvoice"
+            @returnOrder="returnOrder"
+            @click:viewInvoice="viewInvoice"
             title="Orders Record"
             :pageNo="pageNo"
             :meta="orderMeta"
@@ -19,17 +21,19 @@
       </div>
     </div>
 
-    <!-- <Modal
-      :show="createOrderModal"
-      @close="toggleCreateOrderModal(false)"
-      modalClasses="modal--max-width"
-    >
-      <template>
-        <CreateOrderForm :orderDetails="order" :isViewDetails="isViewDetails" v-if="createOrderModal" @close="toggleCreateOrderModal(false)"/>
-      </template>
-    </Modal> -->
-
     <CreateOrderStepForm :showCreateModal="createOrderModal" @click:close="toggleCreateOrderModal(false)"/>
+
+    <Modal :show="returnOrderModal" @close="toggleReturnOrderModal(false)">
+      <template>
+        <ReturnOrderForm v-if="returnOrderModal" :orderID="returnOrderID" @click:close="toggleReturnOrderModal(false)"/>
+      </template>
+    </Modal>
+
+    <Modal modalClasses="modal--max-width" :show="viewOrderModal" @close="toggleCreateOrderModal(false, true)">
+      <template>
+        <CreateOrderForm v-if="viewOrderModal" :orderDetails="order" />
+      </template>
+    </Modal>
 
     <Modal :show="uploadInvoiceModal" @close="toggleUploadInvoiceModal(false)">
       <template>
@@ -62,11 +66,20 @@
         </div>
       </template>
     </Modal>
+
+    <Modal modalClasses="modal--max-width" :show="showInvoice" @close="toggleShowInvoice(false)">
+      <template>
+        <div>
+          <img class="image-preview" :src="`${PUBLIC_URL}/${invoiceAttachment}`" alt="" />
+        </div>
+      </template>
+    </Modal>
   </div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex';
 import OrdersTable from './Order/OrdersTable';
+import { PUBLIC_URL } from '@/.env'
 
 const STATUS_INITIAL = 0,
   STATUS_SAVING = 1,
@@ -76,18 +89,27 @@ const STATUS_INITIAL = 0,
 export default {
   components: {
     OrdersTable,
-    // CreateOrderForm: () => import('./Order/CreateOrderForm'),
     Modal: () => import('./../components/Modal'),
+    CreateOrderForm: () => import('./Order/CreateOrderForm'),
+    ReturnOrderForm: () => import('./Order/ReturnOrderForm'),
     CreateOrderStepForm: () => import('./Order/CreateOrderStepForm')
   },
   data() {
     return {
+      PUBLIC_URL: PUBLIC_URL,
       pageNo: 1,
       createOrderModal: false,
+      viewOrderModal: false,
       uploadInvoiceModal: false,
+      returnOrderModal: false,
 
       isViewDetails: false,
+      returnOrderID: null,
+
       order: {},
+
+      showInvoice: false,
+      invoiceAttachment: '',
 
       invoice: {
         orderId: null
@@ -118,6 +140,26 @@ export default {
     })
   },
   methods: {
+    returnOrder (orderID) {
+      this.returnOrderID = orderID
+      this.toggleReturnOrderModal(true)
+    },
+
+    viewInvoice (payload) {
+      this.getOrderInvoice(payload)
+        .then((resp) => {
+          if (resp.data.length > 0) {
+            this.invoiceAttachment = resp.data[0].attachment
+            this.toggleShowInvoice(true)
+          } else {
+            alert('No Invoice For the order')
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+
     reset() {
       // reset form to initial state
       this.currentStatus = STATUS_INITIAL;
@@ -139,6 +181,8 @@ export default {
         .catch((err) => {
           this.uploadError = err.response;
           this.currentStatus = STATUS_FAILED;
+          this.$notify('Error occured please try again !')
+          this.toggleUploadInvoiceModal(false)
         });
     },
 
@@ -162,11 +206,23 @@ export default {
 
     toggleCreateOrderModal(status, isViewDetails = false) {
       this.isViewDetails = isViewDetails;
-      this.createOrderModal = status;
+      if (isViewDetails) {
+        this.viewOrderModal = status
+      } else {
+        this.createOrderModal = status;
+      }
     },
 
     toggleUploadInvoiceModal(status) {
       this.uploadInvoiceModal = status;
+    },
+
+    toggleShowInvoice(status) {
+      this.showInvoice = status;
+    },
+
+    toggleReturnOrderModal (status) {
+      this.returnOrderModal = status;
     },
 
     uploadInvoice(orderId) {
@@ -182,14 +238,14 @@ export default {
 
     viewDetails(orderId) {
       this.getOrderDetails(orderId).then((result) => {
-        console.log(result);
+        console.log(result.data)
         this.order = result.data;
         this.toggleCreateOrderModal(true, true);
       });
     },
 
     ...mapActions('orders', ['getAllOrders', 'getOrderDetails']),
-    ...mapActions('invoices', ['createInvoice'])
+    ...mapActions('invoices', ['createInvoice', 'getOrderInvoice'])
   },
   mounted() {
     if (
@@ -224,7 +280,12 @@ export default {
 
 <style lang="scss">
 .modal--max-width {
-  max-width: 1600px;
+  max-width: 1200px;
+}
+
+.image-preview {
+  max-width: 100%;
+  height: auto;
 }
 </style>
 

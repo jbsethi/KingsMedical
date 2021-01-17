@@ -16,9 +16,13 @@
             :patientInfo="patientInfo"
             :serviceSelection="serviceSelection"
             :teethSelection="teethSelection"
+            :history="history"
+            @validateHistory="validateToothHistory"
+            @removeFromHistory="removeToothHistory"
             @update:patientInfo="updatePatientInfo"
             @update:serviceSelection="updateServiceSelection"
             @update:teethSelection="updateTeethSelection"
+            @chargeTeethHistoryStatus="chargeTeethHistoryStatus"
           ></component>
         </keep-alive>
       </section>
@@ -31,7 +35,8 @@
         <section>
           <base-button v-if="currentStep != 1" @click="move('back')" class="btn-small" type="secondary">Back</base-button>
           <base-button v-if="currentStep != totalSteps" @click="move('next')" class="btn-small" type="primary">Next</base-button>
-          <base-button v-if="currentStep == totalSteps" @click="confirmCreate" class="btn-small" type="primary">Confirm Create</base-button>
+          <base-button v-if="currentStep == totalSteps" @click="confirmCreate(true)" class="btn-small" type="primary">Create and add Another</base-button>
+          <base-button v-if="currentStep == totalSteps" @click="confirmCreate(false)" class="btn-small" type="primary">Create and Close</base-button>
         </section>
       </section>
     </template>
@@ -40,7 +45,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import 'vue-select/src/scss/vue-select.scss'
 export default {
   name: 'CreateOrderStepForm',
   props: {
@@ -73,7 +77,10 @@ export default {
         teeths: [],
         pointicDesign: '',
         shade: ''
-      }
+      },
+
+      history: {},
+      toothsChargeStatuses: {}
     }
   },
   computed: {
@@ -114,7 +121,28 @@ export default {
     }
   },
   methods: {
-    confirmCreate () {
+    validateToothHistory (toothId) {
+      const data = {
+        toothId,
+        patientEmiratesId: this.patientInfo.emiratesId,
+        serviceId: this.serviceSelection.service
+      }
+
+      this.validateHistory(data)
+        .then(resp => {
+          this.history[toothId] = resp.data.content
+        })
+    },
+
+    removeToothHistory (toothId) {
+      delete this.history[toothId]
+    },
+
+    chargeTeethHistoryStatus (tooths) {
+      this.toothsChargeStatuses = tooths
+    },
+
+    confirmCreate (addMore = false) {
       const formData = {
         patientEmiratesId: this.patientInfo.emiratesId,
         patientName: this.patientInfo.name,
@@ -135,16 +163,28 @@ export default {
           toothId: tooth,
           serviceIds: [this.serviceSelection.service],
           ponticDesignIds: [this.teethSelection.pointicDesign],
-          charge: true
+          charge: this.toothsChargeStatuses[tooth] || false
         }
       })
 
       this.storeOrder(formData)
-        .then((resp) => {
-          console.log(resp)
-        })
-        .catch(err => {
-          console.log(err)
+        .then(() => {
+          if (addMore) {
+            this.serviceSelection = {
+              serviceType: '',
+              service: ''
+            },
+
+            this.teethSelection = {
+              teeths: [],
+              pointicDesign: '',
+              shade: ''
+            }
+
+            this.currentStep = 1
+          } else {
+            this.close()
+          }
         })
     },
 
@@ -209,7 +249,8 @@ export default {
     },
 
     ...mapActions('orders', [
-      'storeOrder'
+      'storeOrder',
+      'validateHistory'
     ])
   },
   components: {

@@ -89,7 +89,6 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import UsersTable from './User/UsersTable'
-import 'vue-select/src/scss/vue-select.scss'
 
 export default {
   components: {

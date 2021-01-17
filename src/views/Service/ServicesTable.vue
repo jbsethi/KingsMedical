@@ -9,7 +9,7 @@
             {{title}}
           </h3>
         </div>
-        <div class="col text-right">
+        <div class="col text-right" v-if="['Administrator'].includes(role || null)">
           <base-button @click="$emit('create:service')" type="primary" size="sm">Create Service</base-button>
         </div>
       </div>
@@ -27,7 +27,7 @@
           <th>Price $</th>
           <th>Replace Duration</th>
           <th>Status</th>
-          <th></th>
+          <th v-if="['Administrator'].includes(role || null)"></th>
         </template>
 
         <template slot-scope="{row}">
@@ -57,7 +57,7 @@
               <span class="status">{{row.active}}</span>
             </badge>
           </td>
-          <td class="text-right">
+          <td class="text-right" v-if="['Administrator'].includes(role || null)">
             <base-dropdown class="dropdown"
                            position="right">
               <a slot="title" class="btn btn-sm btn-icon-only text-light" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -104,6 +104,11 @@
     },
     data() {
       return {
+      }
+    },
+    computed: {
+      role  () {
+        return this.$store.state.user?.currentUser?.role?.name || null
       }
     },
     methods: {

@@ -25,14 +25,17 @@ const router = new Router({
         {
           path: '/orders',
           name: 'order',
-          component: () => import('./views/Order.vue')
+          component: () => import('./views/Order.vue'),
+          meta: {
+            canAccess: ['Administrator', 'Doctor', 'Management']
+          }
         },
         {
           path: '/labs',
           name: 'lab',
           component: () => import('./views/Lab.vue'),
           meta: {
-            canAccess: ['Administrator']
+            canAccess: ['Administrator', 'Management']
           }
         },
         {
@@ -40,7 +43,7 @@ const router = new Router({
           name: 'serviceType',
           component: () => import('./views/ServiceType.vue'),
           meta: {
-            canAccess: ['Administrator']
+            canAccess: ['Administrator', 'Management']
           }
         },
         {
@@ -48,7 +51,7 @@ const router = new Router({
           name: 'service',
           component: () => import('./views/Service.vue'),
           meta: {
-            canAccess: ['Administrator']
+            canAccess: ['Administrator', 'Management']
           }
         },
         {
@@ -66,11 +69,6 @@ const router = new Router({
           meta: {
             canAccess: ['Administrator']
           }
-        },
-        {
-          path: '/icons',
-          name: 'icons',
-          component: () => import('./views/Icons.vue')
         }
       ]
     },

@@ -2,6 +2,18 @@
 import { OrdersService } from '@/services/orders.service'
 
 export default {
+  validateHistory (context, payload) {
+    return new Promise((resolve, reject) => {
+      OrdersService.validateHistory(payload)
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
   storeOrder ({ commit }, payload) {
     return new Promise((resolve, reject) => {
       OrdersService.create(payload)

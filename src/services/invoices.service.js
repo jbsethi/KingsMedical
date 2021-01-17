@@ -14,4 +14,13 @@ export class InvoicesService extends BaseService {
       throw new ErrorWrapper(error)
     }
   }
+
+  static async getOrderInvoice (orderId) {
+    try {
+      const response = await this.request({ auth: true }).get(`${this.entity}/order/${orderId}`)
+      return new ResponseWrapper(response, response.data)
+    } catch (error) {
+      throw new ErrorWrapper(error)
+    }
+  }
 }

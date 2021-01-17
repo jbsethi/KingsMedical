@@ -20,7 +20,6 @@ export default {
     return new Promise((resolve, reject) => {
       ServicesService.getAllList()
         .then(result => {
-          console.log(result)
           commit('ADD_RECORDS', result.data.content)
           resolve(result)
         })

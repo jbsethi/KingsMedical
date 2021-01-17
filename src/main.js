@@ -22,6 +22,8 @@ import './registerServiceWorker'
 import ArgonDashboard from './plugins/argon-dashboard'
 import store from './store'
 
+import 'vue-select/src/scss/vue-select.scss'
+
 Vue.config.productionTip = false
 
 Vue.use(ArgonDashboard)

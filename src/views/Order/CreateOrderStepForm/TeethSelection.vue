@@ -127,23 +127,45 @@
           </Select>
         </div>
       </div>
+
+      <div v-if="Object.keys(history).length > 0" class="col-md-12 pt-5">
+        <p>The Patient has History for same service on teeth below :</p>
+        <div v-for="toothId in Object.keys(history)" :key="toothId">
+          <div class="d-flex align-items-center justify-content-center">
+            <div class="mr-2">Tooth no </div>
+            <div><strong>{{toothId}}</strong></div>
+          </div>
+          <div class="d-flex align-items-center justify-content-center">
+            <div class="mr-2 mt-2">Send Date</div>
+            <div><strong>{{history[toothId][0].sentDate}}</strong></div>
+          </div>
+          <div class="d-flex align-items-center justify-content-center mt-1">
+            <div class="d-flex align-items-center justify-content-center">
+              <base-switch class="mb-0 mr-2" v-model="noChargeHistory[toothId]"></base-switch> <span>Charge ?</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import 'vue-select/src/scss/vue-select.scss'
 export default {
   name: 'TeethSelection',
   props: {
     teethSelection: {
       type: Object,
       required: true
+    },
+    history: {
+      type: Object
     }
   },
   data() {
     return {
-      selectedTeeths: []
+      selectedTeeths: [],
+      noChargeHistory: {}
     }
   },
   computed: {
@@ -260,7 +282,11 @@ export default {
     },
 
     checkIfOrderedBefore (toothId) {
-      console.log('work on return of the teeth !', toothId)
+      this.$emit('validateHistory', toothId)
+    },
+
+    removeCheckIfOrderedBefore (toothId) {
+      this.$emit('removeFromHistory', toothId)
     },
 
     selectTeeth (toothId, e) {
@@ -268,6 +294,7 @@ export default {
         this.checkIfOrderedBefore(toothId)
         this.selectedTeeths.push(toothId)
       } else {
+        this.removeCheckIfOrderedBefore(toothId)
         this.selectedTeeths = this.selectedTeeths.filter(id => id !== toothId)
       }
       this.updateTeethSelection('teeths', this.selectedTeeths)
@@ -277,7 +304,15 @@ export default {
       this.$emit('update:teethSelection', [key, value])
     }
   },
-  mounted () {}
+  mounted () {},
+  watch: {
+    noChargeHistory: {
+      deep: true,
+      handler (tooths) {
+        this.$emit('chargeTeethHistoryStatus', tooths)
+      }
+    }
+  }
 }
 </script>
 

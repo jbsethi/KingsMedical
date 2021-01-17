@@ -9,7 +9,7 @@
             {{title}}
           </h3>
         </div>
-        <div class="col text-right">
+        <div class="col text-right" v-if="['Administrator', 'Doctor'].includes(role || null)">
           <base-button @click="$emit('create:order')" type="primary" size="sm">Create Order</base-button>
         </div>
       </div>
@@ -26,9 +26,9 @@
           <th>Emirates ID</th>
           <th>Details</th>
           <th>Send Date</th>
+          <th v-if="['Administrator', 'Management'].includes(role || null)" >Invoice</th>
           <th>Urgent</th>
-          <th>Status</th>
-          <th></th>
+          <th v-if="['Administrator', 'Management'].includes(role || null)" ></th>
         </template>
 
         <template slot-scope="{row}">
@@ -44,16 +44,13 @@
           <td class="send-date">
             {{getDate(row.sentDate)}}
           </td>
+          <td class="invoice" v-if="['Administrator', 'Management'].includes(role || null)">
+            <base-button @click="$emit('click:viewInvoice', row.id)" outline type="primary" size="sm">View Invoice</base-button>
+          </td>
           <td class="urgent">
             {{row.urgent}}
           </td>
-          <td>
-            <badge class="badge-dot mr-4" :type="row.status ? 'primary': 'danger'">
-              <i :class="`bg-${row.status ? 'primary': 'danger'}`"></i>
-              <span class="status">{{row.status}}</span>
-            </badge>
-          </td>
-          <td class="text-right">
+          <td class="text-right" v-if="['Administrator', 'Management'].includes(role || null)">
             <base-dropdown class="dropdown"
                            position="right">
               <a slot="title" class="btn btn-sm btn-icon-only text-light" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -62,6 +59,7 @@
 
               <template>
                 <a @click.prevent="$emit('uploadInvoice', row.id)" class="dropdown-item" href="#">Add Invoice</a>
+                <a @click.prevent="$emit('returnOrder', row.id)" class="dropdown-item" href="#">Return Order</a>
               </template>
             </base-dropdown>
           </td>
@@ -99,6 +97,11 @@
     },
     data() {
       return {
+      }
+    },
+    computed: {
+      role  () {
+        return this.$store.state.user?.currentUser?.role?.name || null
       }
     },
     methods: {

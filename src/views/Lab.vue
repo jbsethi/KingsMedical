@@ -8,7 +8,9 @@
                 <div class="col">
                     <labs-table
                       @create:lab="toggleCreateLabModal(true)"
+                      @create:labService="toggleCreateLabServiceModal(true)"
                       @edit:lab="editLab"
+                      @click:viewServices="viewServices"
                       title="Labs Record"
                       :pageNo="pageNo"
                       :meta="labMeta"
@@ -17,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <CreateLabModal :show="createLabModal" @close="toggleCreateLabModal(false)">
+        <Modal :show="createLabModal" @close="toggleCreateLabModal(false)">
           <template slot="header">
             Create Lab
           </template>
@@ -55,7 +57,98 @@
               </div>
           </form>
           </template>
-        </CreateLabModal>
+        </Modal>
+
+        <Modal :show="createLabServiceModal" @close="toggleCreateLabServiceModal(false)">
+          <template slot="header">
+            Add Service in lab
+          </template>
+          <template>
+            <form role="form">
+              <div class="form-group mb-3 has-label">
+                <label class="form-control-label">Lab</label>
+                <Select required
+                        :clearable="false"
+                        placeholder="Labs"
+                        class="lab--select"
+                        :options="allLabs"
+                        v-model="labService.labId"
+                        :reduce="(option) => option.id"
+                        label="name">
+                  <template #search="{attributes, events}">
+                    <input
+                      class="vs__search"
+                      :required="!labService.labId"
+                      v-bind="attributes"
+                      v-on="events"
+                    />
+                  </template>
+                </Select>
+              </div>
+
+              <div class="form-group mb-3 has-label">
+                <label class="form-control-label">Service</label>
+                <Select required
+                        :clearable="false"
+                        placeholder="Service"
+                        class="service--select"
+                        :options="allServices"
+                        v-model="labService.serviceId"
+                        :reduce="(option) => option.id"
+                        label="name">
+                  <template #search="{attributes, events}">
+                    <input
+                      class="vs__search"
+                      :required="!labService.serviceId"
+                      v-bind="attributes"
+                      v-on="events"
+                    />
+                  </template>
+                </Select>
+              </div>
+
+              <base-input alternative
+                          class="mb-3"
+                          label="Price"
+                          placeholder="Price"
+                          v-model="labService.price">
+              </base-input>
+              <div class="d-flex align-items-center mt-3">
+                <base-switch class="mb-0 mr-2" v-model="labService.active"></base-switch> <span>Active</span>
+              </div>
+              <div class="text-center">
+                  <base-button @click="addServiceToLab" type="primary" class="my-4">
+                    <template v-if="!addServiceLoading">
+                      Add Service
+                    </template>
+                    <template v-else>
+                      Loading ...
+                    </template>
+                  </base-button>
+              </div>
+          </form>
+          </template>
+        </Modal>
+
+        <Modal :show="showLabServices" @close="toggleShowLabServicesModal(false)">
+          <template slot="header">
+            Lab Services
+          </template>
+          <template>
+            <table class="service-list-table table">
+              <thead>
+                <th>Service</th>
+                <th>Price</th>
+              </thead>
+              <tbody>
+                <tr v-for="ls in labServices" :key="ls.id">
+                  <td>{{ ls.Service.name }}</td>
+                  <td>{{ ls.price }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </template>
+        </Modal>
     </div>
 </template>
 <script>
@@ -67,12 +160,23 @@ import { mapState, mapActions } from 'vuex'
 export default {
   components: {
     LabsTable,
-    CreateLabModal: () => import('./../components/Modal')
+    Select: () => import('vue-select'),
+    Modal: () => import('./../components/Modal')
   },
   data() {
     return {
       createLabModal: false,
+      showLabServices: false,
+
+      allLabs: [],
+      allServices: [],
+      labServices: [],
+      
+      createLabServiceModal: false,
+
       createLoading: false,
+      addServiceLoading: false,
+
       pageNo: 1,
       lab: {
         id: null,
@@ -81,6 +185,13 @@ export default {
         description: '',
         active: false
       },
+
+      labService: {
+        labId: '',
+        serviceId: '',
+        price: '',
+        active: false
+      }
     }
   },
   computed: {
@@ -90,8 +201,39 @@ export default {
     })
   },
   methods: {
+    viewServices (labId) {
+      this.getAllLabServices(labId)
+        .then(resp => {
+          console.log(resp.data.content)
+          this.labServices = resp.data.content.rows
+          this.showLabServices = true
+        })
+    },
+
+    initLabsAndServices (status) {
+      if (status) {
+        this.loadEveryLab()
+          .then(resp => {
+            this.allLabs = resp.data.content
+          })
+
+        this.getAllServicesRecords()
+          .then(resp => {
+            this.allServices = resp.data.content
+          })
+      }
+    },
+
+    toggleShowLabServicesModal (status) {
+      this.showLabServices = status
+    },
+
     toggleCreateLabModal (status) {
       this.createLabModal = status
+    },
+
+    toggleCreateLabServiceModal (status) {
+      this.createLabServiceModal = status
     },
 
     resetForm () {
@@ -100,6 +242,15 @@ export default {
         name: '',
         location: '',
         description: '',
+        active: false
+      }
+    },
+
+    resetServiceForm () {
+      this.lab = {
+        labId: null,
+        serviceId: null,
+        price: '',
         active: false
       }
     },
@@ -135,9 +286,32 @@ export default {
       }
     },
 
+    addServiceToLab () {
+      if (!this.addServiceLoading) {
+        this.addServiceLoading = true
+
+        this.addService(this.labService)
+          .then(() => {
+            this.toggleCreateLabServiceModal(false)
+            this.resetServiceForm()
+          })
+          .catch(error => {
+            console.log(error)
+          })
+          .finally(this.addServiceLoading = false)
+      }
+    },
+
     ...mapActions('labs', [
       'getAllLabs',
-      'storeLab'
+      'loadEveryLab',
+      'getAllLabServices',
+      'storeLab',
+      'addService'
+    ]),
+
+    ...mapActions('services', [
+      'getAllServicesRecords',
     ])
   },
   mounted () {
@@ -157,8 +331,15 @@ export default {
           this.pageNo = query.pageNo
         }
       }
+    },
+    'createLabServiceModal': {
+      handler: 'initLabsAndServices'
     }
   }
 }
 </script>
-<style></style>
+<style scoped lang="scss">
+.service-list-table {
+  width: 100%;
+}
+</style>

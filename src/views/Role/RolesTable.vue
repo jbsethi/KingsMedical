@@ -60,6 +60,11 @@
     data() {
       return {
       }
+    },
+    computed: {
+      role  () {
+        return this.$store.state.user?.currentUser?.role?.name || null
+      }
     }
   }
 </script>
