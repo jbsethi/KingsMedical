@@ -128,7 +128,7 @@
         </div>
       </div>
 
-      <div v-if="Object.keys(history).length > 0" class="col-md-12 pt-5">
+      <div v-if="showHistory" class="col-md-12 pt-5">
         <p>The Patient has History for same service on teeth below :</p>
         <div v-for="toothId in Object.keys(history)" :key="toothId">
           <div class="d-flex align-items-center justify-content-center">
@@ -164,6 +164,7 @@ export default {
   },
   data() {
     return {
+      showHistory: false,
       selectedTeeths: [],
       noChargeHistory: {}
     }
@@ -310,6 +311,17 @@ export default {
       deep: true,
       handler (tooths) {
         this.$emit('chargeTeethHistoryStatus', tooths)
+      }
+    },
+    history: {
+      immediate: true,
+      deep: true,
+      handler (history) {
+        if (Object.keys(history).length > 0) {
+          this.showHistory = true
+        } else {
+          this.showHistory = false
+        }
       }
     }
   }
