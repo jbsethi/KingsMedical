@@ -18,5 +18,5 @@ export default {
 
   ADD_RECORDS (state, payload) {
     state.labs = payload
-  },
+  }
 }

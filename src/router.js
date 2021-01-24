@@ -27,7 +27,7 @@ const router = new Router({
           name: 'order',
           component: () => import('./views/Order.vue'),
           meta: {
-            canAccess: ['Administrator', 'Doctor', 'Management']
+            canAccess: ['Super Administrator', 'Administrator', 'Doctor', 'Management']
           }
         },
         {
@@ -35,7 +35,7 @@ const router = new Router({
           name: 'lab',
           component: () => import('./views/Lab.vue'),
           meta: {
-            canAccess: ['Administrator', 'Management']
+            canAccess: ['Super Administrator', 'Administrator', 'Management']
           }
         },
         {
@@ -43,7 +43,7 @@ const router = new Router({
           name: 'serviceType',
           component: () => import('./views/ServiceType.vue'),
           meta: {
-            canAccess: ['Administrator', 'Management']
+            canAccess: ['Super Administrator', 'Administrator', 'Management']
           }
         },
         {
@@ -51,7 +51,7 @@ const router = new Router({
           name: 'service',
           component: () => import('./views/Service.vue'),
           meta: {
-            canAccess: ['Administrator', 'Management']
+            canAccess: ['Super Administrator', 'Administrator', 'Management']
           }
         },
         {
@@ -59,7 +59,7 @@ const router = new Router({
           name: 'user',
           component: () => import('./views/User.vue'),
           meta: {
-            canAccess: ['Administrator']
+            canAccess: ['Super Administrator', 'Administrator']
           }
         },
         {
@@ -67,7 +67,7 @@ const router = new Router({
           name: 'role',
           component: () => import('./views/Role.vue'),
           meta: {
-            canAccess: ['Administrator']
+            canAccess: ['Super Administrator', 'Administrator']
           }
         }
       ]

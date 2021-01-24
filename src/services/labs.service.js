@@ -43,4 +43,31 @@ export class LabsService extends BaseService {
       throw new ErrorWrapper(error)
     }
   }
+
+  static async removeLabService (payload) {
+    try {
+      const response = await this.request({ auth: true }).delete(`${this.entity}/services/${payload}`)
+      return new ResponseWrapper(response, response.data)
+    } catch (error) {
+      throw new ErrorWrapper(error)
+    }
+  }
+
+  static async updateStatusLabService (payload) {
+    try {
+      const response = await this.request({ auth: true }).put(`${this.entity}/services/${payload.id}`, payload.data)
+      return new ResponseWrapper(response, response.data)
+    } catch (error) {
+      throw new ErrorWrapper(error)
+    }
+  }
+
+  static async getEveryServicebyServiceTypeAndLab (payload) {
+    try {
+      const response = await this.request({ auth: true }).post(`${this.entity}/type/services`, payload)
+      return new ResponseWrapper(response, response.data)
+    } catch (error) {
+      throw new ErrorWrapper(error)
+    }
+  }
 }

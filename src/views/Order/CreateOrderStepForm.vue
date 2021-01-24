@@ -148,7 +148,7 @@ export default {
         patientName: this.patientInfo.name,
         patientGender: this.patientInfo.gender,
         patientContact: '090078601',
-        sendDate: this.patientInfo.sendDate,
+        sentDate: this.patientInfo.sendDate,
         returnDate: this.patientInfo.returnDate,
         notes: '',
         urgent: false,
@@ -185,6 +185,9 @@ export default {
           } else {
             this.close()
           }
+        })
+        .catch((err) => {
+          this.$notify('Error occured: ' + err.message)
         })
     },
 

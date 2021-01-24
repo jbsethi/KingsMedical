@@ -29,7 +29,7 @@ export default {
 
   getAllOrders ({ commit }, payload) {
     return new Promise((resolve, reject) => {
-      OrdersService.getList()
+      OrdersService.getList(payload)
         .then(result => {
           commit('ADD_RECORDS', result.data.content)
           commit('ADD_META', result.data.meta)

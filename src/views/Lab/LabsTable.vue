@@ -9,7 +9,7 @@
             {{title}}
           </h3>
         </div>
-        <div class="col text-right" v-if="['Administrator'].includes(role || null)">
+        <div class="col text-right" v-if="['Super Administrator'].includes(role || null)">
           <base-button @click="$emit('create:lab')" type="primary" size="sm">Create Lab</base-button>
           <base-button @click="$emit('create:labService')" type="primary" size="sm">Add Service</base-button>
         </div>
@@ -28,7 +28,7 @@
           <th>Description</th>
           <th>Services</th>
           <th>Status</th>
-          <th v-if="['Administrator'].includes(role || null)"></th>
+          <th v-if="['Super Administrator'].includes(role || null)"></th>
         </template>
 
         <template slot-scope="{row}">
@@ -58,7 +58,7 @@
               <span class="status">{{row.active}}</span>
             </badge>
           </td>
-          <td class="text-right" v-if="['Administrator'].includes(role || null)">
+          <td class="text-right" v-if="['Super Administrator'].includes(role || null)">
             <base-dropdown class="dropdown"
                            position="right">
               <a slot="title" class="btn btn-sm btn-icon-only text-light" role="button" data-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false">

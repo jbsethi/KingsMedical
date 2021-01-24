@@ -139,11 +139,27 @@
               <thead>
                 <th>Service</th>
                 <th>Price</th>
+                <th>Status</th>
+                <th></th>
               </thead>
-              <tbody>
+              <tbody v-if="labServices.length > 0">
                 <tr v-for="ls in labServices" :key="ls.id">
                   <td>{{ ls.Service.name }}</td>
                   <td>{{ ls.price }}</td>
+                  <td>
+                    <button @click="updateLabServiceStatus(ls, false)" v-if="ls.active" class="btn-info">Active</button>
+                    <button @click="updateLabServiceStatus(ls, true)" v-else class="btn-warning">Inactive</button>
+                  </td>
+                  <td>
+                    <button @click="removeItem(ls)" class="btn-danger">Remove</button>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody v-else>
+                <tr>
+                  <td colspan="3">
+                    No records exisit !
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -201,10 +217,41 @@ export default {
     })
   },
   methods: {
+    removeItem (labService) {
+      console.log(labService)
+      this.removeLabService(labService.id)
+        .then(() => {
+          this.labServices = this.labServices.filter(service => service.id !== labService.id)
+        })
+        .catch(err => {
+          console.log(err)
+          this.$notify('Couldn\'t Remove try again later')
+        })
+    },
+
+    updateLabServiceStatus (labService, status) {
+
+      const { labId, serviceId, active, price } = { ...labService, active: status}
+
+      this.updateStatusLabService({ id: labService.id, data: { labId, serviceId, active, price } })
+        .then(() => {
+          this.labServices = this.labServices.map(service => {
+            if (service.id == labService.id) {
+              service.active = status
+            }
+
+            return service
+          })
+        })
+        .catch(err => {
+          console.log(err)
+          this.$notify('Couldn\'t update try again later')
+        })
+    },
+
     viewServices (labId) {
       this.getAllLabServices(labId)
         .then(resp => {
-          console.log(resp.data.content)
           this.labServices = resp.data.content.rows
           this.showLabServices = true
         })
@@ -307,7 +354,9 @@ export default {
       'loadEveryLab',
       'getAllLabServices',
       'storeLab',
-      'addService'
+      'addService',
+      'removeLabService',
+      'updateStatusLabService'
     ]),
 
     ...mapActions('services', [

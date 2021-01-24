@@ -9,7 +9,7 @@
             {{title}}
           </h3>
         </div>
-        <div class="col text-right" v-if="['Administrator', 'Doctor'].includes(role || null)">
+        <div class="col text-right" v-if="['Super Administrator', 'Administrator', 'Doctor'].includes(role || null)">
           <base-button @click="$emit('create:order')" type="primary" size="sm">Create Order</base-button>
         </div>
       </div>
@@ -24,11 +24,12 @@
         <template slot="columns">
           <th>ID</th>
           <th>Emirates ID</th>
+          <th>Order Type</th>
           <th>Details</th>
           <th>Send Date</th>
-          <th v-if="['Administrator', 'Management'].includes(role || null)" >Invoice</th>
+          <th v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)" >Invoice</th>
           <th>Urgent</th>
-          <th v-if="['Administrator', 'Management'].includes(role || null)" ></th>
+          <th v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)" ></th>
         </template>
 
         <template slot-scope="{row}">
@@ -38,19 +39,22 @@
           <td class="emirates-id">
             {{row.patientEmiratesId}}
           </td>
+          <td>
+            <span v-if="row.parentId" class="badge badge-info">Return Order</span>
+          </td>
           <td class="details">
             <a @click.prevent="$emit('viewOrder', row.id)" href="#">View Details</a>
           </td>
           <td class="send-date">
             {{getDate(row.sentDate)}}
           </td>
-          <td class="invoice" v-if="['Administrator', 'Management'].includes(role || null)">
+          <td class="invoice" v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)">
             <base-button @click="$emit('click:viewInvoice', row.id)" outline type="primary" size="sm">View Invoice</base-button>
           </td>
           <td class="urgent">
             {{row.urgent}}
           </td>
-          <td class="text-right" v-if="['Administrator', 'Management'].includes(role || null)">
+          <td class="text-right" v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)">
             <base-dropdown class="dropdown"
                            position="right">
               <a slot="title" class="btn btn-sm btn-icon-only text-light" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,6 +62,7 @@
               </a>
 
               <template>
+                <a @click.prevent="$emit('viewOrder', row.parentId)" class="dropdown-item" href="#">View Orignal Order</a>
                 <a @click.prevent="$emit('uploadInvoice', row.id)" class="dropdown-item" href="#">Add Invoice</a>
                 <a @click.prevent="$emit('returnOrder', row.id)" class="dropdown-item" href="#">Return Order</a>
               </template>
@@ -112,7 +117,7 @@
       getDate (date) {
         const dateObj = new Date(date)
 
-        return `${dateObj.getDay()}-${dateObj.getMonth()}-${dateObj.getFullYear()}`
+        return `${dateObj.getDay()}-${dateObj.getMonth()+1}-${dateObj.getFullYear()}`
       }
     }
   }

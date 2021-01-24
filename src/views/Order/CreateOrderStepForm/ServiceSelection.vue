@@ -57,6 +57,10 @@ import { mapActions } from 'vuex'
 export default {
   name: 'ServiceSelection',
   props: {
+    patientInfo: {
+      type: Object,
+      required: true
+    },
     serviceSelection: {
       type: Object,
       required: true
@@ -74,10 +78,19 @@ export default {
   methods: {
     updateServices (newServiceType, oldServiceType) {
       if (newServiceType !== oldServiceType) {
-        this.getEveryServicebyServiceType(newServiceType)
+        const labId = this.patientInfo.labId
+        this.getEveryServicebyServiceTypeAndLab({ serviceTypeId: newServiceType, labId })
           .then(resp => {
             this.updateServiceSelection('service', null)
-            this.services = resp?.data?.content || []
+            this.services = (resp?.data || []).map(service => {
+              return {
+                ...service,
+                name: service.Service.name
+              }
+            })
+          }).
+          catch(() => {
+            this.$notify('Couldn\'t get services try again later')
           })
       }
     },
@@ -88,7 +101,10 @@ export default {
 
     ...mapActions('serviceTypes', [
       'getEveryServiceTypes',
-      'getEveryServicebyServiceType'
+    ]),
+
+    ...mapActions('labs', [
+      'getEveryServicebyServiceTypeAndLab'
     ])
   },
   watch: {

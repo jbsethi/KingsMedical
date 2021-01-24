@@ -188,13 +188,12 @@ export default {
     },
     
     returnOrder () {
-      alert ('return Order')
       const data = {
         "patientEmiratesId": this.orderData.patientEmiratesId,
         "patientName":  this.orderData.Patient.name,
         "patientGender":  this.orderData.Patient.gender,
         "patientContact": this.orderData.Patient.contact,
-        "sendDate": this.orderData.sentDate,
+        "sentDate": this.orderData.sentDate,
         "returnDate": this.orderData.returnDate || new Date(),
         "notes": this.orderData.notes,
         "urgent": true,
@@ -207,7 +206,7 @@ export default {
       const tooths = this.selectedTeeths.map(teeth => {
         return {
           toothId: teeth,
-          serviceIds: [this.orderData.tooths[0].ToothServices[0].LabService.serviceId],
+          serviceIds: [this.orderData.tooths[0].ToothServices[0].LabService.id],
           ponticDesignIds: [this.orderData.tooths[0].ToothPonticDesign[0].ponticDesignId],
           charge: false
         }
@@ -218,6 +217,9 @@ export default {
       this.storeOrder(data)
         .then(() => {
           this.close()
+        })
+        .catch((err) => {
+          this.$notify('Error occured: ' + err.message)
         })
     },
 

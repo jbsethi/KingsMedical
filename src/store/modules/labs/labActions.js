@@ -79,5 +79,41 @@ export default {
           })
       })
     }
+  },
+
+  removeLabService  (_, payload) {
+    return new Promise((resolve, reject) => {
+      LabsService.removeLabService(payload)
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
+  updateStatusLabService (_, payload) {
+    return new Promise((resolve, reject) => {
+      LabsService.updateStatusLabService(payload)
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
+  getEveryServicebyServiceTypeAndLab (_, payload) {
+    return new Promise((resolve, reject) => {
+      LabsService.getEveryServicebyServiceTypeAndLab(payload)
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
   }
 }

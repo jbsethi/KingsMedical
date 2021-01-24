@@ -15,7 +15,7 @@
         />
 
         <sidebar-item
-          v-if="['Administrator', 'Doctor', 'Management'].includes(role || null)"
+          v-if="['Super Administrator', 'Administrator', 'Doctor', 'Management'].includes(role || null)"
           :link="{
             name: 'Orders',
             icon: 'ni ni-folder-17 text-primary',
@@ -24,7 +24,7 @@
         />
 
         <sidebar-item
-          v-if="['Administrator', 'Management'].includes(role || null)"
+          v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)"
           :link="{
             name: 'Labs',
             icon: 'ni ni-shop text-primary',
@@ -33,7 +33,7 @@
         />
 
         <sidebar-item
-          v-if="['Administrator', 'Management'].includes(role || null)"
+          v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)"
           :link="{
             name: 'Service Types',
             icon: 'ni ni-delivery-fast text-primary',
@@ -42,7 +42,7 @@
         />
 
         <sidebar-item
-          v-if="['Administrator', 'Management'].includes(role || null)"
+          v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)"
           :link="{
             name: 'Services',
             icon: 'ni ni-delivery-fast text-primary',
@@ -51,7 +51,7 @@
         />
 
         <sidebar-item
-          v-if="['Administrator'].includes(role || null)"
+          v-if="['Super Administrator', 'Administrator'].includes(role || null)"
           :link="{
             name: 'Users',
             icon: 'ni ni-circle-08 text-primary',
@@ -60,7 +60,7 @@
         />
 
         <sidebar-item
-          v-if="['Administrator'].includes(role || null)"
+          v-if="['Super Administrator', 'Administrator'].includes(role || null)"
           :link="{
             name: 'Roles',
             icon: 'ni ni-badge text-primary',
