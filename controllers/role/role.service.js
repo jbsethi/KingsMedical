@@ -1,13 +1,17 @@
 var db = require('../../models');
 const { Pagination } = require('../../functions');
-
+const { Roles } = require('../../utils/permissions');
 
 exports.GetAll = async function ( _PAGE, _LIMIT) {
 
+    let where = {
+        live: true,
+        id: { [db.Sequelize.Op.ne]: Roles['SuperAdmin'] }
+    }
+    // where['id'] = { [db.Sequelize.Op.ne]: Roles['SuperAdmin'] };
+
     let association = {
-        where: {
-            live: true
-        }
+        where
     }
 
     let result = await Pagination(_PAGE, _LIMIT, db.Role, association);
@@ -19,11 +23,14 @@ exports.GetAll = async function ( _PAGE, _LIMIT) {
 
 exports.GetEachAndEvery = async function () {
     
+    let where = { 
+        live: true,
+        id: { [db.Sequelize.Op.ne]: Roles['SuperAdmin'] }
+    };
+
     let Role = await db.Role.findAll({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
-        where: {
-            live: true
-        },
+        where,
         order: [
             ['id', 'DESC']
         ]
@@ -36,12 +43,15 @@ exports.GetEachAndEvery = async function () {
 
 exports.GetAllActive = async function () {
     
+    let where = { 
+        live: true,
+        active: true,
+        id: { [db.Sequelize.Op.ne]: Roles['SuperAdmin'] }
+    };
+
     let Role = await db.Role.findAll({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
-        where: {
-            live: true,
-            active: true
-        },
+        where,
         order: [
             ['id', 'DESC']
         ]
@@ -54,12 +64,15 @@ exports.GetAllActive = async function () {
 
 exports.Get = async function ( _ID ) {
 
+    let where = { 
+        live: true,
+        id: _ID,
+        id: { [db.Sequelize.Op.ne]: Roles['SuperAdmin'] }
+    };
+
     let Role = await db.Role.findOne({
         attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
-        where: {
-            id: _ID,
-            live: true
-        }
+        where,
     });
 
 
@@ -139,11 +152,14 @@ exports.Update = async (_OBJECT, _ID) => {
 
 exports.Delete = async ( _ID ) => {
 
+    let where = { 
+        live: true,
+        id: _ID,
+        id: { [db.Sequelize.Op.ne]: Roles['SuperAdmin'] }
+    };
+
     let Role = await db.Role.findOne({
-        where: {
-            id: _ID,
-            live: true
-        }
+        where,
     });
 
 

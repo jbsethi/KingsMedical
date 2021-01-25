@@ -4,7 +4,8 @@ const { GetAll, Get, Create, Update, Delete, GetEachAndEvery, GetAllActive,
         CreateLabServices, GetLabService, GetAllLabService, GetEachAndEveryLabService,
         GetAllActiveLabService,
         DeleteLabService,
-        UpdateLabService
+        UpdateLabService,
+        GetLabTypeServices
      } = require('../controllers/lab/lab.controller');
 const { HandleNullString, AuthenticatePermission } = require('../middlewares');
 const { Resources, Actions } = require('../utils/permissions');
@@ -50,5 +51,9 @@ router.route('/services/:id/all/records')
 
 router.route('/services/:id/all/active')
 .get(AuthenticatePermission(Resources['Labs'], Actions['GetAll']), GetAllActiveLabService)
+
+
+router.route('/type/services')
+.post(AuthenticatePermission(Resources['Labs'], Actions['Create']), GetLabTypeServices)
 
 module.exports = router;

@@ -451,3 +451,41 @@ exports.UpdateLabService = async (_OBJECT, _ID) => {
 
 
 }
+
+
+exports.GetLabTypeServices = async function ( _OBJECT ) {
+    
+
+    let LabService = await db.LabService.findAll({
+        attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+        where: {
+            live: true,
+            labId: _OBJECT.labId,
+        },
+        order: [
+            ['id', 'DESC']
+        ],
+        include: [
+            {
+                as: 'Service',
+                model: db.Service, // will create a left join
+                required: true,
+                attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                include: [{
+                    as: 'ServiceType',
+                    model: db.ServiceType, // will create a left join
+                    required: true,
+                    attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+                    where: {
+                        live: true,
+                        id: _OBJECT.serviceTypeId
+                    },
+                }]
+            },
+        ]
+    });
+
+    return {
+        DB_value: LabService
+    };
+}

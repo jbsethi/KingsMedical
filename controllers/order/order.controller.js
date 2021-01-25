@@ -16,7 +16,7 @@ const Schema = Joi.object({
     patientGender: Joi.string().required(),
     patientContact: Joi.string().required().allow(null, ''),
 
-    sendDate: Joi.date().required().iso().allow(null, ''),
+    sentDate: Joi.date().required().iso().allow(null, ''),
     returnDate: Joi.date().required().iso().allow(null, ''),
     notes: Joi.string().required().allow(null, ''),
     urgent: Joi.boolean().required(),

@@ -1,6 +1,6 @@
 var db = require('../../models');
 const { Pagination } = require('../../functions');
-
+const { Roles } = require('../../utils/permissions');
 const superman = process.env.SUPERMAN;
 const supermanId = process.env.SUPERMAN_ID;
 
@@ -13,6 +13,10 @@ exports.getAllUsers = async function ( _PAGE, _LIMIT) {
     if(superman){
         where['id'] = { [db.Sequelize.Op.ne]: supermanId }
     }
+
+    where['role'] = { [db.Sequelize.Op.ne]: Roles['SuperAdmin'] };
+
+    console.log(where);
 
     let association = {
         include: [{
@@ -331,7 +335,7 @@ exports.Delete = async function ( _OBJECT, _ID ) {
     });
 
 
-    if(!User || (superman && _ID == 1) ){
+    if((superman && _ID == supermanId) || !User ){
 
         let error = new Error("User not found!");
         error.status = 404;

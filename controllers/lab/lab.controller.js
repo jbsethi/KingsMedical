@@ -16,6 +16,11 @@ const SchemaLabService = Joi.object({
     active: Joi.boolean().required(),
 });
 
+const SchemaLabServiceType = Joi.object({
+    labId: Joi.number().required(),
+    serviceTypeId: Joi.number().required(),
+});
+
 exports.GetAll = async (req, res, next) => {
     
 
@@ -355,6 +360,35 @@ exports.UpdateLabService = async (req, res, next) => {
     value.updatedBy = req.token.id;
 
     let { DB_error, DB_value } = await LabService.UpdateLabService( value, req.params.id );
+
+    if(DB_error){
+
+        return Errors(res, DB_error);
+        
+    }
+
+    return res.send(DB_value);
+
+}
+
+exports.GetLabTypeServices = async (req, res, next) => {
+    
+    let {error, value} = SchemaLabServiceType.validate(req.body);
+
+    if(error){
+
+        let newError = {
+            message: error.details[0].message,
+            status: 400
+        }
+
+        return Errors(res, newError);
+
+    }
+
+    value.updatedBy = req.token.id;
+
+    let { DB_error, DB_value } = await LabService.GetLabTypeServices( value, req.params.id );
 
     if(DB_error){
 
