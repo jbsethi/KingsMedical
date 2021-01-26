@@ -2,10 +2,28 @@ var db = require('../../models');
 const { Pagination } = require('../../functions');
 const { Roles } = require('../../utils/permissions');
 
-exports.getAllUsers = async function ( _PAGE, _LIMIT, _USER ) {
+exports.getAllUsers = async function ( _PAGE, _LIMIT, _USER, _SEARCH ) {
     
     let where = {
         live: true
+    }
+
+    if(_SEARCH){
+
+        let searchOf = `%${_SEARCH}%`;
+        where[db.Sequelize.Op.or]= [
+            { id: { [db.Sequelize.Op.like]: searchOf } },
+            { patientEmiratesId: { [db.Sequelize.Op.like]: searchOf } },
+            { urgent: { [db.Sequelize.Op.like]: searchOf } },
+            { notes: { [db.Sequelize.Op.like]: searchOf } },
+            { status: { [db.Sequelize.Op.like]: searchOf } },
+            { shadeId: { [db.Sequelize.Op.like]: searchOf } },
+            { labId: { [db.Sequelize.Op.like]: searchOf } },
+            { name: db.Sequelize.where(db.Sequelize.col('Patient.name'), { [db.Sequelize.Op.like]: searchOf  }) },
+            { name: db.Sequelize.where(db.Sequelize.col('Patient.gender'), { [db.Sequelize.Op.like]: searchOf  }) },
+            { name: db.Sequelize.where(db.Sequelize.col('Patient.contact'), { [db.Sequelize.Op.like]: searchOf  }) },
+        ]
+
     }
 
     // Only retrive orders that is assigned to lab
@@ -32,7 +50,8 @@ exports.getAllUsers = async function ( _PAGE, _LIMIT, _USER ) {
                 }
             },
     ],
-        where
+        where,
+        subQuery: false
     }
 
     let result = await Pagination(_PAGE, _LIMIT, db.Order, association);
