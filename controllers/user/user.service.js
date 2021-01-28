@@ -360,3 +360,43 @@ exports.Delete = async function ( _OBJECT, _ID ) {
     };
 
 }
+
+exports.UpdatePassword = async (_OBJECT, _ID) => {
+
+    let where = {
+        live: true,
+        id: _ID,
+    }
+
+    let User = await db.User.findOne({
+        where
+    });
+
+
+    if(!User){
+
+        let error = new Error("User not found!");
+        error.status = 404;
+        return {
+            DB_error: error
+        };
+
+    }
+
+    User.password = _OBJECT.password;
+    User.updatedBy = _OBJECT.updatedBy;
+
+    let result = await User.save();
+
+    delete result.dataValues.password;
+    delete result.dataValues.createdBy;
+    delete result.dataValues.updatedBy;
+    delete result.dataValues.updatedAt;
+    delete result.dataValues.live;
+
+    return {
+        DB_value: result
+    };
+
+
+}

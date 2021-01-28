@@ -18,6 +18,12 @@ const Schema = Joi.object({
     active: Joi.boolean().required(),
 });
 
+const schemaPassword = Joi.object({
+    // userId: Joi.number().required(),
+    password: Joi.string().required(),
+    confirmPassword: Joi.ref('password'),
+});
+
 exports.GetAll = async (req, res, next) => {
     
 
@@ -164,5 +170,43 @@ exports.Delete = async (req, res, next) => {
     }
 
     return res.send(DB_value);
+
+}
+
+exports.resetPassword = async (req, res, next) => {
+        
+
+    if( isNaN(req.params.id) ){
+        let error = new Error('ID must be a number');
+        error.status = 400;
+        return Errors(res, error);
+    }
+
+    let {error, value} = schemaPassword.validate(req.body);
+
+    if(error){
+
+        let newError = {
+            message: error.details[0].message,
+            status: 400
+        }
+
+        return Errors(res, newError);
+
+    }
+
+    value.password = await GenerateHash(value.password);
+    value.updatedBy = req.token.id;
+
+    let { DB_error, DB_value } = await UserService.UpdatePassword(value, req.params.id);
+
+    if(DB_error){
+
+        return Errors(res, DB_error);
+
+    }
+    
+
+    return res.status(201).send(DB_value);
 
 }

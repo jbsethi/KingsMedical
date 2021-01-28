@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { GetAll, Get, Create, Update, Delete} = require('../controllers/user/user.controller');
+const { GetAll, Get, Create, Update, Delete, resetPassword} = require('../controllers/user/user.controller');
 const { HandleNullString, AuthenticatePermission } = require('../middlewares');
 const { Resources, Actions } = require('../utils/permissions');
 
@@ -13,6 +13,8 @@ router.route('/:id')
 .put(AuthenticatePermission(Resources['Users'], Actions['Update']), upload.single('image'), HandleNullString, Update)                // UPDATE USER
 .delete(AuthenticatePermission(Resources['Users'], Actions['Delete']), Delete)             // DELETE USER
 
+router.route('/password-reset/:id')
+.post(AuthenticatePermission(Resources['Users'], Actions['Update']), HandleNullString, resetPassword)
 // // GET ALL USERS
 // router.get('/', (req, res)=>{
 //     res.send('GET ALL USERS');
