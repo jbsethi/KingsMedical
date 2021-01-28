@@ -35,6 +35,20 @@ export class LabsService extends BaseService {
     }
   }
 
+  static async getAllActiveLab () {
+    try {
+      const response = await this.request({ auth: true }).get(`${this.entity}/all/active`)
+      
+      const data = {
+        content: response.data
+      }
+
+      return new ResponseWrapper(response, data)
+    } catch (error) {
+      throw new ErrorWrapper(error)
+    }
+  }
+
   static async addService (payload) {
     try {
       const response = await this.request({ auth: true }).post(`${this.entity}/services`, payload)

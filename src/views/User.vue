@@ -6,11 +6,11 @@
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col">
-                    <users-table @create:user="toggleCreateUserModal(true)" @activate:user="activateUser" :tableData="users" :tableMeta="userMeta" title="Users Record"></users-table>
+                    <users-table @create:user="toggleCreateUserModal(true)" @click:forgotPassword="toggleForgotPassword" @activate:user="activateUser" :tableData="users" :tableMeta="userMeta" title="Users Record"></users-table>
                 </div>
             </div>
         </div>
-        <CreateUserModal :show="createUserModal" @close="toggleCreateUserModal(false)">
+        <Modal :show="createUserModal" @close="toggleCreateUserModal(false)">
           <template slot="header">
             Create User
           </template>
@@ -83,7 +83,39 @@
               </div>
           </form>
           </template>
-        </CreateUserModal>
+        </Modal>
+
+        <Modal :show="forgotModal" @close="toggleForgotPassword(null)">
+          <template slot="header">
+            Reset Password
+          </template>
+          <template>
+            <form role="form">
+              <base-input alternative
+                          label="New Password"
+                          class="mb-3"
+                          placeholder="Emirates ID"
+                          v-model="resetPassword.newPassword">
+              </base-input>
+              <base-input alternative
+                          label="New Password"
+                          class="mb-3"
+                          placeholder="Emirates ID"
+                          v-model="resetPassword.retypePassword">
+              </base-input>
+              <div class="text-center">
+                  <base-button @click="resetUserPassword" type="primary" class="my-4">
+                    <template v-if="!resetUserPasswordLoading">
+                      Reset
+                    </template>
+                    <template v-else>
+                      Loading ...
+                    </template>
+                  </base-button>
+              </div>
+          </form>
+          </template>
+        </Modal>
     </div>
 </template>
 <script>
@@ -93,7 +125,7 @@ import UsersTable from './User/UsersTable'
 export default {
   components: {
     UsersTable,
-    CreateUserModal: () => import('../components/Modal'),
+    Modal: () => import('../components/Modal'),
     Select: () => import('vue-select')
   },
   data() {
@@ -102,7 +134,15 @@ export default {
       createUserModal: false,
       user: {
         id: null
-      }
+      },
+
+      resetUserPasswordLoading: false,
+      forgotUserPasswordId: null,
+      resetPassword: {
+        newPassword: '',
+        retypePassword: ''
+      },
+      forgotModal: false
     }
   },
   computed: {
@@ -113,6 +153,15 @@ export default {
     })
   },
   methods: {
+    toggleForgotPassword (userId) {
+      this.forgotModal = !this.forgotModal
+      if (this.forgotModal) {
+        this.forgotUserPasswordId = userId
+      } else {
+        this.forgotUserPasswordId = null
+      }
+    },
+
     toggleCreateUserModal (status) {
       this.createUserModal = status === undefined ? !this.createUserModal : status
       if (this.createUserModal && this.roles.length === 0) this.getAllRoles()
@@ -139,6 +188,22 @@ export default {
             this.$notify(error)
           })
           .finally(this.createLoading = false)
+      }
+    },
+
+    resetUserPassword () {
+      if (!this.resetUserPasswordLoading) {
+        this.resetUserPasswordLoading = true
+        
+        // this.storeUser({user: this.user, userId: this.user.id})
+        //   .then(() => {
+        //     this.toggleCreateUserModal(false)
+        //     this.resetForm()
+        //   })
+        //   .catch(error => {
+        //     this.$notify(error)
+        //   })
+        //   .finally(this.createLoading = false)
       }
     },
 

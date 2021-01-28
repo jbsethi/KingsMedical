@@ -39,7 +39,7 @@
                   :clearable="false"
                   placeholder="Labs"
                   class="lab--select"
-                  :options="[{ id: 1, name: 'Kings Clinic' }]"
+                  :options="labs"
                   :value="patientInfo.labId"
                   @input="updatePatientInfo('labId', $event)"
                   :reduce="(option) => option.id"
@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'PatientInformation',
   props: {
@@ -74,13 +75,27 @@ export default {
       required: true
     }
   },
+  data () {
+    return {
+      labs: []
+    }
+  },
   components: {
     Select: () => import('vue-select')
   },
   methods: {
     updatePatientInfo (key, value) {
       this.$emit('update:patientInfo', [key, value])
-    }
+    },
+    ...mapActions('labs', [
+      'getAllActiveLab'
+    ])
+  },
+  mounted () {
+    this.getAllActiveLab()
+      .then(resp => {
+        this.labs = resp?.data?.content || []
+      })
   }
 }
 </script>

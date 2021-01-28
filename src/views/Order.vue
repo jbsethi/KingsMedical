@@ -238,7 +238,6 @@ export default {
 
     viewDetails(orderId) {
       this.getOrderDetails(orderId).then((result) => {
-        console.log(result.data)
         this.order = result.data;
         this.toggleCreateOrderModal(true, true);
       });
@@ -247,31 +246,24 @@ export default {
     ...mapActions('orders', ['getAllOrders', 'getOrderDetails']),
     ...mapActions('invoices', ['createInvoice', 'getOrderInvoice'])
   },
-  mounted() {
-    if (
-      this.$route.query.pageNo &&
-      Number.isInteger(this.$route.query.pageNo) &&
-      this.$route.query.pageNo > 0
-    ) {
-      this.getAllOrders({ pageNo: this.$route.query.pageNo });
-      this.pageNo = this.$route.query.pageNo;
-    }
-
-    this.getAllOrders();
-    this.reset();
-  },
   watch: {
     '$route.query': {
+      immediate: true,
       deep: true,
       handler(query) {
+        const q = query.q || null
         if (
           query.pageNo &&
           Number.isInteger(query.pageNo) &&
           query.pageNo > 0
         ) {
-          this.getAllOrders({ pageNo: query.pageNo });
+          this.getAllOrders({ pageNo: query.pageNo, search: q });
           this.pageNo = query.pageNo;
+        } else {
+          this.getAllOrders({ search: q });
         }
+
+        this.reset();
       }
     }
   }

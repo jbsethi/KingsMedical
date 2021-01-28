@@ -14,6 +14,18 @@ export default {
     })
   },
 
+  getAllActiveLab (context, payload) {
+    return new Promise((resolve, reject) => {
+      LabsService.getAllActiveLab(payload)
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
   getAllLabs ({ commit }, payload) {
     return new Promise((resolve, reject) => {
       LabsService.getList(payload)

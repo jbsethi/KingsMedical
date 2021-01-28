@@ -3,9 +3,10 @@
               id="navbar-main"
               :show-toggle-button="false"
               expand>
-        <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
-            <div class="form-group mb-0">
+        <form @submit.prevent="searchQueryString" class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
+            <div v-if="isSearchActive" class="form-group mb-0">
                 <base-input placeholder="Search"
+                            v-model="searchQuery"
                             class="input-group-alternative"
                             alternative=""
                             addon-right-icon="fas fa-search">
@@ -28,14 +29,14 @@
                         <div class=" dropdown-header noti-title">
                             <h6 class="text-overflow m-0">Welcome!</h6>
                         </div>
-                        <router-link to="/profile" class="dropdown-item">
+                        <!-- <router-link to="/profile" class="dropdown-item">
                             <i class="ni ni-single-02"></i>
                             <span>My profile</span>
                         </router-link>
                         <router-link to="/profile" class="dropdown-item">
                             <i class="ni ni-settings-gear-65"></i>
                             <span>Settings</span>
-                        </router-link>
+                        </router-link> -->
                         <div class="dropdown-divider"></div>
                         <span @click="logout" class="dropdown-item">
                             <i class="ni ni-user-run"></i>
@@ -58,6 +59,9 @@
       };
     },
     methods: {
+      searchQueryString () {
+        this.$router.push({ query: { q: this.searchQuery } })
+      },
       toggleSidebar() {
         this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
       },
@@ -72,8 +76,11 @@
       ])
     },
     computed: {
+      isSearchActive () {
+        return this.$route.meta.searchActive || false
+      },
       ...mapState({
-        name: state => state.user.currentUser?.name || ''
+        name: state => state.user.currentUser?.name || '',
       })
     }
   };

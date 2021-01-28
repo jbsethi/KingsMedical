@@ -6,5 +6,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules,
+  state: {
+    isSearchActive: false
+  },
   strict: process.env.NODE_ENV === 'development'
 })

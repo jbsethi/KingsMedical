@@ -54,7 +54,7 @@
             {{row.role}}
           </td>
           <td class="role">
-            <a href="#">Change Password</a>
+            <a @click.prevent="$emit('click:forgotPassword', row.id)" href="#">Change Password</a>
           </td>
           <td>
             <badge class="badge-dot mr-4" :type="row.active ? 'primary': 'danger'">

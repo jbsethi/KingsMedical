@@ -62,7 +62,7 @@
               </a>
 
               <template>
-                <a @click.prevent="$emit('viewOrder', row.parentId)" class="dropdown-item" href="#">View Orignal Order</a>
+                <a v-if="row.parentId" @click.prevent="$emit('viewOrder', row.parentId)" class="dropdown-item" href="#">View Orignal Order</a>
                 <a @click.prevent="$emit('uploadInvoice', row.id)" class="dropdown-item" href="#">Add Invoice</a>
                 <a @click.prevent="$emit('returnOrder', row.id)" class="dropdown-item" href="#">Return Order</a>
               </template>
@@ -111,7 +111,9 @@
     },
     methods: {
       updatePage (pageNo) {
-        this.$router.push({query: { pageNo }})
+        if (pageNo != this.pageNo) {
+          this.$router.push({query: { ...this.$route.query, pageNo }})
+        }
       },
 
       getDate (date) {

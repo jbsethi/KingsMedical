@@ -113,7 +113,9 @@
     },
     methods: {
       updatePage (pageNo) {
-        this.$router.push({query: { pageNo }})
+        if (pageNo !== this.pageNo) {
+          this.$router.push({query: { ...this.$route.query, pageNo }})
+        }
       }
     }
   }

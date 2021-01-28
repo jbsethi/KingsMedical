@@ -20,14 +20,19 @@ const router = new Router({
         {
           path: '/dashboard',
           name: 'dashboard',
-          component: () => import('./views/Dashboard.vue')
+          component: () => import('./views/Dashboard.vue'),
+          meta: {
+            canAccess: ['Super Administrator', 'Administrator', 'Doctor', 'Management'],
+            isAuth: true
+          }
         },
         {
           path: '/orders',
           name: 'order',
           component: () => import('./views/Order.vue'),
           meta: {
-            canAccess: ['Super Administrator', 'Administrator', 'Doctor', 'Management']
+            canAccess: ['Super Administrator', 'Administrator', 'Doctor', 'Management'],
+            searchActive: true
           }
         },
         {

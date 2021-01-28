@@ -4,60 +4,60 @@
             <!-- Card stats -->
             <div class="row">
                 <div class="col-xl-3 col-lg-6">
-                    <stats-card title="Total traffic"
+                    <stats-card title="Total OrderS"
                                 type="gradient-red"
                                 sub-title="350,897"
                                 icon="ni ni-active-40"
                                 class="mb-4 mb-xl-0"
                     >
 
-                        <template slot="footer">
+                        <!-- <template slot="footer">
                             <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
                             <span class="text-nowrap">Since last month</span>
-                        </template>
+                        </template> -->
                     </stats-card>
                 </div>
                 <div class="col-xl-3 col-lg-6">
-                    <stats-card title="Total traffic"
+                    <stats-card title="Total Invoices"
                                 type="gradient-orange"
                                 sub-title="2,356"
                                 icon="ni ni-chart-pie-35"
                                 class="mb-4 mb-xl-0"
                     >
 
-                        <template slot="footer">
+                        <!-- <template slot="footer">
                             <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 12.18%</span>
                             <span class="text-nowrap">Since last month</span>
-                        </template>
+                        </template> -->
                     </stats-card>
                 </div>
                 <div class="col-xl-3 col-lg-6">
-                    <stats-card title="Sales"
+                    <stats-card title="Users"
                                 type="gradient-green"
                                 sub-title="924"
                                 icon="ni ni-money-coins"
                                 class="mb-4 mb-xl-0"
                     >
 
-                        <template slot="footer">
+                        <!-- <template slot="footer">
                             <span class="text-danger mr-2"><i class="fa fa-arrow-down"></i> 5.72%</span>
                             <span class="text-nowrap">Since last month</span>
-                        </template>
+                        </template> -->
                     </stats-card>
 
                 </div>
                 <div class="col-xl-3 col-lg-6">
-                    <stats-card title="Performance"
+                    <stats-card title="Services"
                                 type="gradient-info"
                                 sub-title="49,65%"
                                 icon="ni ni-chart-bar-32"
                                 class="mb-4 mb-xl-0"
                     >
 
-                        <template slot="footer">
+                        <!-- <template slot="footer">
                             <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 54.8%</span>
                             <span class="text-nowrap">Since last month</span>
-                        </template>
+                        </template> -->
                     </stats-card>
                 </div>
             </div>
@@ -71,29 +71,7 @@
                         <div slot="header" class="row align-items-center">
                             <div class="col">
                                 <h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6>
-                                <h5 class="h3 text-white mb-0">Sales value</h5>
-                            </div>
-                            <div class="col">
-                                <ul class="nav nav-pills justify-content-end">
-                                    <li class="nav-item mr-2 mr-md-0">
-                                        <a class="nav-link py-2 px-3"
-                                           href="#"
-                                           :class="{active: bigLineChart.activeIndex === 0}"
-                                           @click.prevent="initBigChart(0)">
-                                            <span class="d-none d-md-block">Month</span>
-                                            <span class="d-md-none">M</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link py-2 px-3"
-                                           href="#"
-                                           :class="{active: bigLineChart.activeIndex === 1}"
-                                           @click.prevent="initBigChart(1)">
-                                            <span class="d-none d-md-block">Week</span>
-                                            <span class="d-md-none">W</span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                <h5 class="h3 text-white mb-0">Current Week</h5>
                             </div>
                         </div>
                         <line-chart
@@ -175,7 +153,7 @@
               data: this.bigLineChart.allData[index]
             }
           ],
-          labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+          labels: [1, 2, 3, 4, 5, 6, 7],
         };
         this.bigLineChart.chartData = chartData;
         this.bigLineChart.activeIndex = index;

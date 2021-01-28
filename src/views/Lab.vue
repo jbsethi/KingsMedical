@@ -151,7 +151,7 @@
                     <button @click="updateLabServiceStatus(ls, true)" v-else class="btn-warning">Inactive</button>
                   </td>
                   <td>
-                    <button @click="removeItem(ls)" class="btn-danger">Remove</button>
+                    <button v-if="['Super Administrator'].includes(role || null)" @click="removeItem(ls)" class="btn-danger">Remove</button>
                   </td>
                 </tr>
               </tbody>
@@ -213,7 +213,8 @@ export default {
   computed: {
     ...mapState({
       labs: state => state.labs.labs,
-      labMeta : state => state.labs.meta
+      labMeta : state => state.labs.meta,
+      role: state => state.user?.currentUser?.role?.name || null
     })
   },
   methods: {
@@ -230,23 +231,24 @@ export default {
     },
 
     updateLabServiceStatus (labService, status) {
+      if (['Super Administrator'].includes(this.role || null)) {
+        const { labId, serviceId, active, price } = { ...labService, active: status}
 
-      const { labId, serviceId, active, price } = { ...labService, active: status}
+        this.updateStatusLabService({ id: labService.id, data: { labId, serviceId, active, price } })
+          .then(() => {
+            this.labServices = this.labServices.map(service => {
+              if (service.id == labService.id) {
+                service.active = status
+              }
 
-      this.updateStatusLabService({ id: labService.id, data: { labId, serviceId, active, price } })
-        .then(() => {
-          this.labServices = this.labServices.map(service => {
-            if (service.id == labService.id) {
-              service.active = status
-            }
-
-            return service
+              return service
+            })
           })
-        })
-        .catch(err => {
-          console.log(err)
-          this.$notify('Couldn\'t update try again later')
-        })
+          .catch(err => {
+            console.log(err)
+            this.$notify('Couldn\'t update try again later')
+          })
+      }
     },
 
     viewServices (labId) {
