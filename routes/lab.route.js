@@ -54,6 +54,6 @@ router.route('/services/:id/all/active')
 
 
 router.route('/type/services')
-.post(AuthenticatePermission(Resources['Labs'], Actions['Create']), GetLabTypeServices)
+.post(AuthenticatePermission(Resources['Labs'], Actions['GetAll']), GetLabTypeServices)
 
 module.exports = router;

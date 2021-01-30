@@ -983,7 +983,7 @@ exports.WeeklyStats = async function ( ) {
         )
     }
 
-    console.log(attributes);
+    // console.log(attributes);
 
     let Order = await db.Order.findOne({
         attributes: attributes
