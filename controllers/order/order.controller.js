@@ -38,6 +38,10 @@ let SchemaGetOrderStatus = Joi.object({
     serviceId: Joi.number().required()
 });
 
+let SchemaMonthlyStats = Joi.object({
+    year: Joi.number().required()
+});
+
 exports.GetAll = async (req, res, next) => {
     
 
@@ -236,6 +240,42 @@ exports.GetOrderStatus = async (req, res, next) => {
     }
     
 
+    return res.status(201).send(DB_value);
+
+}
+
+exports.GetOrderStatsMonthly = async (req, res, next) => {
+
+
+    let {error, value} = SchemaMonthlyStats.validate(req.body);
+
+    if(error){
+
+        let newError = {
+            message: error.details[0].message,
+            status: 400
+        }
+
+        return Errors(res, newError);
+
+    }
+
+    value.createdBy = req.token.id;
+    value.updatedBy = null;
+
+    let { DB_error, DB_value } = await Service.MonthlyStats(value);
+
+
+    if(DB_error) return Errors(res, DB_error); 
+    return res.status(201).send(DB_value);
+
+}
+
+exports.GetOrderStatsWeekly = async (req, res, next) => {
+
+    let { DB_error, DB_value } = await Service.WeeklyStats();
+
+    if(DB_error) return Errors(res, DB_error); 
     return res.status(201).send(DB_value);
 
 }

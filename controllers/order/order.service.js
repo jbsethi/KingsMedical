@@ -102,7 +102,7 @@ exports.Get = async function ( _ID, _USER ) {
                 {
                     as: 'ToothServices', 
                     model: db.OrderToothService, 
-                    attributes: ['serviceId'], 
+                    attributes: ['serviceId', 'price', 'charge'], 
                     paranoid: false, 
                     required: false,
                     include: [
@@ -202,6 +202,8 @@ exports.Get = async function ( _ID, _USER ) {
 
 exports.Create = async (_OBJECT) => {
 
+        let servicePrices = {};
+
         if( _OBJECT.labId ){
 
             let lab = await db.Lab.findOne({
@@ -290,6 +292,8 @@ exports.Create = async (_OBJECT) => {
                     };
                 }
 
+                servicePrices[Service.dataValues.id] = Service.dataValues.price;
+
             }
 
             let ponticDesigns = element.ponticDesignIds;
@@ -352,6 +356,7 @@ exports.Create = async (_OBJECT) => {
                 toothId: element.toothId,
                 createdBy: _OBJECT.createdBy,
             }
+
             let Tooth = await db.OrderTooth.create(orderTooth);
             if(!Tooth){
                 let error = new Error(`Failed to add tooth having id '${element.toothId}' to order`);
@@ -367,6 +372,7 @@ exports.Create = async (_OBJECT) => {
                 let orderToothService = {
                     orderToothId: Tooth.dataValues.id,
                     serviceId: serviceId,
+                    price: servicePrices[serviceId],
                     charge: element.charge,
                     createdBy: _OBJECT.createdBy,
                 }
@@ -419,6 +425,8 @@ exports.Create = async (_OBJECT) => {
 }
 
 exports.Update = async (_OBJECT, _ID, condition = {}) => {
+
+    let servicePrices = {};
 
     let Order = null;
     if( _ID ){
@@ -556,6 +564,7 @@ exports.Update = async (_OBJECT, _ID, condition = {}) => {
                     DB_error: error
                 };
             }
+            servicePrices[Service.dataValues.id] = Service.dataValues.price;
 
         }
 
@@ -635,6 +644,8 @@ exports.Update = async (_OBJECT, _ID, condition = {}) => {
             let orderToothService = {
                 orderToothId: Tooth.dataValues.id,
                 serviceId: serviceId,
+                price: servicePrices[serviceId],
+                charge: element.charge,
                 createdBy: _OBJECT.createdBy,
             }
             let Service = await db.OrderToothService.create(orderToothService);
@@ -922,5 +933,74 @@ exports.GetOrderStatus = async function ( _OBJECT ) {
     return {
         DB_value: Orders
     };
+
+}
+
+exports.MonthlyStats = async function ( _OBJECT ) {
+
+    let Order = await db.Order.findOne({
+        attributes: [
+            [ db.Sequelize.literal(`( SELECT COUNT(*) FROM orders WHERE month(orders.createdAt) = 1 AND year(orders.createdAt) = ${_OBJECT['year']} AND orders.live = 1 )`), 'January' ],
+            [ db.Sequelize.literal(`( SELECT COUNT(*) FROM orders WHERE month(orders.createdAt) = 2 AND year(orders.createdAt) = ${_OBJECT['year']} AND orders.live = 1 )`), 'Febuary' ],
+            [ db.Sequelize.literal(`( SELECT COUNT(*) FROM orders WHERE month(orders.createdAt) = 3 AND year(orders.createdAt) = ${_OBJECT['year']} AND orders.live = 1 )`), 'March' ],
+            [ db.Sequelize.literal(`( SELECT COUNT(*) FROM orders WHERE month(orders.createdAt) = 4 AND year(orders.createdAt) = ${_OBJECT['year']} AND orders.live = 1 )`), 'April' ],
+            [ db.Sequelize.literal(`( SELECT COUNT(*) FROM orders WHERE month(orders.createdAt) = 5 AND year(orders.createdAt) = ${_OBJECT['year']} AND orders.live = 1 )`), 'May' ],
+            [ db.Sequelize.literal(`( SELECT COUNT(*) FROM orders WHERE month(orders.createdAt) = 6 AND year(orders.createdAt) = ${_OBJECT['year']} AND orders.live = 1 )`), 'June' ],
+            [ db.Sequelize.literal(`( SELECT COUNT(*) FROM orders WHERE month(orders.createdAt) = 7 AND year(orders.createdAt) = ${_OBJECT['year']} AND orders.live = 1 )`), 'July' ],
+            [ db.Sequelize.literal(`( SELECT COUNT(*) FROM orders WHERE month(orders.createdAt) = 8 AND year(orders.createdAt) = ${_OBJECT['year']} AND orders.live = 1 )`), 'August' ],
+            [ db.Sequelize.literal(`( SELECT COUNT(*) FROM orders WHERE month(orders.createdAt) = 9 AND year(orders.createdAt) = ${_OBJECT['year']} AND orders.live = 1 )`), 'September' ],
+            [ db.Sequelize.literal(`( SELECT COUNT(*) FROM orders WHERE month(orders.createdAt) = 10 AND year(orders.createdAt) = ${_OBJECT['year']} AND orders.live = 1 )`), 'October' ],
+            [ db.Sequelize.literal(`( SELECT COUNT(*) FROM orders WHERE month(orders.createdAt) = 11 AND year(orders.createdAt) = ${_OBJECT['year']} AND orders.live = 1 )`), 'November' ],
+            [ db.Sequelize.literal(`( SELECT COUNT(*) FROM orders WHERE month(orders.createdAt) = 12 AND year(orders.createdAt) = ${_OBJECT['year']} AND orders.live = 1 )`), 'December' ]
+        ]
+    });
+
+
+    if(!Order){
+
+        let error = new Error("Order not found!");
+        error.status = 404;
+        return {
+            DB_error: error
+        };
+
+    }
+
+    // Order = Order.get({ plain: true });
+    return { DB_value: Order };
+
+}
+
+exports.WeeklyStats = async function ( ) {
+
+    let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    let attributes = [];
+
+    for(i=6; i >= 0; i--){
+        let date = new Date( (new Date()).getTime() - ( i * 8.64e+7 ) );
+        attributes.push(
+            [ db.Sequelize.literal(`( SELECT COUNT(*) FROM orders WHERE year(orders.createdAt) = ${date.getFullYear()} AND month(orders.createdAt) = ${date.getMonth() + 1} AND day(orders.createdAt) = ${date.getDate()})`), days[date.getDay()] ]
+        )
+    }
+
+    console.log(attributes);
+
+    let Order = await db.Order.findOne({
+        attributes: attributes
+    });
+
+
+    if(!Order){
+
+        let error = new Error("Order not found!");
+        error.status = 404;
+        return {
+            DB_error: error
+        };
+
+    }
+
+    // Order = Order.get({ plain: true });
+    return { DB_value: Order };
 
 }

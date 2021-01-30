@@ -15,6 +15,14 @@ module.exports = (sequelize, Datatypes) => {
         type: Datatypes.INTEGER(11),
         allowNull: false,
       },
+      price:{
+        type: Datatypes.INTEGER(11),
+        allowNull: false,
+      },
+      charge: {
+        type: Datatypes.BOOLEAN,
+        allowNull: false,
+      },
       createdBy: {
         type: Datatypes.INTEGER(11),
         allowNull: true,

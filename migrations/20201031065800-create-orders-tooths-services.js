@@ -18,6 +18,10 @@ module.exports = {
       type: Sequelize.INTEGER(11),
       allowNull: false,
     },
+    price:{
+      type: Sequelize.INTEGER(11),
+      allowNull: false,
+    },
     charge: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
