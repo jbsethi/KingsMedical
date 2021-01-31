@@ -15,4 +15,13 @@ export class UsersService extends BaseService {
       throw new ErrorWrapper(error, message)
     }
   }
+
+  static async resetUserPassword (payload) {
+    try {
+      const response = await this.request({ auth: true }).post(`${this.entity}/password-reset/${payload.userId}`, payload.data)
+      return new ResponseWrapper(response, response.data)
+    } catch (error) {
+      throw new ErrorWrapper(error)
+    }
+  }
 }

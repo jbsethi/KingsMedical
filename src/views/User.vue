@@ -31,11 +31,32 @@
                         :options="roles"
                         v-model="user.role"
                         :reduce="(role) => role.id"
+                        @input="checkRole"
                         label="title">
                   <template #search="{attributes, events}">
                     <input
                       class="vs__search"
                       :required="!user.role"
+                      v-bind="attributes"
+                      v-on="events"
+                    />
+                  </template>
+                </Select>
+              </div>
+              <div v-if="isLabSelectActive" class="form-group mb-3 has-label">
+                <label class="form-control-label">Labs</label>
+                <Select required
+                        :clearable="false"
+                        placeholder="Role"
+                        class="user-role--select"
+                        :options="labs"
+                        v-model="user.labId"
+                        :reduce="(lab) => lab.id"
+                        label="name">
+                  <template #search="{attributes, events}">
+                    <input
+                      class="vs__search"
+                      :required="!user.labId"
                       v-bind="attributes"
                       v-on="events"
                     />
@@ -94,17 +115,17 @@
               <base-input alternative
                           label="New Password"
                           class="mb-3"
-                          placeholder="Emirates ID"
+                          placeholder="Password"
                           v-model="resetPassword.newPassword">
               </base-input>
               <base-input alternative
                           label="New Password"
                           class="mb-3"
-                          placeholder="Emirates ID"
+                          placeholder="Password"
                           v-model="resetPassword.retypePassword">
               </base-input>
               <div class="text-center">
-                  <base-button @click="resetUserPassword" type="primary" class="my-4">
+                  <base-button @click="resetUserPass" type="primary" class="my-4">
                     <template v-if="!resetUserPasswordLoading">
                       Reset
                     </template>
@@ -136,6 +157,9 @@ export default {
         id: null
       },
 
+      isLabSelectActive: false,
+      labs: [],
+
       resetUserPasswordLoading: false,
       forgotUserPasswordId: null,
       resetPassword: {
@@ -153,6 +177,15 @@ export default {
     })
   },
   methods: {
+    checkRole (roleId) {
+      const role = this.roles.find(role => role.id == roleId) || null
+      if (role && role.title == 'Lab') {
+        this.isLabSelectActive = true
+      } else {
+        this.isLabSelectActive = false
+      }
+    },
+
     toggleForgotPassword (userId) {
       this.forgotModal = !this.forgotModal
       if (this.forgotModal) {
@@ -177,7 +210,7 @@ export default {
       if (!this.createLoading) {
         this.createLoading = true
 
-        this.user.labId = null
+        this.user.labId = this.user.labId || null
         
         this.storeUser({user: this.user, userId: this.user.id})
           .then(() => {
@@ -191,33 +224,50 @@ export default {
       }
     },
 
-    resetUserPassword () {
+    resetUserPass () {
       if (!this.resetUserPasswordLoading) {
         this.resetUserPasswordLoading = true
         
-        // this.storeUser({user: this.user, userId: this.user.id})
-        //   .then(() => {
-        //     this.toggleCreateUserModal(false)
-        //     this.resetForm()
-        //   })
-        //   .catch(error => {
-        //     this.$notify(error)
-        //   })
-        //   .finally(this.createLoading = false)
+        const data = {
+          userId: this.forgotUserPasswordId,
+          data: {
+            password: this.resetPassword.newPassword,
+            confirmPassword: this.resetPassword.retypePassword
+          }
+        }
+
+        this.resetUserPassword(data)
+          .then(() => {
+            this.toggleForgotPassword()
+          })
+          .catch(error => {
+            console.log(error)
+            this.$notify(error)
+          })
+          .finally(this.resetUserPasswordLoading = false)
       }
     },
 
     ...mapActions('user', [
       'getAllUsers',
       'storeUser',
-      'activateUser'
+      'activateUser',
+      'resetUserPassword'
     ]),
     ...mapActions('roles', [
       'getAllRoles'
+    ]),
+    ...mapActions('labs', [
+      'getAllActiveLab'
     ])
   },
   mounted () {
     this.getAllUsers()
+
+    this.getAllActiveLab()
+      .then(resp => {
+        this.labs = resp?.data?.content || []
+      })
   }
 }
 </script>

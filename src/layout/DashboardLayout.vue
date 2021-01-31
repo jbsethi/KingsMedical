@@ -7,6 +7,7 @@
     >
       <template slot="links">
         <sidebar-item
+          v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)"
           :link="{
             name: 'Dashboard',
             icon: 'ni ni-tv-2 text-primary',
@@ -15,7 +16,7 @@
         />
 
         <sidebar-item
-          v-if="['Super Administrator', 'Administrator', 'Doctor', 'Management'].includes(role || null)"
+          v-if="['Super Administrator', 'Administrator', 'Doctor', 'Lab', 'Management'].includes(role || null)"
           :link="{
             name: 'Orders',
             icon: 'ni ni-folder-17 text-primary',

@@ -101,5 +101,18 @@ export default {
           commit('toast/NEW', { type: 'error', message: error.message }, { root: true })
         })
     })
+  },
+
+  resetUserPassword ({commit}, payload) {
+    return new Promise((resolve, reject) => {
+      UsersService.resetUserPassword(payload)
+        .then(result => {
+          resolve(result)
+        })
+        .catch(error => {
+          console.log('coming here')
+          reject(error.message)
+        })
+    })
   }
 }

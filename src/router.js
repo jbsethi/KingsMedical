@@ -22,7 +22,7 @@ const router = new Router({
           name: 'dashboard',
           component: () => import('./views/Dashboard.vue'),
           meta: {
-            canAccess: ['Super Administrator', 'Administrator', 'Doctor', 'Management'],
+            canAccess: ['Super Administrator', 'Administrator', 'Management'],
             isAuth: true
           }
         },
@@ -31,7 +31,7 @@ const router = new Router({
           name: 'order',
           component: () => import('./views/Order.vue'),
           meta: {
-            canAccess: ['Super Administrator', 'Administrator', 'Doctor', 'Management'],
+            canAccess: ['Super Administrator', 'Administrator', 'Doctor', 'Lab', 'Management'],
             searchActive: true
           }
         },

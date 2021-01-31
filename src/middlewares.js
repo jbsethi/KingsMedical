@@ -1,5 +1,5 @@
 import $store from './store'
-import vue from 'vue'
+// import vue from 'vue'
 
 
 /**
@@ -21,10 +21,18 @@ export function checkAccessMiddleware (to, from, next) {
   const canAccess = to.meta.canAccess
 
   if (currentUserId && canAccess && canAccess.includes(currentUserRole)) return next()
+
   if (currentUserId && canAccess && !canAccess.includes(currentUserRole)) {
-    vue.prototype.$notify('Unautharized Access !')
-    return next('/')
+    switch (currentUserRole) {
+      case 'Lab':
+        return next('/orders')
+      case 'Doctor':
+        return next('/orders')
+      default:
+        return next('/')
+    }    
   }
+
   next()
 }
 
