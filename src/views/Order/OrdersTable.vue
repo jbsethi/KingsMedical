@@ -27,8 +27,8 @@
           <th>Order Type</th>
           <th>Details</th>
           <th>Send Date</th>
-          <th v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)" >Invoice</th>
-          <th v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)" ></th>
+          <th v-if="['Super Administrator', 'Administrator', 'Management', 'Lab'].includes(role || null)" >Invoice</th>
+          <th v-if="['Super Administrator', 'Administrator', 'Management', 'Lab'].includes(role || null)" ></th>
         </template>
 
         <template slot-scope="{row}">
@@ -47,10 +47,10 @@
           <td class="send-date">
             {{getDate(row.sentDate)}}
           </td>
-          <td class="invoice" v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)">
+          <td class="invoice" v-if="['Super Administrator', 'Administrator', 'Management', 'Lab'].includes(role || null)">
             <base-button @click="$emit('click:viewInvoice', row.id)" outline type="primary" size="sm">View Invoice</base-button>
           </td>
-          <td class="text-right" v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)">
+          <td class="text-right" v-if="['Super Administrator', 'Administrator', 'Management', 'Lab'].includes(role || null)">
             <base-dropdown class="dropdown"
                            position="right">
               <a slot="title" class="btn btn-sm btn-icon-only text-light" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -60,7 +60,7 @@
               <template>
                 <a v-if="row.parentId" @click.prevent="$emit('viewOrder', row.parentId)" class="dropdown-item" href="#">View Orignal Order</a>
                 <a @click.prevent="$emit('uploadInvoice', row.id)" class="dropdown-item" href="#">Add Invoice</a>
-                <a @click.prevent="$emit('returnOrder', row.id)" class="dropdown-item" href="#">Return Order</a>
+                <a v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)" @click.prevent="$emit('returnOrder', row.id)" class="dropdown-item" href="#">Return Order</a>
               </template>
             </base-dropdown>
           </td>
