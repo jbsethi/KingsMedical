@@ -31,7 +31,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"image\": null,\r\n    \"emiratesId\": \"111111111111112\",\r\n    \"email\": null,\r\n    \"name\": \"lab 2 User\",\r\n    \"username\": \"lab2\",\r\n    \"password\": \"lab2123\",\r\n    \"confirm_password\": \"lab2123\",\r\n    \"contact\": null,\r\n    \"role\": \"4\",\r\n    \"remarks\": null,\r\n    \"active\": true,\r\n    \"labId\": 2\r\n}",
+							"raw": "{\r\n    \"image\": null,\r\n    \"emiratesId\": \"111111111111112\",\r\n    \"email\": null,\r\n    \"name\": \"lab 2 User\",\r\n    \"username\": \"doctor1\",\r\n    \"password\": \"doctor123\",\r\n    \"confirm_password\": \"doctor123\",\r\n    \"contact\": null,\r\n    \"role\": \"3\",\r\n    \"remarks\": null,\r\n    \"active\": true,\r\n    \"labId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1869,7 +1869,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"labId\": 1,\r\n    \"serviceTypeId\": 3\r\n}",
+							"raw": "{\r\n    \"labId\": 1,\r\n    \"serviceTypeId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2948,7 +2948,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"super.admin\",\r\n    \"password\": \"krypton\"\r\n}",
+							"raw": "{\r\n    \"username\": \"doctor1\",\r\n    \"password\": \"doctor123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
