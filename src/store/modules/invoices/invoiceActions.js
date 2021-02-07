@@ -2,6 +2,18 @@
 import { InvoicesService } from '@/services/invoices.service'
 
 export default {
+  totalInvoices () {
+    return new Promise((resolve, reject) => {
+      InvoicesService.getList()
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+  
   createInvoice ({ commit }, payload) {
     return new Promise((resolve, reject) => {
       InvoicesService.uploadInvoice(payload)

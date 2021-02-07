@@ -69,9 +69,6 @@
                 <a @click.stop="$emit('edit:lab', row.id)" class="dropdown-item" href="#">
                   Edit
                 </a>
-                <a class="dropdown-item" href="#">
-                  Remove
-                </a>
               </template>
             </base-dropdown>
           </td>

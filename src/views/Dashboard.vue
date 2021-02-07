@@ -6,7 +6,7 @@
                 <div class="col-xl-3 col-lg-6">
                     <stats-card title="Total OrderS"
                                 type="gradient-red"
-                                sub-title="350,897"
+                                :sub-title="`${totalOrdersCount}`"
                                 icon="ni ni-active-40"
                                 class="mb-4 mb-xl-0"
                     >
@@ -20,7 +20,7 @@
                 <div class="col-xl-3 col-lg-6">
                     <stats-card title="Total Invoices"
                                 type="gradient-orange"
-                                sub-title="2,356"
+                                :sub-title="`${totalInvoicesCount}`"
                                 icon="ni ni-chart-pie-35"
                                 class="mb-4 mb-xl-0"
                     >
@@ -34,7 +34,7 @@
                 <div class="col-xl-3 col-lg-6">
                     <stats-card title="Users"
                                 type="gradient-green"
-                                sub-title="924"
+                                :sub-title="`${totalUsersCount}`"
                                 icon="ni ni-money-coins"
                                 class="mb-4 mb-xl-0"
                     >
@@ -49,7 +49,7 @@
                 <div class="col-xl-3 col-lg-6">
                     <stats-card title="Services"
                                 type="gradient-info"
-                                sub-title="49,65%"
+                                :sub-title="`${totalServicesCount}`"
                                 icon="ni ni-chart-bar-32"
                                 class="mb-4 mb-xl-0"
                     >
@@ -109,6 +109,7 @@
     </div>
 </template>
 <script>
+  import { mapActions } from 'vuex'
   // Charts
   import * as chartConfigs from '@/components/Charts/config';
   import LineChart from '@/components/Charts/LineChart';
@@ -121,11 +122,14 @@
     },
     data() {
       return {
+        totalOrdersCount: 0,
+        totalInvoicesCount: 0,
+        totalUsersCount: 0,
+        totalServicesCount: 0,
         bigLineChart: {
-          allData: [
-            [0, 20, 10, 30, 15, 40, 20, 60, 60],
-            [0, 20, 5, 25, 10, 30, 15, 40, 40]
-          ],
+          labels: [],
+          allData: [],
+
           activeIndex: 0,
           chartData: {
             datasets: [],
@@ -135,32 +139,139 @@
         },
         redBarChart: {
           chartData: {
-            labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            labels: [],
             datasets: [{
-              label: 'Sales',
-              data: [25, 20, 30, 22, 17, 29]
+              label: 'Order',
+              data: []
             }]
           }
         }
       };
     },
     methods: {
-      initBigChart(index) {
+      initDataDashboard () {
+        this.getOrderStatWeek()
+          .then(resp => {
+            console.log(resp)
+            this.bigLineChart.allData = Object.keys(resp.data.content).map(label => {
+              return resp.data.content[label]
+            })
+
+            let chartData = {
+              datasets: [
+                {
+                  label: 'Performance',
+                  data: this.bigLineChart.allData
+                }
+              ],
+              labels: Object.keys(resp.data.content),
+            }
+
+            this.bigLineChart.chartData = chartData
+          })
+          .catch(err => {
+            if (err.status == 404) {
+              console.log(err.status)
+
+            } else {
+              this.$notify(err.message)
+            }
+          })
+
+        this.getOrderStatMonthly()
+          .then(resp => {
+            console.log(resp)
+            const labels = Object.keys(resp.data.content)
+
+            this.redBarChart = {
+              chartData: {
+                labels: labels,
+                datasets: [{
+                  label: 'Order',
+                  data: Object.values(resp.data.content)
+                }]
+              }
+        }
+          })
+          .catch(err => {
+            if (err.status == 404) {
+              console.log(err.status)
+
+            } else {
+              this.$notify(err.message)
+            }
+          })
+
+        this.totalOrders()
+          .then(resp => {
+            console.log(resp)
+            this.totalOrdersCount = resp.data.meta.total
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
+        this.totalInvoices()
+          .then(resp => {
+            console.log(resp)
+            this.totalInvoicesCount = resp.data.meta.total
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
+        this.totalUsers()
+          .then(resp => {
+            console.log(resp)
+            this.totalUsersCount = resp.data.meta.total
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
+        this.totalServices()
+          .then(resp => {
+            console.log(resp)
+            this.totalServicesCount = resp.data.meta.total
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      },
+
+      initBigChart() {
         let chartData = {
           datasets: [
             {
               label: 'Performance',
-              data: this.bigLineChart.allData[index]
+              data: this.bigLineChart.allData
             }
           ],
           labels: [1, 2, 3, 4, 5, 6, 7],
         };
-        this.bigLineChart.chartData = chartData;
-        this.bigLineChart.activeIndex = index;
-      }
+        this.bigLineChart.chartData = chartData
+        this.bigLineChart.activeIndex = 0
+      },
+
+      ...mapActions('orders', [
+        'getOrderStatWeek',
+        'getOrderStatMonthly',
+        'totalOrders'
+      ]),
+      ...mapActions('invoices', [
+        'totalInvoices'
+      ]),
+      ...mapActions('user', [
+        'totalUsers'
+      ]),
+      ...mapActions('services', [
+        'totalServices'
+      ])
     },
     mounted() {
       this.initBigChart(0);
+
+      this.initDataDashboard()
     }
   };
 </script>

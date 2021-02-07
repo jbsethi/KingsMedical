@@ -45,6 +45,7 @@
                     type="checkbox"
                     @input="selectTeeth(tooth.id, $event)"
                     :checked="isChecked(tooth.id)"
+                    :disabled="isDisabled(tooth.id)"
                   />
                   <span class="checkmark"></span>
                 </label>
@@ -62,6 +63,7 @@
                     type="checkbox"
                     @input="selectTeeth(tooth.id, $event)"
                     :checked="isChecked(tooth.id)"
+                    :disabled="isDisabled(tooth.id)"
                   />
                   <span class="checkmark checkmark--right"></span>
                 </label>
@@ -77,6 +79,7 @@
                     type="checkbox"
                     @input="selectTeeth(tooth.id, $event)"
                     :checked="isChecked(tooth.id)"
+                    :disabled="isDisabled(tooth.id)"
                   />
                   <span class="checkmark checkmark--right"></span>
                 </label>

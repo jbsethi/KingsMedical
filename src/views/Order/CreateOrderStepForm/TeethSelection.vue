@@ -305,8 +305,18 @@ export default {
       this.$emit('update:teethSelection', [key, value])
     }
   },
-  mounted () {},
+  mounted () {
+    console.log(this.teethSelection, this.selectedTeeths)
+  },
   watch: {
+    teethSelection: {
+      deep: true,
+      handler () {
+        if (this.teethSelection.teeths.length == 0) {
+          this.selectedTeeths = []
+        }
+      }
+    },
     noChargeHistory: {
       deep: true,
       handler (tooths) {

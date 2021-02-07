@@ -66,7 +66,7 @@
 
               <template>
                 <a @click.prevent="$emit('edit:service', row.id)" class="dropdown-item" href="#">Edit</a>
-                <a class="dropdown-item" href="#">Deactivate</a>
+                <a @click.prevent="$emit('remove:service', row.id)" class="dropdown-item" href="#">Deactivate</a>
               </template>
             </base-dropdown>
           </td>

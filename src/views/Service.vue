@@ -9,6 +9,7 @@
                     <services-table
                       @create:service="toggleCreateServiceModal(true)"
                       @edit:service="editService"
+                      @remove:service="removeService"
                       title="Services Record"
                       :pageNo="pageNo"
                       :meta="serviceMeta"
@@ -55,12 +56,6 @@
                           label="Replacement ( In Days )"
                           placeholder="Replacement Interval"
                           v-model="service.replaceInterval">
-              </base-input>
-              <base-input alternative
-                          class="mb-3"
-                          label="Price"
-                          placeholder="Price"
-                          v-model="service.price">
               </base-input>
               <div class="form-group">
                 <label class="form-control-label">Description</label>
@@ -111,7 +106,6 @@ export default {
         description: '',
         serviceType: '',
         replaceInterval: '',
-        price: '',
         active: false
       }
     }
@@ -174,7 +168,8 @@ export default {
     ]),
     ...mapActions('services', [
       'getAllServices',
-      'storeService'
+      'storeService',
+      'removeService'
     ])
   },
   mounted () {

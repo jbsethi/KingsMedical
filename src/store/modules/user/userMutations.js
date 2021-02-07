@@ -7,12 +7,12 @@ export default {
     state.users.push(payload)
   },
 
-  UPDATE_RECORD (state, payload) {
-    state.labs = state.users.map(user => {
+  REMOVE_RECORD (state, payload) {
+    state.users = state.users.filter(user => {
       if (user.id == payload.id) {
-        return payload
+        return false
       }
-      return user
+      return true
     })
   },
 

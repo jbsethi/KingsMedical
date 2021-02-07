@@ -19,4 +19,8 @@ export default {
   ADD_RECORDS (state, payload) {
     state.services = payload
   },
+
+  REMOVE_RECORDS (state, payload) {
+    state.services = state.services.filter(service => service.id != payload.id )
+  }
 }

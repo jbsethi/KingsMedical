@@ -2,6 +2,43 @@
 import { OrdersService } from '@/services/orders.service'
 
 export default {
+  totalOrders () {
+    return new Promise((resolve, reject) => {
+      OrdersService.getList()
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
+  getOrderStatWeek () {
+    return new Promise((resolve, reject) => {
+      OrdersService.getOrderStatWeek()
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
+  getOrderStatMonthly () {
+    return new Promise((resolve, reject) => {
+      const year = new Date().getFullYear()
+      OrdersService.getOrderStatMonthly({ year })
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
   validateHistory (context, payload) {
     return new Promise((resolve, reject) => {
       OrdersService.validateHistory(payload)

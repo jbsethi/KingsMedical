@@ -4,6 +4,20 @@ import { AuthService } from '@/services/auth.service'
 import * as _ from 'lodash'
 
 export default {
+  totalUsers () {
+    return new Promise((resolve, reject) => {
+      console.log('coming here')
+      UsersService.getList()
+        .then(result => {
+          console.log('coming here 2')
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
   getAllUsers ({ commit }) {
     return new Promise((resolve, reject) => {
       UsersService.getList()
@@ -61,9 +75,10 @@ export default {
   activateUser ({ state, commit }, payload) {
     console.log(payload)
     return new Promise((resolve, reject) => {
-      UsersService.update(payload.id, { active: payload.status })
+      UsersService.remove(payload.id)
         .then(result => {
-          commit('UPDATE_RECORD', result.data)
+          console.log(result)
+          commit('REMOVE_RECORD', result.data)
           resolve(result)
         })
         .catch((error) => {

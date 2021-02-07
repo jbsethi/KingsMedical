@@ -28,7 +28,6 @@
           <th>Details</th>
           <th>Send Date</th>
           <th v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)" >Invoice</th>
-          <th>Urgent</th>
           <th v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)" ></th>
         </template>
 
@@ -50,9 +49,6 @@
           </td>
           <td class="invoice" v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)">
             <base-button @click="$emit('click:viewInvoice', row.id)" outline type="primary" size="sm">View Invoice</base-button>
-          </td>
-          <td class="urgent">
-            {{row.urgent}}
           </td>
           <td class="text-right" v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)">
             <base-dropdown class="dropdown"

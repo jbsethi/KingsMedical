@@ -70,7 +70,7 @@
               </a>
 
               <template>
-                <a @click.prevent="$emit('activate:user', { id: row.id, status: false})" v-if="row.active" class="dropdown-item" href="#">Deactivate</a>
+                <a @click.prevent="$emit('activate:user', { id: row.id, status: false})" v-if="row.active" class="dropdown-item" href="#">Delete</a>
                 <a @click.prevent="$emit('activate:user', { id: row.id, status: true})" v-else class="dropdown-item" href="#">Activate</a>
               </template>
             </base-dropdown>

@@ -237,10 +237,7 @@ export default {
     },
 
     viewDetails(orderId) {
-      this.getOrderDetails(orderId).then((result) => {
-        this.order = result.data;
-        this.toggleCreateOrderModal(true, true);
-      });
+        window.open(`/orders/details/${orderId}`, 'chart', 'width=1225, height=770')
     },
 
     ...mapActions('orders', ['getAllOrders', 'getOrderDetails']),

@@ -78,6 +78,15 @@ const router = new Router({
       ]
     },
     {
+      path: '/orders/details/:id',
+      name: 'orderDetails',
+      component: () => import('./views/OrderDetails.vue'),
+      meta: {
+        canAccess: ['Super Administrator', 'Administrator', 'Doctor', 'Lab', 'Management'],
+        searchActive: true
+      }
+    },
+    {
       path: '/',
       redirect: 'login',
       component: AuthLayout,

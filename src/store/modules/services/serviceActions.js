@@ -2,6 +2,32 @@ import * as _ from 'lodash'
 import { ServicesService } from '@/services/services.service'
 
 export default {
+  totalServices () {
+    return new Promise((resolve, reject) => {
+      ServicesService.getList()
+        .then(result => {
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
+  removeService ({commit}, payload) {
+    console.log(payload)
+    return new Promise((resolve, reject) => {
+      ServicesService.remove(payload)
+        .then(result => {
+          commit('REMOVE_RECORDS', result.data)
+          resolve(result)
+        })
+        .catch((error) => {
+          reject(error)
+        })
+    })
+  },
+
   getAllServices ({ commit }, payload) {
     return new Promise((resolve, reject) => {
       ServicesService.getList(payload)

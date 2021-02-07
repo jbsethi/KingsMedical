@@ -19,4 +19,32 @@ export class OrdersService extends BaseService {
       throw new ErrorWrapper(error)
     }
   }
+
+  static async getOrderStatWeek () {
+    try {
+      const response = await this.request({ auth: true }).get(`${this.entity}/stats/weekly`)
+      
+      const data = {
+        content: response.data
+      }
+
+      return new ResponseWrapper(response, data)
+    } catch (error) {
+      throw new ErrorWrapper(error)
+    }
+  }
+
+  static async getOrderStatMonthly (payload) {
+    try {
+      const response = await this.request({ auth: true }).post(`${this.entity}/stats/monthly`, payload)
+      
+      const data = {
+        content: response.data
+      }
+
+      return new ResponseWrapper(response, data)
+    } catch (error) {
+      throw new ErrorWrapper(error)
+    }
+  }
 }

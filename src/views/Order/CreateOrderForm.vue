@@ -1,5 +1,5 @@
 <template>
-  <div class="order-container">
+  <div class="order-container" id="printThis">
     <form ref="orderForm">
       <div class="order">
         <section class="order__client">
@@ -361,13 +361,15 @@ export default {
     Select: () => import('vue-select')
   },
   methods: {
+    printOrder () {
+    },
+
     async initOrderData () {
       await this.$store.dispatch('services/getAllServicesRecords')
       await this.$store.dispatch('labs/getAllLabs')
     },
 
     initOrderDetails () {
-      console.log(this.orderDetails)
       this.order.emiratesId = this.orderDetails.patientEmiratesId
       this.order.patientName = this.orderDetails.Patient.name
       this.order.lab = this.orderDetails.labId
@@ -380,7 +382,7 @@ export default {
       this.orderDetails.tooths.forEach(tooth => {
         this.orderData.teeths[tooth.toothId] = true
         this.orderData.pointicDesign = tooth.ToothPonticDesign[0].ponticDesignId
-        this.orderData.service = tooth.ToothServices[0].serviceId
+        this.orderData.service = tooth.ToothServices[0].LabService.serviceId
       })
 
       // this.orderDetails.reduce((orders, tooth) => {
@@ -412,6 +414,16 @@ export default {
   }
 }
 
+@media print {
+  body{
+    overflow: hidden;
+  }
+
+  #printThis {
+    top: 0%;
+  }
+}
+
 .order-container {
   .order {
     display: grid;
@@ -435,6 +447,7 @@ export default {
     &__options {
       margin-left: 10px;
       border: 2px solid saddlebrown;
+      flex-direction: column-reverse;
       @include media (null, 1280px) {
         margin-left: 5px;
         flex-direction: column-reverse;

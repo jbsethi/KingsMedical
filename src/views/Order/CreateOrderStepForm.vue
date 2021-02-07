@@ -69,7 +69,6 @@ export default {
       },
 
       serviceSelection: {
-        serviceType: '',
         service: ''
       },
 
@@ -93,7 +92,6 @@ export default {
     },
 
     isServiceSelectionValid () {
-      if (this.serviceSelection.serviceType == '') return false
       if (this.serviceSelection.service == '') return false
       return true
     },
@@ -155,7 +153,7 @@ export default {
         labId: this.patientInfo.labId,
         shadeId: this.teethSelection.shade,
         tooths: [],
-        parentId: ''
+        parentId: null
       }
 
       formData.tooths = this.teethSelection.teeths.map(tooth => {
@@ -169,18 +167,18 @@ export default {
 
       this.storeOrder(formData)
         .then(() => {
+          this.serviceSelection = {
+            serviceType: '',
+            service: ''
+          },
+
+          this.teethSelection = {
+            teeths: [],
+            pointicDesign: '',
+            shade: ''
+          }
+          
           if (addMore) {
-            this.serviceSelection = {
-              serviceType: '',
-              service: ''
-            },
-
-            this.teethSelection = {
-              teeths: [],
-              pointicDesign: '',
-              shade: ''
-            }
-
             this.currentStep = 1
           } else {
             this.close()
