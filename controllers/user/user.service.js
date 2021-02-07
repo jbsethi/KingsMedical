@@ -5,7 +5,7 @@ const superman = process.env.SUPERMAN;
 const supermanId = process.env.SUPERMAN_ID;
 
 exports.getAllUsers = async function ( _PAGE, _LIMIT) {
-    
+
     let where = {
         live: true
     }
@@ -16,7 +16,6 @@ exports.getAllUsers = async function ( _PAGE, _LIMIT) {
 
     where['role'] = { [db.Sequelize.Op.ne]: Roles['SuperAdmin'] };
 
-    console.log(where);
 
     let association = {
         include: [{
@@ -63,7 +62,7 @@ exports.Get = async function ( _ID ) {
 }
 
 exports.Create = async (_OBJECT) => {
-
+    
         let emiratesId = await db.User.findOne({
             where: {
                 emiratesId: _OBJECT.emiratesId,
@@ -154,18 +153,39 @@ exports.Create = async (_OBJECT) => {
 
         }
 
-        let result = await db.User.create(_OBJECT);
+        
 
-        delete result.dataValues.password;
-        delete result.dataValues.createdBy;
-        delete result.dataValues.updatedBy;
-        delete result.dataValues.updatedAt;
-        delete result.dataValues.live;
+        try{
+            let result = await db.User.create(_OBJECT);
+            
+            return {
+                DB_value: result
+            };
+        }
+        catch(excp){
+            let error = new Error("Failed to create user");
+            error.status = 500;
+            return {
+                DB_error: error
+            };
+        }
+        // if(result){
 
-        return {
-            DB_value: result
-        };
+        //     delete result.dataValues.password;
+        //     delete result.dataValues.createdBy;
+        //     delete result.dataValues.updatedBy;
+        //     delete result.dataValues.updatedAt;
+        //     delete result.dataValues.live;
     
+        //     return {
+        //         DB_value: result
+        //     };
+        // }
+ 
+        
+        // return {
+        //     DB_value: 'Failed'
+        // };
     
 }
 

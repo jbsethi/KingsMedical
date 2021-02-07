@@ -6,11 +6,11 @@ const { Resources, Actions } = require('../utils/permissions');
 
 router.route('/')
 .get(AuthenticatePermission(Resources['ServiceTypes'], Actions['GetAll']), GetAll)                        // GET ALL Notice
-.post(AuthenticatePermission(Resources['ServiceTypes'], HandleNullString, Actions['Create']), Create)                       // CREATE Notice
+.post(AuthenticatePermission(Resources['ServiceTypes'], Actions['Create']),  HandleNullString, Create)                       // CREATE Notice
 
 router.route('/:id')
 .get(AuthenticatePermission(Resources['ServiceTypes'], Actions['GetSingle']), Get)                           // GET Notice AGAINST ID
-.put(AuthenticatePermission(Resources['ServiceTypes'], HandleNullString, Actions['Update']), Update)                        // UPDATE Notice
+.put(AuthenticatePermission(Resources['ServiceTypes'], Actions['Update']), HandleNullString, Update)                        // UPDATE Notice
 .delete(AuthenticatePermission(Resources['ServiceTypes'], Actions['Delete']), Delete)                     // DELETE Notice
 
 router.route('/:id/services')

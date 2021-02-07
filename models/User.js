@@ -14,12 +14,12 @@ module.exports = (sequelize, Datatypes) => {
       emiratesId : {
         type: Datatypes.STRING(),
         allowNull: false,
-        unique: true
+        // unique: true
       },
       email : {
         type: Datatypes.STRING(),
         allowNull: true,
-        unique: true
+        // unique: true
       },
       name : {
         type: Datatypes.STRING(),
@@ -29,7 +29,7 @@ module.exports = (sequelize, Datatypes) => {
       {
         type: Datatypes.STRING(),
         allowNull: false,
-        unique: true
+        // unique: true
       },
       password : {
         type: Datatypes.STRING(500),

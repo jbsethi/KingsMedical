@@ -81,6 +81,8 @@ exports.Get = async function ( _ID ) {
 
 exports.Create = async (_OBJECT) => {
 
+    console.log(_OBJECT);
+    
     let result = await db.ServiceType.create(_OBJECT);
 
     delete result.dataValues.createdBy;

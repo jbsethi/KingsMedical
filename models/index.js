@@ -67,7 +67,6 @@ sequelize.authenticate()
     // Include Services in Order from OrderToothServices Table
     db.OrderToothPonticDesign.belongsTo(db.PonticDesign, {as: 'PonticDesign', foreignKey: 'ponticDesignId'});
 
-    // db.Invoice.belongsTo(db.Order, {as: 'Invoices', foreignKey: 'orderId'});
     db.Order.hasMany(db.Invoice, {as: 'Invoices', foreignKey: 'orderId'});
 
     // Synchronization
@@ -76,11 +75,11 @@ sequelize.authenticate()
         console.log('[DATABASE] Synchronising successfull');
     })
     .catch((error) => {  
-        console.log('[DATABASE] Synchronising failed\n Error =>');
+        console.log('[DATABASE] Synchronising failed\n Error =>', error);
     });
 
 })
-.catch(( ERROR )=>{ console.log('[DATABASE] Connection failed'); })
+.catch(( ERROR )=>{ console.log('[DATABASE] Connection failed', ERROR); })
 
 
 db.sequelize = sequelize;

@@ -26,6 +26,7 @@ const schemaPassword = Joi.object({
 
 exports.GetAll = async (req, res, next) => {
     
+    console.log('User controller');
 
     let pageNo = req.query.pageNo;
     let pageSize = req.query.pageSize;
