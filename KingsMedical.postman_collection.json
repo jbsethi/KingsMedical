@@ -166,6 +166,16 @@
 				{
 					"name": "DeleteUser",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [
 							{
@@ -175,14 +185,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/users/1",
+							"raw": "{{url}}/api/users/4",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"api",
 								"users",
-								"1"
+								"4"
 							]
 						}
 					},
@@ -390,7 +400,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"patientEmiratesId\": \"22222222222\",\r\n    \"toothId\":1,\r\n    \"serviceId\": 4\r\n}",
+							"raw": "{\r\n    \"patientEmiratesId\": \"222\",\r\n    \"toothId\":2,\r\n    \"labServiceId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -434,7 +444,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"patientId\": 10,\r\n    \"patientEmiratesId\": \"222\",\r\n    \"patientName\": \"Sumaira\",\r\n    \"patientGender\": \"female\",\r\n    \"patientContact\": \"03040014628\",\r\n    \"sendDate\": \"2020-11-20\",\r\n    \"returnDate\": \"2020-11-20\",\r\n    \"notes\": \"notes\",\r\n    \"urgent\": true,\r\n    \"labId\": \"1\",\r\n    \"shadeId\": 1,\r\n    \"parentId\": null,\r\n    \"tooths\": [\r\n        {\r\n            \"toothId\":1,\r\n            \"serviceIds\": [1,2,3],\r\n            \"ponticDesignIds\": [1,2]\r\n        },\r\n        {\r\n            \"toothId\": 2,\r\n            \"serviceIds\": [4,5,6],\r\n            \"ponticDesignIds\": [8,9]\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"patientId\": 1,\r\n    \"patientEmiratesId\": \"222\",\r\n    \"patientName\": \"Sumaira\",\r\n    \"patientGender\": \"female\",\r\n    \"patientContact\": \"03040014628\",\r\n    \"sentDate\": \"2020-11-20\",\r\n    \"returnDate\": \"2020-11-20\",\r\n    \"notes\": \"notes\",\r\n    \"urgent\": true,\r\n    \"labId\": \"1\",\r\n    \"shadeId\": 1,\r\n    \"parentId\": null,\r\n    \"tooths\": [\r\n        {\r\n            \"toothId\":1,\r\n            \"serviceIds\": [1,2,3],\r\n            \"ponticDesignIds\": [1,2],\r\n            \"charge\" : true\r\n        },\r\n        {\r\n            \"toothId\": 2,\r\n            \"serviceIds\": [2,3],\r\n            \"ponticDesignIds\": [3],\r\n            \"charge\" : false\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -895,6 +905,16 @@
 				{
 					"name": "GetServiceType",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -1025,6 +1045,16 @@
 				{
 					"name": "GetEachAndEveryServiceTypes",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -1051,6 +1081,16 @@
 				{
 					"name": "GetActiveServiceTypes",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -1403,7 +1443,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"labId\": 1,\r\n    \"serviceId\": 5,\r\n    \"price\": 50,\r\n    \"active\": true\r\n}",
+							"raw": "{\r\n    \"labId\": 1,\r\n    \"serviceId\": 3,\r\n    \"price\": 100,\r\n    \"active\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2948,7 +2988,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"doctor1\",\r\n    \"password\": \"doctor123\"\r\n}",
+							"raw": "{\r\n    \"username\": \"super.admin\",\r\n    \"password\": \"krypton\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

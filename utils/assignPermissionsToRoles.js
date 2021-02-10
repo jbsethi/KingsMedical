@@ -351,8 +351,8 @@ const permissions = {
             {permission: Create, status: false},
             {permission: Update, status: false},
             {permission: Delete, status: false},
-            {permission: GetSingle, status: false},
-            {permission: GetAll, status: false},
+            {permission: GetSingle, status: true},
+            {permission: GetAll, status: true},
         ] },
         { [PonticDesigns]: [
             {permission: Create, status: false},
@@ -377,8 +377,8 @@ const permissions = {
         ] },
         { [Invoices]: [
             {permission: Create, status: true},
-            {permission: Update, status: false},
-            {permission: Delete, status: false},
+            {permission: Update, status: true},
+            {permission: Delete, status: true},
             {permission: GetSingle, status: true},
             {permission: GetAll, status: true},
         ] },

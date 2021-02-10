@@ -50,6 +50,10 @@ module.exports = {
       type: Sequelize.STRING(),
       allowNull: false,
     },
+    price:{
+      type: Sequelize.INTEGER(),
+      allowNull: true,
+    },
     createdBy: {
       type: Sequelize.INTEGER(11),
       allowNull: true,

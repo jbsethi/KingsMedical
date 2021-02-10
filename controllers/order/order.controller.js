@@ -35,7 +35,7 @@ let SchemaStatus = Joi.object({
 let SchemaGetOrderStatus = Joi.object({
     patientEmiratesId: Joi.string().required(),
     toothId: Joi.number().required(),
-    serviceId: Joi.number().required()
+    labServiceId: Joi.number().required()
 });
 
 let SchemaMonthlyStats = Joi.object({

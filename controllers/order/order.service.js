@@ -202,7 +202,7 @@ exports.Get = async function ( _ID, _USER ) {
 
 exports.Create = async (_OBJECT) => {
 
-        let servicePrices = {};
+        let servicePrices = {}, orderPrice = 0;
 
         if( _OBJECT.labId ){
 
@@ -293,7 +293,7 @@ exports.Create = async (_OBJECT) => {
                 }
 
                 servicePrices[Service.dataValues.id] = Service.dataValues.price;
-
+                if(element.charge) orderPrice += +Service.price;
             }
 
             let ponticDesigns = element.ponticDesignIds;
@@ -344,6 +344,7 @@ exports.Create = async (_OBJECT) => {
             shadeId: _OBJECT.shadeId,
             parentId: _OBJECT.parentId,
             status: 'placed',
+            price: orderPrice,
             createdBy: _OBJECT.createdBy,
         }
         let Order = await db.Order.create(orderObject);
@@ -416,6 +417,7 @@ exports.Create = async (_OBJECT) => {
 
         delete _OBJECT.updatedBy;
         _OBJECT.id = Order.dataValues.id;
+        _OBJECT.price = Order.orderPrice;
 
         return {
             DB_value: _OBJECT
@@ -424,9 +426,9 @@ exports.Create = async (_OBJECT) => {
     
 }
 
-exports.Update = async (_OBJECT, _ID, condition = {}) => {
+exports.Update = async (_OBJECT, _ID, _USER ) => {
 
-    let servicePrices = {};
+    let servicePrices = {}, orderPrice = 0;
 
     let Order = null;
     if( _ID ){
@@ -556,7 +558,7 @@ exports.Update = async (_OBJECT, _ID, condition = {}) => {
         let services = element.serviceIds;
         for(let serviceId of services){
 
-            let Service = await db.Service.findOne( {where: {id: serviceId, live: true } });
+            let Service = await db.LabService.findOne( {where: {id: serviceId, live: true } });
             if(!Service){
                 let error = new Error(`Service does not exists having id '${serviceId}'`);
                 error.status = 400;
@@ -564,8 +566,9 @@ exports.Update = async (_OBJECT, _ID, condition = {}) => {
                     DB_error: error
                 };
             }
-            servicePrices[Service.dataValues.id] = Service.dataValues.price;
 
+            servicePrices[Service.dataValues.id] = Service.dataValues.price;
+            if(element.charge) orderPrice += +Service.price;
         }
 
         let ponticDesigns = element.ponticDesignIds;
@@ -616,6 +619,7 @@ exports.Update = async (_OBJECT, _ID, condition = {}) => {
     Order.notes = _OBJECT.notes;
     Order.labId = _OBJECT.labId;
     Order.shadeId = _OBJECT.shadeId;
+    Order.price = orderPrice;
     Order.parentId = _OBJECT.parentId;
     Order.updatedBy = _OBJECT.updatedBy;
 
@@ -638,6 +642,8 @@ exports.Update = async (_OBJECT, _ID, condition = {}) => {
             };
         }
 
+        console.log(servicePrices);
+
         let services = element.serviceIds;
         for(let serviceId of services){
 
@@ -648,6 +654,9 @@ exports.Update = async (_OBJECT, _ID, condition = {}) => {
                 charge: element.charge,
                 createdBy: _OBJECT.createdBy,
             }
+
+            console.log(orderToothService);
+
             let Service = await db.OrderToothService.create(orderToothService);
             if(!Service){
                 let error = new Error(`Failed to add service having id '${serviceId}' to order`);
@@ -681,6 +690,7 @@ exports.Update = async (_OBJECT, _ID, condition = {}) => {
     }
 
     delete _OBJECT.updatedBy;
+    _OBJECT.price = orderPrice;
 
     return {
         DB_value: _OBJECT
@@ -799,16 +809,16 @@ exports.GetOrderStatus = async function ( _OBJECT ) {
                             model: db.LabService, // will create a left join
                             attributes: [['serviceId', 'LabServiceId']],
                             required: true,
+                            where: {
+                                live: true,
+                                id: _OBJECT['labServiceId']
+                            },
                             include: [
                                 {
                                     as: 'Service',
                                     model: db.Service, // will create a left join
                                     attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
                                     required: true,
-                                    where: {
-                                        live: true,
-                                        id: _OBJECT['serviceId']
-                                    }
                                 },
                             ]
                         },
