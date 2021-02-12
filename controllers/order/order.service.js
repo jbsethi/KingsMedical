@@ -341,7 +341,7 @@ exports.Create = async (_OBJECT) => {
         let orderObject = {
             patientEmiratesId: _OBJECT.patientEmiratesId,
             patientId: Patient.dataValues.id,
-            sentDate: _OBJECT.sendDate,
+            sentDate: _OBJECT.sentDate,
             returnDate: _OBJECT.returnDate,
             urgent: _OBJECT.urgent,
             notes: _OBJECT.notes,

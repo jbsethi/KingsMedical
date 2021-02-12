@@ -98,6 +98,8 @@ exports.Create = async (req, res, next) => {
         value.createdBy = req.token.id;
         value.updatedBy = null;
 
+        // console.log('Order:', value);
+
         let { DB_error, DB_value } = await Service.Create(value);
 
         if(DB_error){
