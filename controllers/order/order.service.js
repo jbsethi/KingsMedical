@@ -417,7 +417,7 @@ exports.Create = async (_OBJECT) => {
 
         delete _OBJECT.updatedBy;
         _OBJECT.id = Order.dataValues.id;
-        _OBJECT.price = Order.orderPrice;
+        _OBJECT.price = orderPrice;
 
         return {
             DB_value: _OBJECT
