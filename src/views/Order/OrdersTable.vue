@@ -26,6 +26,7 @@
           <th>Emirates ID</th>
           <th>Order Type</th>
           <th>Details</th>
+          <th v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)">Cost</th>
           <th>Send Date</th>
           <th v-if="['Super Administrator', 'Administrator', 'Management', 'Lab'].includes(role || null)" >Invoice</th>
           <th v-if="['Super Administrator', 'Administrator', 'Management', 'Lab'].includes(role || null)" ></th>
@@ -43,6 +44,9 @@
           </td>
           <td class="details">
             <a @click.prevent="$emit('viewOrder', row.id)" href="#">View Details</a>
+          </td>
+          <td class="invoice" v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)">
+            <span class="text-danger">{{ row.price || 'Updating' }}</span>
           </td>
           <td class="send-date">
             {{getDate(row.sentDate)}}

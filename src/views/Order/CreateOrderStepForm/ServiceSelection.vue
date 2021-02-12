@@ -9,7 +9,7 @@
             </div>
             <div class="service-types__services">
               <div>
-                <p v-for="s in getServicesbyType(t.id)" :key="s.id">
+                <p class="service-types__service" v-for="s in getServicesbyType(t.id)" :key="s.id">
                   <input class="serviceRadio" @input="updateServiceSelection(s.id, $event)" type="radio" name="serviceSelect" :id="s.id" :value="s.id">
                   <label class="service-label" :for="s.id">{{s.name}}</label>
                 </p>
@@ -21,53 +21,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="col-md-12">
-        <div class="form-group mb-3 has-label">
-          <label class="form-control-label">Service Type</label>
-          <Select required
-                  :clearable="false"
-                  placeholder="Service Type"
-                  class="service-type--select"
-                  :options="serviceTypes"
-                  :value="serviceSelection.serviceType"
-                  @input="updateServiceSelection('serviceType', $event)"
-                  @change="updateServices"
-                  :reduce="(option) => option.id"
-                  label="name">
-            <template #search="{attributes, events}">
-              <input
-                class="vs__search"
-                :required="!serviceSelection.serviceType"
-                v-bind="attributes"
-                v-on="events"
-              />
-            </template>
-          </Select>
-        </div>
-      </div>
-      <div class="col-md-12">
-        <div class="form-group mb-3 has-label">
-          <label class="form-control-label">Service</label>
-          <Select required
-                  :clearable="false"
-                  placeholder="Service"
-                  class="service--select"
-                  :options="services"
-                  :value="serviceSelection.service"
-                  @input="updateServiceSelection('service', $event)"
-                  :reduce="(option) => option.id"
-                  label="name">
-            <template #search="{attributes, events}">
-              <input
-                class="vs__search"
-                :required="!serviceSelection.service"
-                v-bind="attributes"
-                v-on="events"
-              />
-            </template>
-          </Select>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -92,29 +45,7 @@ export default {
       services: []
     }
   },
-  components: {
-    // Select: () => import('vue-select')
-  },
   methods: {
-    // updateServices (newServiceType, oldServiceType) {
-    //   if (newServiceType && newServiceType !== oldServiceType) {
-    //     const labId = this.patientInfo.labId
-    //     this.getEveryServicebyServiceTypeAndLab({ serviceTypeId: newServiceType, labId })
-    //       .then(resp => {
-    //         this.updateServiceSelection('service', null)
-    //         this.services = (resp?.data || []).map(service => {
-    //           return {
-    //             ...service,
-    //             name: service.Service.name
-    //           }
-    //         })
-    //       }).
-    //       catch(() => {
-    //         this.$notify('Couldn\'t get services try again later')
-    //       })
-    //   }
-    // },
-
     getServicesbyType (typeId) {
       return this.services.filter(s => {
         if (s.Service.serviceType == typeId) {
@@ -142,7 +73,7 @@ export default {
   mounted () {
     this.getEveryServiceTypes()
       .then(resp => {
-        this.serviceTypes = resp?.data?.content || []
+        this.serviceTypes = resp?.data?.content.reverse() || []
         const labId = this.patientInfo.labId
         this.serviceTypes.forEach(t => {
           this.getEveryServicebyServiceTypeAndLab({ serviceTypeId: t.id, labId })
@@ -178,5 +109,19 @@ export default {
 <style lang="scss" scoped>
 .service-label {
   padding-left: 10px;
+}
+
+.service-types {
+  &__heading {
+    font-weight: bold;
+    padding-bottom: 10px;
+  }
+  &__services {
+    margin-left: 10px;
+    margin-bottom: 15px;
+  }
+  &__service {
+    margin-bottom: 0px;
+  }
 }
 </style>

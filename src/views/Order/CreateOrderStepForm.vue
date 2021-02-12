@@ -16,15 +16,39 @@
             :patientInfo="patientInfo"
             :serviceSelection="serviceSelection"
             :teethSelection="teethSelection"
-            :history="history"
             @validateHistory="validateToothHistory"
             @removeFromHistory="removeToothHistory"
             @update:patientInfo="updatePatientInfo"
             @update:serviceSelection="updateServiceSelection"
             @update:teethSelection="updateTeethSelection"
-            @chargeTeethHistoryStatus="chargeTeethHistoryStatus"
+            @updateNotes="updateNotes"
+            @updateUrgentStatus="updateUrgentStatus"
           ></component>
         </keep-alive>
+      </section>
+
+      <section v-if="history.length > 0 && currentStep == 3" class="row">
+        <div class="col-md-12 pt-5">
+          <p>The Patient has History for same service on teeth below :</p>
+          <div :class="((+index + 1) < history.length) ? 'list--bottom pb-2' : 'mt-3'" v-for="(tooth, index) in history" :key="tooth.toothId">
+            <div class="d-flex">
+              <span class="bullet"></span>
+            </div>
+            <div class="d-flex">
+              <div class="mr-2">Tooth no </div>
+              <div><strong>{{tooth.toothId}}</strong></div>
+            </div>
+            <div class="d-flex">
+              <div class="mr-2 mt-2">Send Date</div>
+              <div class=" mt-2"><strong>{{ getDate(tooth.data[0].sentDate || tooth.data[0].updatedAt) }}</strong></div>
+            </div>
+            <div class="d-flex align-items-center justify-content-center mt-1">
+              <div class="d-flex align-items-center justify-content-center">
+                <base-switch class="mb-0 mr-2" v-model="toothsChargeStatuses[tooth.toothId]"></base-switch> <span>Charge ?</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
     </section>
     <template slot="footer">
@@ -35,7 +59,7 @@
         <section>
           <base-button v-if="currentStep != 1" @click="move('back')" class="btn-small" type="secondary">Back</base-button>
           <base-button v-if="currentStep != totalSteps" @click="move('next')" class="btn-small" type="primary">Next</base-button>
-          <base-button v-if="currentStep == totalSteps" @click="confirmCreate(true)" class="btn-small" type="primary">Create and add Another</base-button>
+          <!-- <base-button v-if="currentStep == totalSteps" @click="confirmCreate(true)" class="btn-small" type="primary">Create and add Another</base-button> -->
           <base-button v-if="currentStep == totalSteps" @click="confirmCreate(false)" class="btn-small" type="primary">Create and Close</base-button>
         </section>
       </section>
@@ -78,8 +102,11 @@ export default {
         shade: ''
       },
 
-      history: {},
-      toothsChargeStatuses: {}
+      history: [],
+      toothsChargeStatuses: {},
+
+      notes: '',
+      urgent: false
     }
   },
   computed: {
@@ -119,25 +146,34 @@ export default {
     }
   },
   methods: {
+    getDate (date) {
+      const dayFormat =  new Date(date)
+      return `${dayFormat.getDay()}-${+dayFormat.getMonth() + 1}-${dayFormat.getFullYear()}`
+    },
+
+    updateNotes (notes) {
+      this.notes = notes
+    },
+
+    updateUrgentStatus (status) {
+      this.urgent = status
+    },
+
     validateToothHistory (toothId) {
       const data = {
         toothId,
         patientEmiratesId: this.patientInfo.emiratesId,
-        serviceId: this.serviceSelection.service
+        labServiceId: this.serviceSelection.service
       }
 
       this.validateHistory(data)
         .then(resp => {
-          this.history[toothId] = resp.data.content
+          this.history.push({ toothId, data: resp.data.content })
         })
     },
 
     removeToothHistory (toothId) {
-      delete this.history[toothId]
-    },
-
-    chargeTeethHistoryStatus (tooths) {
-      this.toothsChargeStatuses = tooths
+      this.history = this.history.filter(teeth => teeth.toothId !== toothId)
     },
 
     confirmCreate (addMore = false) {
@@ -148,8 +184,8 @@ export default {
         patientContact: '090078601',
         sentDate: this.patientInfo.sendDate,
         returnDate: this.patientInfo.returnDate,
-        notes: '',
-        urgent: false,
+        notes: this.notes,
+        urgent: this.urgent,
         labId: this.patientInfo.labId,
         shadeId: this.teethSelection.shade,
         tooths: [],
@@ -161,7 +197,7 @@ export default {
           toothId: tooth,
           serviceIds: [this.serviceSelection.service],
           ponticDesignIds: [this.teethSelection.pointicDesign],
-          charge: this.toothsChargeStatuses[tooth] || false
+          charge: (this.toothsChargeStatuses[tooth] !== undefined) ? this.toothsChargeStatuses[tooth] : true
         }
       })
 
@@ -296,8 +332,7 @@ export default {
   }
 }
 
-.btn-small {
-  padding: 0.5rem 0.925rem;
-  font-size: 0.7rem;
+.list--bottom {
+  border-bottom: 1px solid black;
 }
 </style>

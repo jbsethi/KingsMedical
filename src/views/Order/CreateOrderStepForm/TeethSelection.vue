@@ -127,25 +127,6 @@
           </Select>
         </div>
       </div>
-
-      <div v-if="showHistory" class="col-md-12 pt-5">
-        <p>The Patient has History for same service on teeth below :</p>
-        <div v-for="toothId in Object.keys(history)" :key="toothId">
-          <div class="d-flex align-items-center justify-content-center">
-            <div class="mr-2">Tooth no </div>
-            <div><strong>{{toothId}}</strong></div>
-          </div>
-          <div class="d-flex align-items-center justify-content-center">
-            <div class="mr-2 mt-2">Send Date</div>
-            <div><strong>{{history[toothId][0].sentDate}}</strong></div>
-          </div>
-          <div class="d-flex align-items-center justify-content-center mt-1">
-            <div class="d-flex align-items-center justify-content-center">
-              <base-switch class="mb-0 mr-2" v-model="noChargeHistory[toothId]"></base-switch> <span>Charge ?</span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -158,6 +139,7 @@ export default {
       type: Object,
       required: true
     },
+
     history: {
       type: Object
     }
@@ -314,23 +296,6 @@ export default {
       handler () {
         if (this.teethSelection.teeths.length == 0) {
           this.selectedTeeths = []
-        }
-      }
-    },
-    noChargeHistory: {
-      deep: true,
-      handler (tooths) {
-        this.$emit('chargeTeethHistoryStatus', tooths)
-      }
-    },
-    history: {
-      immediate: true,
-      deep: true,
-      handler (history) {
-        if (Object.keys(history).length > 0) {
-          this.showHistory = true
-        } else {
-          this.showHistory = false
         }
       }
     }
