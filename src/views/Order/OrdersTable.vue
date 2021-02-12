@@ -46,7 +46,7 @@
             <a @click.prevent="$emit('viewOrder', row.id)" href="#">View Details</a>
           </td>
           <td class="invoice" v-if="['Super Administrator', 'Administrator', 'Management'].includes(role || null)">
-            <span class="text-danger">{{ row.price || 'Updating' }}</span>
+            <span class="text-danger">{{ row.price || '0' }}</span>
           </td>
           <td class="send-date">
             {{getDate(row.sentDate)}}

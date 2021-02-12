@@ -20,26 +20,13 @@
                        disabled
                       alternative="">
           </base-input>
-          <div class="form-group mb-0 has-label">
-            <label class="form-control-label">Clinic</label>
-            <Select required
-                    :clearable="false"
-                    placeholder="Select Clinic"
-                    :options="labs"
-                    v-model="order.lab"
-                    :reduce="(lab) => lab.id"
-                     disabled
-                    label="name">
-              <template #search="{attributes, events}">
-                <input
-                  class="vs__search"
-                  :required="!order.lab"
-                  v-bind="attributes"
-                  v-on="events"
-                />
-              </template>
-            </Select>
-          </div>
+          <base-input placeholder="Clinic"
+                      label="Clinic"
+                      class="mb-0"
+                      v-model="order.lab"
+                       disabled
+                      alternative="">
+          </base-input>
           <base-input placeholder="Send Date"
                       label="Send Date"
                       class="mb-0"
@@ -337,7 +324,6 @@ export default {
       return pointicDesigns
     },
     ...mapState({
-      labs: state => state.labs.labs,
       allServices: state => state.services.services,
       serviceTypes: state => {
         const serviceTypes = {}
@@ -358,7 +344,6 @@ export default {
     })
   },
   components: {
-    Select: () => import('vue-select')
   },
   methods: {
     printOrder () {
@@ -366,13 +351,12 @@ export default {
 
     async initOrderData () {
       await this.$store.dispatch('services/getAllServicesRecords')
-      await this.$store.dispatch('labs/getAllLabs')
     },
 
     initOrderDetails () {
       this.order.emiratesId = this.orderDetails.patientEmiratesId
       this.order.patientName = this.orderDetails.Patient.name
-      this.order.lab = this.orderDetails.labId
+      this.order.lab = this.orderDetails.Lab.title
       this.order.age = 20
       this.order.sendDate = this.orderDetails.sentDate
       this.order.returnDate = this.orderDetails.returnDate
