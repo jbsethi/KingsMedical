@@ -56,6 +56,7 @@ sequelize.authenticate()
 
     // Including Patient in order
     db.Order.belongsTo(db.Patient,  {as: 'Patient', foreignKey: 'patientId'});
+    db.Order.belongsTo(db.Lab,  {as: 'Lab', foreignKey: 'labId'});
     // Include Sahde in Order
     db.Order.belongsTo(db.Shade,  {as: 'Shade', foreignKey: 'shadeId'});
     // Include Tooth in Order from Ordertooth Table

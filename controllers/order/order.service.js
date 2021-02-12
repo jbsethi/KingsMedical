@@ -77,6 +77,11 @@ exports.Get = async function ( _ID, _USER ) {
 
     let include = [
         {
+            as: 'Lab',
+            model: db.Lab, // will create a left join
+            attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
+        },
+        {
             as: 'Patient',
             model: db.Patient, // will create a left join
             attributes: { exclude: ['createdBy', 'updatedBy', 'updatedAt', 'live'] },
